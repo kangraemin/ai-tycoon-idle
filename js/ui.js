@@ -15,9 +15,11 @@ function switchScreen(screen) {
   });
 
   const activeBtn = document.querySelector(`[data-screen="${screen}"]`);
-  activeBtn.classList.add('active');
-  const activeIcon = activeBtn.querySelector('.material-symbols-outlined');
-  if (activeIcon) activeIcon.classList.add('fill-1');
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+    const activeIcon = activeBtn.querySelector('.material-symbols-outlined');
+    if (activeIcon) activeIcon.classList.add('fill-1');
+  }
 }
 
 function updateCurrencyDisplay() {
@@ -73,12 +75,11 @@ function showModal(title, message, buttons) {
 }
 
 function showSettings() {
-  const sfxState = gameState.settings?.sfxEnabled !== false;
+  const sfxState = gameState.settings?.sfxOn !== false;
   showModal('Settings', '', [
     { text: `SFX: ${sfxState ? 'ON' : 'OFF'}`, onClick: () => {
       if (!gameState.settings) gameState.settings = {};
-      gameState.settings.sfxEnabled = !sfxState;
-      if (typeof SFX !== 'undefined') SFX.enabled = gameState.settings.sfxEnabled;
+      gameState.settings.sfxOn = !sfxState;
       saveGame();
       showSettings();
     }},

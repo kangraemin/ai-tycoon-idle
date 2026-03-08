@@ -32,7 +32,6 @@ function rollGacha() {
 
 function pullGacha() {
   if (gameState.gems < GACHA_COST) return null;
-  gameState.gems -= GACHA_COST;
 
   const result = rollGacha();
   const slimeState = getSlimeState(result.slimeId);
@@ -41,12 +40,12 @@ function pullGacha() {
     const owned = getOwnedSlimes().length;
     if (owned >= gameState.ranchSlots) {
       result.slotFull = true;
+      return result;
     }
   }
 
-  if (!result.slotFull) {
-    slimeState.count = Math.min(slimeState.count + 1, 10);
-  }
+  gameState.gems -= GACHA_COST;
+  slimeState.count = Math.min(slimeState.count + 1, 10);
 
   return result;
 }
