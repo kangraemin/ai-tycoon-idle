@@ -3,11 +3,11 @@
 const GACHA_COST = 10;
 
 const GACHA_RATES = [
-  { rarity: 'common',    weight: 40 },
-  { rarity: 'uncommon',  weight: 30 },
-  { rarity: 'rare',      weight: 20 },
-  { rarity: 'epic',      weight: 8 },
-  { rarity: 'legendary', weight: 2 },
+  { rarity: 'common',    weight: 40, label: 'C' },
+  { rarity: 'uncommon',  weight: 30, label: 'U' },
+  { rarity: 'rare',      weight: 20, label: 'R' },
+  { rarity: 'epic',      weight: 8,  label: 'E' },
+  { rarity: 'legendary', weight: 2,  label: 'L' },
 ];
 
 function getSlimesByRarity(rarity) {
@@ -45,18 +45,33 @@ function renderGachaScreen() {
   const container = document.getElementById('gacha-content');
   container.innerHTML = `
     <div class="gacha-machine">
-      <div class="gacha-display" id="gacha-result"></div>
-      <button class="btn btn-primary gacha-pull-btn" onclick="doGachaPull()">
-        Pull (${GACHA_COST} Gems)
-      </button>
+      <div class="gacha-display" id="gacha-result">
+        <div class="gacha-bubble-window">
+          <div class="gacha-bubbles">
+            <div class="gacha-bubble b-blue"></div>
+            <div class="gacha-bubble b-green"></div>
+            <div class="gacha-bubble b-purple"></div>
+            <div class="gacha-bubble b-pink"></div>
+            <div class="gacha-bubble b-orange"></div>
+            <div class="gacha-bubble b-yellow"></div>
+          </div>
+          <div class="gacha-bubble-chute"></div>
+        </div>
+        <div class="gacha-pull-area">
+          <button class="gacha-pull-btn" onclick="doGachaPull()">PULL!</button>
+          <span class="gacha-pull-hint">${GACHA_COST} gems per pull</span>
+        </div>
+      </div>
       <div class="gacha-rates">
         <h3>Drop Rates</h3>
-        ${GACHA_RATES.map(r => `
-          <div class="rate-row">
-            <span class="rarity-badge ${r.rarity}">${r.rarity}</span>
-            <span>${r.weight}%</span>
-          </div>
-        `).join('')}
+        <div class="rate-circles">
+          ${GACHA_RATES.map(r => `
+            <div class="rate-circle">
+              <div class="rate-circle-badge ${r.rarity}">${r.label}</div>
+              <span class="rate-circle-pct ${r.rarity}">${r.weight}%</span>
+            </div>
+          `).join('')}
+        </div>
       </div>
     </div>
   `;
@@ -82,5 +97,13 @@ function doGachaPull() {
       <div class="gacha-name">${def.name}</div>
       <div class="rarity-badge ${result.rarity}">${result.rarity}</div>
     </div>
+    <div class="gacha-pull-area" style="margin-top:16px">
+      <button class="gacha-pull-btn" onclick="doGachaPull()">PULL!</button>
+      <span class="gacha-pull-hint">${GACHA_COST} gems per pull</span>
+    </div>
   `;
+
+  updateCurrencyDisplay();
+  renderRanch();
+  renderUpgradeScreen();
 }

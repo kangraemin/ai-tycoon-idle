@@ -1,8 +1,8 @@
 /* slimes.css - CSS slime design + animations (Stitch 4 Meadow) */
 
 .slime {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   background: linear-gradient(135deg, var(--color1), var(--color2));
   position: relative;
@@ -10,7 +10,7 @@
   transition: transform 0.1s;
   animation: bounce 2s infinite ease-in-out;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin: 0 auto 4px;
+  margin: 0 auto 8px;
 }
 
 .slime:active {
@@ -81,45 +81,74 @@
   100% { transform: scale(1); }
 }
 
+/* Slime Slot Card */
 .slime-slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
-  border-radius: 14px;
+  padding: 12px;
+  border-radius: 16px;
   background: #ffffff;
-  min-width: 90px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(241, 245, 249, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
+  position: relative;
+  min-height: 110px;
 }
 
 .slime-slot.empty {
   justify-content: center;
-  min-height: 110px;
-  background: rgba(241, 245, 249, 0.3);
+  background: rgba(226, 232, 240, 0.2);
   box-shadow: none;
   border: 2px dashed rgba(203, 213, 225, 0.5);
 }
 
+/* Level Badge */
+.slime-level-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #68bb6c;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  z-index: 2;
+}
+
+/* Empty slot */
 .empty-slot {
   width: 40px;
   height: 40px;
   border: none;
-  border-radius: 50%;
-  background: rgba(241, 245, 249, 1);
+  border-radius: 9999px;
+  background: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(148, 163, 184, 1);
+  margin-bottom: 4px;
+}
+
+.empty-slot .material-symbols-outlined {
+  color: #94a3b8;
   font-size: 20px;
+}
+
+.empty-slot-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
 }
 
 .slime-name {
   font-size: 11px;
   color: #1e293b;
-  margin-top: 2px;
   text-align: center;
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .slime-info {
@@ -128,9 +157,9 @@
 }
 
 .slime-jps {
-  font-size: 10px;
+  font-size: 9px;
   color: #68bb6c;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .floating-text {

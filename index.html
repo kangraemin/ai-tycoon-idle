@@ -8,34 +8,55 @@
   <title>Slime Ranch</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/slimes.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="app">
     <!-- Top Bar: Currency Display -->
     <div class="top-bar">
-      <div class="currency gold">
-        <span class="currency-icon">&#x1FA99;</span>
-        <span class="currency-value" id="gold-display">0</span>
+      <div class="currency-group">
+        <div class="currency gold">
+          <span class="material-symbols-outlined currency-icon fill-1">monetization_on</span>
+          <span class="currency-value" id="gold-display">0</span>
+        </div>
+        <div class="currency gems">
+          <span class="material-symbols-outlined currency-icon fill-1">diamond</span>
+          <span class="currency-value" id="gems-display">0</span>
+        </div>
       </div>
-      <div class="currency gems">
-        <span class="currency-icon">&#x1F48E;</span>
-        <span class="currency-value" id="gems-display">0</span>
-      </div>
+      <button class="settings-btn">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
     </div>
 
     <!-- Jelly Bar -->
     <div class="jelly-bar">
-      <div>
-        <div class="jelly-amount" id="jelly-display">0</div>
-        <div class="jelly-rate" id="jps-display">0/s</div>
+      <div class="jelly-left">
+        <div class="jelly-icon-wrap">
+          <span class="material-symbols-outlined jelly-icon">potted_plant</span>
+        </div>
+        <div class="jelly-info">
+          <div class="jelly-label">Jelly Harvest</div>
+          <div class="jelly-amount-row">
+            <span class="jelly-amount" id="jelly-display">0</span>
+          </div>
+          <div class="jelly-rate"><span class="material-symbols-outlined jelly-bolt">bolt</span> <span id="jps-display">0/s</span></div>
+        </div>
       </div>
-      <button class="sell-btn" onclick="sellJelly()">Sell Jelly</button>
+      <button class="sell-btn" onclick="sellJelly()">Sell</button>
     </div>
 
     <!-- Screen Container -->
     <div class="screen-container">
       <!-- Ranch Screen -->
       <div class="screen active" id="screen-ranch">
+        <div class="ranch-header">
+          <h3 class="ranch-title">
+            <span class="material-symbols-outlined">pets</span>
+            Your Ranch
+          </h3>
+          <span class="ranch-slot-badge" id="ranch-slot-count"></span>
+        </div>
         <div id="slime-grid"></div>
       </div>
 
@@ -58,20 +79,28 @@
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
       <button class="nav-btn active" data-screen="ranch">
-        <span class="nav-icon">&#x1F3E0;</span>
-        Ranch
+        <div class="nav-icon-wrap">
+          <span class="material-symbols-outlined fill-1">home</span>
+        </div>
+        <span class="nav-label">Ranch</span>
       </button>
       <button class="nav-btn" data-screen="upgrade">
-        <span class="nav-icon">&#x2B06;&#xFE0F;</span>
-        Upgrade
+        <div class="nav-icon-wrap">
+          <span class="material-symbols-outlined">trending_up</span>
+        </div>
+        <span class="nav-label">Upgrade</span>
       </button>
       <button class="nav-btn" data-screen="gacha">
-        <span class="nav-icon">&#x1F3B0;</span>
-        Gacha
+        <div class="nav-icon-wrap">
+          <span class="material-symbols-outlined">featured_seasonal_and_gifts</span>
+        </div>
+        <span class="nav-label">Gacha</span>
       </button>
       <button class="nav-btn" data-screen="prestige">
-        <span class="nav-icon">&#x1F504;</span>
-        Prestige
+        <div class="nav-icon-wrap">
+          <span class="material-symbols-outlined">military_tech</span>
+        </div>
+        <span class="nav-label">Prestige</span>
       </button>
     </nav>
 

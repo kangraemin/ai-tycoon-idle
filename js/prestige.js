@@ -47,29 +47,64 @@ function renderPrestigeScreen() {
   const preview = getPrestigePreview();
   const canDo = canPrestige();
   const progress = Math.min(gameState.totalJelly / PRESTIGE_THRESHOLD * 100, 100);
+  const increase = (preview.newMultiplier - gameState.prestigeMultiplier).toFixed(1);
+
+  let progressMsg = '';
+  if (progress >= 85) progressMsg = 'Almost there, Rancher!';
+  else if (progress >= 50) progressMsg = 'Halfway there!';
+  else if (progress >= 25) progressMsg = 'Keep going!';
+  else progressMsg = 'Just getting started';
 
   container.innerHTML = `
     <div class="prestige-info">
-      <div class="prestige-level">Prestige Level: ${gameState.prestigeLevel}</div>
-      <div class="prestige-multiplier">Current Bonus: x${gameState.prestigeMultiplier.toFixed(1)}</div>
+      <div class="prestige-hero">
+        <div class="prestige-star-wrap">
+          <span class="material-symbols-outlined">stars</span>
+        </div>
+        <div class="prestige-level">Level ${gameState.prestigeLevel}</div>
+        <div class="prestige-multiplier">Multiplier: ${gameState.prestigeMultiplier.toFixed(1)}x</div>
+        <div class="prestige-flavor">Ready to reach for the stars? Reset for a permanent bonus!</div>
+      </div>
 
       <div class="prestige-progress">
+        <div class="progress-header">
+          <span class="progress-header-label">Progress to Prestige</span>
+          <span class="progress-header-value">${formatNumber(gameState.totalJelly)} / ${formatNumber(PRESTIGE_THRESHOLD)}</span>
+        </div>
         <div class="progress-bar">
           <div class="progress-fill" style="width:${progress}%"></div>
         </div>
-        <div class="progress-text">${formatNumber(gameState.totalJelly)} / ${formatNumber(PRESTIGE_THRESHOLD)}</div>
+        <div class="progress-text">${progressMsg}</div>
       </div>
 
-      <div class="prestige-preview">
-        <h3>Next Prestige</h3>
-        <div>New Multiplier: x${preview.newMultiplier.toFixed(1)}</div>
-        <div>Gem Reward: +${preview.gemsReward}</div>
+      <div class="prestige-cards">
+        <div class="prestige-card">
+          <div class="prestige-card-header">
+            <span class="material-symbols-outlined" style="color:var(--accent)">trending_up</span>
+            <span class="prestige-card-label">Next Boost</span>
+          </div>
+          <div class="prestige-card-value">x${preview.newMultiplier.toFixed(1)}</div>
+          <div class="prestige-card-sub green">+${increase}x increase</div>
+        </div>
+        <div class="prestige-card">
+          <div class="prestige-card-header">
+            <span class="material-symbols-outlined" style="color:var(--gold)">diamond</span>
+            <span class="prestige-card-label">Gem Reward</span>
+          </div>
+          <div class="prestige-card-value">${preview.gemsReward}</div>
+          <div class="prestige-card-sub amber">Shiny bonus</div>
+        </div>
       </div>
 
-      <button class="btn ${canDo ? 'btn-primary' : 'btn-disabled'}"
-              onclick="confirmPrestige()" ${canDo ? '' : 'disabled'}>
-        ${canDo ? 'Prestige Now' : 'Not Ready Yet'}
-      </button>
+      <div class="prestige-btn-area">
+        <button class="btn ${canDo ? 'btn-primary' : 'btn-disabled'}"
+                onclick="confirmPrestige()" ${canDo ? '' : 'disabled'}>
+          ${canDo ? 'Prestige Now' : 'Not Ready Yet'}
+        </button>
+        <div class="prestige-desc">
+          Resetting your progress will grant you a permanent multiplier and gems. Your slimes will be faster and hungrier than ever before!
+        </div>
+      </div>
     </div>
   `;
 }

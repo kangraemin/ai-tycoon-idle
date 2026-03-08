@@ -7,8 +7,16 @@ function switchScreen(screen) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
   document.getElementById('screen-' + screen).classList.add('active');
 
-  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-  document.querySelector(`[data-screen="${screen}"]`).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(el => {
+    el.classList.remove('active');
+    const icon = el.querySelector('.material-symbols-outlined');
+    if (icon) icon.classList.remove('fill-1');
+  });
+
+  const activeBtn = document.querySelector(`[data-screen="${screen}"]`);
+  activeBtn.classList.add('active');
+  const activeIcon = activeBtn.querySelector('.material-symbols-outlined');
+  if (activeIcon) activeIcon.classList.add('fill-1');
 }
 
 function updateCurrencyDisplay() {
