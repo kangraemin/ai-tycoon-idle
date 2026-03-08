@@ -39,6 +39,16 @@ function createDefaultState() {
       musicOn: true,
       sfxOn: true,
     },
+
+    stats: {
+      totalTaps: 0,
+      totalSells: 0,
+      totalGold: 0,
+      gachaPulls: 0,
+      slimesOwned: 1,
+    },
+
+    achievements: {},
   };
 }
 
@@ -78,6 +88,18 @@ function loadGame() {
         for (const key of Object.keys(defaults.settings)) {
           if (parsed.settings[key] !== undefined) defaults.settings[key] = parsed.settings[key];
         }
+      }
+
+      // Safe merge: stats
+      if (parsed.stats) {
+        for (const key of Object.keys(defaults.stats)) {
+          if (parsed.stats[key] !== undefined) defaults.stats[key] = parsed.stats[key];
+        }
+      }
+
+      // Safe merge: achievements
+      if (parsed.achievements) {
+        defaults.achievements = parsed.achievements;
       }
 
       // Safe merge: slimes (restore saved data + keep new slime types)

@@ -112,5 +112,13 @@ const SFX = (() => {
         { freq: 150, dur: 0.12, type: 'square', vol: 0.1 },
       ], 80);
     },
+
+    achievement() {
+      playNotes([
+        { freq: 784, dur: 0.1, type: 'triangle', vol: 0.2 },
+        { freq: 988, dur: 0.1, type: 'triangle', vol: 0.2 },
+        { freq: 1175, dur: 0.2, type: 'sine', vol: 0.25 },
+      ], 100);
+    },
   };
 })();

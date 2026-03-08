@@ -36,6 +36,8 @@ function gameLoop() {
     autoSellTick(dt);
   }
   updateCurrencyDisplay();
+  updateHintBanner();
+  checkAchievements();
 }
 
 function startGame() {

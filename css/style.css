@@ -948,6 +948,44 @@ html, body {
   border-radius: 2px;
 }
 
+/* ===== Hint Banner ===== */
+.hint-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin: 0 16px 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(104, 187, 108, 0.2);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  animation: hintSlideIn 0.3s ease-out;
+}
+
+.hint-icon {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+.hint-text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hint-arrow {
+  color: var(--text-muted);
+  font-size: 18px;
+}
+
+@keyframes hintSlideIn {
+  0% { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 /* ===== Lock Hints ===== */
 .lock-hint {
   font-size: 11px;

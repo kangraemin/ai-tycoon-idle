@@ -101,6 +101,19 @@ function showSettings() {
       saveGame();
       showSettings();
     }},
+    { text: `Achievements (${getAchievementProgress().unlocked}/${getAchievementProgress().total})`, onClick: () => {
+      const overlay = document.getElementById('modal-overlay');
+      document.getElementById('modal-title').textContent = 'Achievements';
+      document.getElementById('modal-message').innerHTML = renderAchievementList();
+      const btnContainer = document.getElementById('modal-buttons');
+      btnContainer.innerHTML = '';
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'btn btn-primary';
+      closeBtn.textContent = 'Close';
+      closeBtn.onclick = () => overlay.classList.remove('active');
+      btnContainer.appendChild(closeBtn);
+      overlay.classList.add('active');
+    }},
     { text: 'Reset Data', onClick: () => {
       showModal('Reset Data', 'Are you sure? All progress will be lost!', [
         { text: 'Cancel' },

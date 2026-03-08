@@ -46,6 +46,9 @@
       <button class="sell-btn" onclick="sellJelly()">Sell</button>
     </div>
 
+    <!-- Hint Banner -->
+    <div id="hint-banner" class="hint-banner" style="display:none" onclick="if(this.dataset.screen) switchScreen(this.dataset.screen)"></div>
+
     <!-- Screen Container -->
     <div class="screen-container">
       <!-- Ranch Screen -->
@@ -128,6 +131,8 @@
   <script src="js/offline.js"></script>
   <script src="js/sound.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/hints.js"></script>
+  <script src="js/achievements.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

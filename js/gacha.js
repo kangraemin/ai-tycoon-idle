@@ -45,6 +45,7 @@ function pullGacha() {
   }
 
   gameState.gems -= GACHA_COST;
+  if (gameState.stats) gameState.stats.gachaPulls++;
   slimeState.count = Math.min(slimeState.count + 1, 10);
 
   return result;

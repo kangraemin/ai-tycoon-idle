@@ -43,6 +43,7 @@ function tapSlime(event) {
   const tapAmount = gameState.upgrades.tapPower * gameState.prestigeMultiplier;
   gameState.jelly += tapAmount;
   gameState.totalJelly += tapAmount;
+  if (gameState.stats) gameState.stats.totalTaps++;
 
   if (event) {
     const slimeEl = event.currentTarget;
@@ -65,6 +66,10 @@ function sellJelly() {
   SFX.sell();
   const goldEarned = getExpectedGold();
   gameState.gold += goldEarned;
+  if (gameState.stats) {
+    gameState.stats.totalSells++;
+    gameState.stats.totalGold += goldEarned;
+  }
   gameState.jelly = 0;
   updateCurrencyDisplay();
 
