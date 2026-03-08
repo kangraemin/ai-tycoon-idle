@@ -29,6 +29,7 @@ function tapSlime(event) {
       '+' + formatNumber(tapAmount)
     );
   }
+  updateCurrencyDisplay();
 }
 
 function sellJelly() {
