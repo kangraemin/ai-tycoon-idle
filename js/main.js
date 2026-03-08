@@ -131,7 +131,7 @@ function renderUpgradeScreen() {
         <div class="upgrade-card-bottom">
           <div class="upgrade-next-info">${getUpgradeEffect(id)} → ${getUpgradeNextEffect(id)}</div>
           <button class="btn ${canBuy ? 'btn-primary' : 'btn-disabled'}"
-                  onclick="doBuyUpgrade('${id}')" ${canBuy ? '' : 'disabled'}>
+                  onclick="doBuyUpgrade('${id}', event)" ${canBuy ? '' : 'disabled'}>
             ${formatNumber(cost)}
           </button>
         </div>
@@ -169,7 +169,7 @@ function renderUpgradeScreen() {
           <div class="upgrade-card-bottom">
             <div class="upgrade-next-info">Next: +jelly boost</div>
             <button class="btn ${canLv ? 'btn-primary' : 'btn-disabled'}"
-                    onclick="doLevelUpSlime('${id}')" ${canLv ? '' : 'disabled'}>
+                    onclick="doLevelUpSlime('${id}', event)" ${canLv ? '' : 'disabled'}>
               ${formatNumber(lvCost)}
             </button>
           </div>
@@ -191,7 +191,7 @@ function renderUpgradeScreen() {
           <div class="upgrade-card-bottom">
             <div class="upgrade-next-info">Unlock new slime</div>
             <button class="btn ${canBuy ? 'btn-secondary' : 'btn-disabled'}"
-                    onclick="doBuySlime('${id}')" ${canBuy ? '' : 'disabled'}>
+                    onclick="doBuySlime('${id}', event)" ${canBuy ? '' : 'disabled'}>
               ${formatNumber(def.unlockCost)}
             </button>
           </div>
@@ -216,7 +216,7 @@ function renderUpgradeScreen() {
       <div class="upgrade-card-bottom">
         <div class="upgrade-next-info">+1 slot</div>
         <button class="btn ${gameState.gold >= getRanchSlotCost() ? 'btn-primary' : 'btn-disabled'}"
-                onclick="doBuyRanchSlot()" ${gameState.gold >= getRanchSlotCost() ? '' : 'disabled'}>
+                onclick="doBuyRanchSlot(event)" ${gameState.gold >= getRanchSlotCost() ? '' : 'disabled'}>
           ${formatNumber(getRanchSlotCost())}
         </button>
       </div>
@@ -226,38 +226,80 @@ function renderUpgradeScreen() {
   container.innerHTML = html;
 }
 
-function doBuyUpgrade(id) {
+function flashPurchase(btnEl, success) {
+  if (!btnEl) return;
+  const card = btnEl.closest('.upgrade-card');
+  if (!card) return;
+  if (success) {
+    card.classList.add('purchase-success');
+    setTimeout(() => card.classList.remove('purchase-success'), 400);
+  } else {
+    card.classList.add('purchase-fail');
+    setTimeout(() => card.classList.remove('purchase-fail'), 400);
+  }
+}
+
+function doBuyUpgrade(id, event) {
+  const btn = event ? event.currentTarget : null;
   if (buyUpgrade(id)) {
     SFX.buy();
+    flashPurchase(btn, true);
     renderUpgradeScreen();
     updateCurrencyDisplay();
+  } else {
+    SFX.error();
+    flashPurchase(btn, false);
+    showToast('Not enough gold!', 'error');
   }
 }
 
-function doLevelUpSlime(id) {
+function doLevelUpSlime(id, event) {
+  const btn = event ? event.currentTarget : null;
   if (levelUpSlime(id)) {
     SFX.levelUp();
+    flashPurchase(btn, true);
     renderRanch();
     renderUpgradeScreen();
     updateCurrencyDisplay();
+  } else {
+    SFX.error();
+    flashPurchase(btn, false);
+    showToast('Not enough gold!', 'error');
   }
 }
 
-function doBuySlime(id) {
+function doBuySlime(id, event) {
+  const btn = event ? event.currentTarget : null;
   if (buySlime(id)) {
     SFX.buy();
+    flashPurchase(btn, true);
     renderRanch();
     renderUpgradeScreen();
     updateCurrencyDisplay();
+  } else {
+    SFX.error();
+    flashPurchase(btn, false);
+    const owned = getOwnedSlimes();
+    if (owned.length >= gameState.ranchSlots) {
+      showToast('Ranch is full!', 'error');
+    } else {
+      showToast('Not enough gold!', 'error');
+    }
   }
 }
 
-function doBuyRanchSlot() {
+function doBuyRanchSlot(event) {
+  const btn = event ? event.currentTarget : null;
   if (buyRanchSlot()) {
     SFX.buy();
+    flashPurchase(btn, true);
     renderRanch();
     renderUpgradeScreen();
     updateCurrencyDisplay();
+  } else {
+    SFX.error();
+    flashPurchase(btn, false);
+    showToast('Not enough gold!', 'error');
   }
 }
 

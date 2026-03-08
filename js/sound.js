@@ -105,5 +105,12 @@ const SFX = (() => {
     navigate() {
       playTone(800, 0.04, 'sine', 0.06);
     },
+
+    error() {
+      playNotes([
+        { freq: 200, dur: 0.08, type: 'square', vol: 0.1 },
+        { freq: 150, dur: 0.12, type: 'square', vol: 0.1 },
+      ], 80);
+    },
   };
 })();

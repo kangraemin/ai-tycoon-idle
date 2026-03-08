@@ -3,10 +3,28 @@
 let currentScreen = 'ranch';
 
 function switchScreen(screen) {
+  if (currentScreen === screen) return;
   SFX.navigate();
+
+  const oldScreen = document.getElementById('screen-' + currentScreen);
+  const newScreen = document.getElementById('screen-' + screen);
   currentScreen = screen;
-  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
+
+  if (oldScreen) {
+    oldScreen.classList.add('screen-exit');
+    oldScreen.addEventListener('animationend', function handler() {
+      oldScreen.classList.remove('active', 'screen-exit');
+      oldScreen.removeEventListener('animationend', handler);
+    }, { once: true });
+  }
+
+  if (newScreen) {
+    newScreen.classList.add('active', 'screen-enter');
+    newScreen.addEventListener('animationend', function handler() {
+      newScreen.classList.remove('screen-enter');
+      newScreen.removeEventListener('animationend', handler);
+    }, { once: true });
+  }
 
   document.querySelectorAll('.nav-btn').forEach(el => {
     el.classList.remove('active');
@@ -96,9 +114,23 @@ function showSettings() {
   ]);
 }
 
+function showToast(message, type) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + (type || 'info');
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('toast-exit');
+    toast.addEventListener('animationend', () => toast.remove(), { once: true });
+  }, 1800);
+}
+
 function initUI() {
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
   });
-  switchScreen('ranch');
+  // Ranch is already active via HTML class; just sync nav state
+  currentScreen = 'ranch';
 }

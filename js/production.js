@@ -45,7 +45,12 @@ function tapSlime(event) {
   gameState.totalJelly += tapAmount;
 
   if (event) {
-    const rect = event.currentTarget.getBoundingClientRect();
+    const slimeEl = event.currentTarget;
+    slimeEl.classList.remove('tap-bounce');
+    void slimeEl.offsetWidth;
+    slimeEl.classList.add('tap-bounce');
+
+    const rect = slimeEl.getBoundingClientRect();
     showFloatingText(
       event.clientX - rect.left,
       event.clientY - rect.top - 20,
@@ -62,4 +67,11 @@ function sellJelly() {
   gameState.gold += goldEarned;
   gameState.jelly = 0;
   updateCurrencyDisplay();
+
+  const goldEl = document.getElementById('gold-display');
+  if (goldEl) {
+    goldEl.classList.remove('golden-pulse');
+    void goldEl.offsetWidth;
+    goldEl.classList.add('golden-pulse');
+  }
 }
