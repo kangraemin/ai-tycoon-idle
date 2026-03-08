@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Slime Ranch</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/slimes.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Top Bar: Currency Display -->
+    <div class="top-bar">
+      <div class="currency gold">
+        <span class="currency-icon">&#x1FA99;</span>
+        <span class="currency-value" id="gold-display">0</span>
+      </div>
+      <div class="currency gems">
+        <span class="currency-icon">&#x1F48E;</span>
+        <span class="currency-value" id="gems-display">0</span>
+      </div>
+    </div>
+
+    <!-- Jelly Bar -->
+    <div class="jelly-bar">
+      <div>
+        <div class="jelly-amount" id="jelly-display">0</div>
+        <div class="jelly-rate" id="jps-display">0/s</div>
+      </div>
+      <button class="sell-btn" onclick="sellJelly()">Sell Jelly</button>
+    </div>
+
+    <!-- Screen Container -->
+    <div class="screen-container">
+      <!-- Ranch Screen -->
+      <div class="screen active" id="screen-ranch">
+        <div id="slime-grid"></div>
+      </div>
+
+      <!-- Upgrade Screen -->
+      <div class="screen" id="screen-upgrade">
+        <div id="upgrade-content"></div>
+      </div>
+
+      <!-- Gacha Screen -->
+      <div class="screen" id="screen-gacha">
+        <div id="gacha-content"></div>
+      </div>
+
+      <!-- Prestige Screen -->
+      <div class="screen" id="screen-prestige">
+        <div id="prestige-content"></div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-screen="ranch">
+        <span class="nav-icon">&#x1F3E0;</span>
+        Ranch
+      </button>
+      <button class="nav-btn" data-screen="upgrade">
+        <span class="nav-icon">&#x2B06;&#xFE0F;</span>
+        Upgrade
+      </button>
+      <button class="nav-btn" data-screen="gacha">
+        <span class="nav-icon">&#x1F3B0;</span>
+        Gacha
+      </button>
+      <button class="nav-btn" data-screen="prestige">
+        <span class="nav-icon">&#x1F504;</span>
+        Prestige
+      </button>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal">
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-message" id="modal-message"></div>
+        <div class="modal-buttons" id="modal-buttons"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/format.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/slime.js"></script>
+  <script src="js/production.js"></script>
+  <script src="js/upgrade.js"></script>
+  <script src="js/gacha.js"></script>
+  <script src="js/prestige.js"></script>
+  <script src="js/offline.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
