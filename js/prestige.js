@@ -113,6 +113,7 @@ function confirmPrestige() {
   showModal('Prestige', 'Reset all progress for a permanent bonus?', [
     { text: 'Cancel' },
     { text: 'Prestige!', primary: true, onClick: () => {
+      SFX.prestige();
       doPrestige();
       renderRanch();
       renderPrestigeScreen();

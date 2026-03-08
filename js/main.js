@@ -216,6 +216,7 @@ function renderUpgradeScreen() {
 
 function doBuyUpgrade(id) {
   if (buyUpgrade(id)) {
+    SFX.buy();
     renderUpgradeScreen();
     updateCurrencyDisplay();
   }
@@ -223,6 +224,7 @@ function doBuyUpgrade(id) {
 
 function doLevelUpSlime(id) {
   if (levelUpSlime(id)) {
+    SFX.levelUp();
     renderRanch();
     renderUpgradeScreen();
     updateCurrencyDisplay();
@@ -231,6 +233,7 @@ function doLevelUpSlime(id) {
 
 function doBuySlime(id) {
   if (buySlime(id)) {
+    SFX.buy();
     renderRanch();
     renderUpgradeScreen();
     updateCurrencyDisplay();
@@ -239,6 +242,7 @@ function doBuySlime(id) {
 
 function doBuyRanchSlot() {
   if (buyRanchSlot()) {
+    SFX.buy();
     renderRanch();
     renderUpgradeScreen();
     updateCurrencyDisplay();

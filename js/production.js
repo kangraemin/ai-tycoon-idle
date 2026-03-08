@@ -17,6 +17,7 @@ function produceTick() {
 }
 
 function tapSlime(event) {
+  SFX.tap();
   const tapAmount = gameState.upgrades.tapPower * gameState.prestigeMultiplier;
   gameState.jelly += tapAmount;
   gameState.totalJelly += tapAmount;
@@ -34,6 +35,7 @@ function tapSlime(event) {
 
 function sellJelly() {
   if (gameState.jelly <= 0) return;
+  SFX.sell();
   const goldEarned = gameState.jelly * gameState.upgrades.jellyValue * 0.1;
   gameState.gold += goldEarned;
   gameState.jelly = 0;

@@ -3,6 +3,7 @@
 let currentScreen = 'ranch';
 
 function switchScreen(screen) {
+  SFX.navigate();
   currentScreen = screen;
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
   document.getElementById('screen-' + screen).classList.add('active');

@@ -78,6 +78,7 @@ function renderGachaScreen() {
 }
 
 function doGachaPull() {
+  SFX.gachaPull();
   const result = pullGacha();
   if (!result) {
     showModal('Not Enough Gems', 'You need ' + GACHA_COST + ' gems to pull.', [
@@ -103,6 +104,7 @@ function doGachaPull() {
     </div>
   `;
 
+  SFX.gachaReveal(result.rarity);
   updateCurrencyDisplay();
   renderRanch();
   renderUpgradeScreen();
