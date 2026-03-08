@@ -54,6 +54,10 @@ function startGame() {
     applyOfflineEarnings();
   }
 
+  if (gameState.tutorialStep < 6) {
+    startTutorial();
+  }
+
   lastTickTime = performance.now();
   gameLoopId = setInterval(gameLoop, 100);
   autoSaveId = setInterval(saveGame, AUTO_SAVE_INTERVAL);
@@ -251,6 +255,7 @@ function doBuyUpgrade(id, event) {
   const btn = event ? event.currentTarget : null;
   if (buyUpgrade(id)) {
     SFX.buy();
+    if (getTutorialTrigger() === 'buy') advanceTutorial();
     flashPurchase(btn, true);
     renderUpgradeScreen();
     updateCurrencyDisplay();

@@ -44,6 +44,7 @@ function tapSlime(event) {
   gameState.jelly += tapAmount;
   gameState.totalJelly += tapAmount;
   if (gameState.stats) gameState.stats.totalTaps++;
+  if (getTutorialTrigger() === 'tap') advanceTutorial();
 
   if (event) {
     const slimeEl = event.currentTarget;
@@ -71,6 +72,7 @@ function sellJelly() {
     gameState.stats.totalGold += goldEarned;
   }
   gameState.jelly = 0;
+  if (getTutorialTrigger() === 'sell') advanceTutorial();
   updateCurrencyDisplay();
 
   const goldEl = document.getElementById('gold-display');

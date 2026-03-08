@@ -49,6 +49,7 @@ function createDefaultState() {
     },
 
     achievements: {},
+    tutorialStep: 0,
   };
 }
 
@@ -72,7 +73,7 @@ function loadGame() {
 
       // Safe merge: primitives
       for (const key of ['gold', 'jelly', 'gems', 'totalJelly', 'ranchSlots',
-                          'prestigeLevel', 'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime']) {
+                          'prestigeLevel', 'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime', 'tutorialStep']) {
         if (parsed[key] !== undefined) defaults[key] = parsed[key];
       }
 

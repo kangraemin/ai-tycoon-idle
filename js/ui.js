@@ -5,6 +5,7 @@ let currentScreen = 'ranch';
 function switchScreen(screen) {
   if (currentScreen === screen) return;
   SFX.navigate();
+  if (getTutorialTrigger() === 'navigate' && screen === 'upgrade') advanceTutorial();
 
   const oldScreen = document.getElementById('screen-' + currentScreen);
   const newScreen = document.getElementById('screen-' + screen);
