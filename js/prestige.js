@@ -1,11 +1,15 @@
 // prestige.js - Prestige/rebirth system
 
-const PRESTIGE_THRESHOLD = 1000000;
+const BASE_PRESTIGE_THRESHOLD = 1000000;
 const PRESTIGE_BONUS_PER_LEVEL = 0.1;
 const PRESTIGE_GEM_REWARD = 5;
 
+function getPrestigeThreshold() {
+  return BASE_PRESTIGE_THRESHOLD * Math.pow(3, gameState.prestigeLevel);
+}
+
 function canPrestige() {
-  return gameState.totalJelly >= PRESTIGE_THRESHOLD;
+  return gameState.totalJelly >= getPrestigeThreshold();
 }
 
 function getPrestigePreview() {
@@ -36,7 +40,7 @@ function doPrestige() {
     count: s.id === 'normal' ? 1 : 0,
   }));
 
-  gameState.upgrades = { tapPower: 1, productionSpeed: 1, jellyValue: 1 };
+  gameState.upgrades = { tapPower: 1, productionSpeed: 1, jellyValue: 1, autoSell: 0 };
   gameState.ranchSlots = 5;
 
   return true;
@@ -46,7 +50,7 @@ function renderPrestigeScreen() {
   const container = document.getElementById('prestige-content');
   const preview = getPrestigePreview();
   const canDo = canPrestige();
-  const progress = Math.min(gameState.totalJelly / PRESTIGE_THRESHOLD * 100, 100);
+  const progress = Math.min(gameState.totalJelly / getPrestigeThreshold() * 100, 100);
   const increase = (preview.newMultiplier - gameState.prestigeMultiplier).toFixed(1);
 
   let progressMsg = '';
@@ -69,7 +73,7 @@ function renderPrestigeScreen() {
       <div class="prestige-progress">
         <div class="progress-header">
           <span class="progress-header-label">Progress to Prestige</span>
-          <span class="progress-header-value">${formatNumber(gameState.totalJelly)} / ${formatNumber(PRESTIGE_THRESHOLD)}</span>
+          <span class="progress-header-value">${formatNumber(gameState.totalJelly)} / ${formatNumber(getPrestigeThreshold())}</span>
         </div>
         <div class="progress-bar">
           <div class="progress-fill" style="width:${progress}%"></div>

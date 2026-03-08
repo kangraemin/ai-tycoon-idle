@@ -3,7 +3,10 @@
 const FORMAT_SUFFIXES = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc'];
 
 function formatNumber(num) {
-  if (num < 1000) return Math.floor(num).toString();
+  if (num < 1000) {
+    if (num < 1 && num > 0) return num.toFixed(1);
+    return Math.floor(num).toString();
+  }
 
   let tier = 0;
   let scaled = num;

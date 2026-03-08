@@ -26,6 +26,7 @@ function createDefaultState() {
       tapPower: 1,
       productionSpeed: 1,
       jellyValue: 1,
+      autoSell: 0,
     },
 
     ranchSlots: 5,
@@ -57,7 +58,40 @@ function loadGame() {
     const saved = localStorage.getItem(SAVE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
-      gameState = Object.assign(createDefaultState(), parsed);
+      const defaults = createDefaultState();
+
+      // Safe merge: primitives
+      for (const key of ['gold', 'jelly', 'gems', 'totalJelly', 'ranchSlots',
+                          'prestigeLevel', 'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime']) {
+        if (parsed[key] !== undefined) defaults[key] = parsed[key];
+      }
+
+      // Safe merge: upgrades (preserve new keys from defaults)
+      if (parsed.upgrades) {
+        for (const key of Object.keys(defaults.upgrades)) {
+          if (parsed.upgrades[key] !== undefined) defaults.upgrades[key] = parsed.upgrades[key];
+        }
+      }
+
+      // Safe merge: settings
+      if (parsed.settings) {
+        for (const key of Object.keys(defaults.settings)) {
+          if (parsed.settings[key] !== undefined) defaults.settings[key] = parsed.settings[key];
+        }
+      }
+
+      // Safe merge: slimes (restore saved data + keep new slime types)
+      if (parsed.slimes) {
+        for (const defaultSlime of defaults.slimes) {
+          const savedSlime = parsed.slimes.find(s => s.id === defaultSlime.id);
+          if (savedSlime) {
+            defaultSlime.level = savedSlime.level || 1;
+            defaultSlime.count = savedSlime.count || 0;
+          }
+        }
+      }
+
+      gameState = defaults;
       return true;
     }
   } catch (e) {

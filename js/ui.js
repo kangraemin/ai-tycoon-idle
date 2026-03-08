@@ -25,6 +25,20 @@ function updateCurrencyDisplay() {
   document.getElementById('gems-display').textContent = formatNumber(gameState.gems);
   document.getElementById('jelly-display').textContent = formatNumber(gameState.jelly);
   document.getElementById('jps-display').textContent = formatNumber(getJellyPerSecond()) + '/s';
+
+  const sellBtn = document.querySelector('.sell-btn');
+  if (sellBtn) {
+    const expectedGold = getExpectedGold();
+    if (gameState.jelly > 0) {
+      sellBtn.textContent = `Sell (${formatNumber(expectedGold)})`;
+      sellBtn.disabled = false;
+      sellBtn.classList.remove('btn-disabled');
+    } else {
+      sellBtn.textContent = 'Sell';
+      sellBtn.disabled = true;
+      sellBtn.classList.add('btn-disabled');
+    }
+  }
 }
 
 function showFloatingText(x, y, text) {
@@ -56,6 +70,29 @@ function showModal(title, message, buttons) {
   });
 
   overlay.classList.add('active');
+}
+
+function showSettings() {
+  const sfxState = gameState.settings?.sfxEnabled !== false;
+  showModal('Settings', '', [
+    { text: `SFX: ${sfxState ? 'ON' : 'OFF'}`, onClick: () => {
+      if (!gameState.settings) gameState.settings = {};
+      gameState.settings.sfxEnabled = !sfxState;
+      if (typeof SFX !== 'undefined') SFX.enabled = gameState.settings.sfxEnabled;
+      saveGame();
+      showSettings();
+    }},
+    { text: 'Reset Data', onClick: () => {
+      showModal('Reset Data', 'Are you sure? All progress will be lost!', [
+        { text: 'Cancel' },
+        { text: 'Reset', primary: true, onClick: () => {
+          localStorage.removeItem(SAVE_KEY);
+          location.reload();
+        }},
+      ]);
+    }},
+    { text: 'Close', primary: true },
+  ]);
 }
 
 function initUI() {

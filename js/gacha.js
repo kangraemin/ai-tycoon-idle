@@ -36,7 +36,17 @@ function pullGacha() {
 
   const result = rollGacha();
   const slimeState = getSlimeState(result.slimeId);
-  slimeState.count++;
+
+  if (slimeState.count === 0) {
+    const owned = getOwnedSlimes().length;
+    if (owned >= gameState.ranchSlots) {
+      result.slotFull = true;
+    }
+  }
+
+  if (!result.slotFull) {
+    slimeState.count = Math.min(slimeState.count + 1, 10);
+  }
 
   return result;
 }
@@ -97,6 +107,7 @@ function doGachaPull() {
       </div>
       <div class="gacha-name">${def.name}</div>
       <div class="rarity-badge ${result.rarity}">${result.rarity}</div>
+      ${result.slotFull ? '<div style="color:#ef4444;font-size:12px;margin-top:4px">Ranch full! Expand slots first.</div>' : ''}
     </div>
     <div class="gacha-pull-area" style="margin-top:16px">
       <button class="gacha-pull-btn" onclick="doGachaPull()">PULL!</button>

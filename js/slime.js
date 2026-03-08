@@ -31,7 +31,8 @@ function getSlimeDef(id) {
 
 function getSlimeJellyPerSecond(slimeState) {
   const def = SLIME_DEFS[slimeState.id];
-  return def.baseJelly * slimeState.level * slimeState.count;
+  const countBonus = slimeState.count <= 1 ? slimeState.count : Math.sqrt(slimeState.count);
+  return def.baseJelly * slimeState.level * countBonus;
 }
 
 function getSlimeLevelUpCost(slimeState) {

@@ -6,6 +6,7 @@ const UPGRADE_ICONS = {
   tapPower: { icon: 'touch_app', bg: 'pink-bg', border: 'pastel-pink' },
   productionSpeed: { icon: 'speed', bg: 'blue-bg', border: 'pastel-blue' },
   jellyValue: { icon: 'paid', bg: 'yellow-bg', border: 'pastel-yellow' },
+  autoSell: { icon: 'sell', bg: 'green-bg', border: 'pastel-green' },
 };
 
 const SLIME_ICON_STYLES = [
@@ -25,7 +26,15 @@ let gameLoopId = null;
 let autoSaveId = null;
 
 function gameLoop() {
-  produceTick();
+  const now = performance.now();
+  if (lastTickTime === 0) lastTickTime = now;
+  const dt = (now - lastTickTime) / 1000;
+  lastTickTime = now;
+
+  if (dt > 0 && dt < 10) {
+    produceTick(dt);
+    autoSellTick(dt);
+  }
   updateCurrencyDisplay();
 }
 
@@ -43,7 +52,8 @@ function startGame() {
     applyOfflineEarnings();
   }
 
-  gameLoopId = setInterval(gameLoop, 1000);
+  lastTickTime = performance.now();
+  gameLoopId = setInterval(gameLoop, 100);
   autoSaveId = setInterval(saveGame, AUTO_SAVE_INTERVAL);
 }
 
@@ -66,6 +76,7 @@ function renderRanch() {
     el.className = 'slime-slot';
     el.innerHTML = `
       <div class="slime-level-badge">Lv.${slime.level}</div>
+      ${slime.count > 1 ? `<div class="slime-count-badge">x${slime.count}</div>` : ''}
       <div class="slime ${slime.id}" style="--color1:${def.color1};--color2:${def.color2}"
            onclick="tapSlime(event)">
         <div class="slime-eye left"></div>
@@ -86,6 +97,7 @@ function renderRanch() {
       </div>
       <div class="empty-slot-label">Unlock</div>
     `;
+    el.onclick = () => switchScreen('upgrade');
     grid.appendChild(el);
   }
 }
@@ -117,7 +129,7 @@ function renderUpgradeScreen() {
           </div>
         </div>
         <div class="upgrade-card-bottom">
-          <div class="upgrade-next-info">Next: ${def.description}</div>
+          <div class="upgrade-next-info">${getUpgradeEffect(id)} → ${getUpgradeNextEffect(id)}</div>
           <button class="btn ${canBuy ? 'btn-primary' : 'btn-disabled'}"
                   onclick="doBuyUpgrade('${id}')" ${canBuy ? '' : 'disabled'}>
             ${formatNumber(cost)}

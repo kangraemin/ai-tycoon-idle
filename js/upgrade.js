@@ -19,12 +19,37 @@ const UPGRADE_DEFS = {
     baseCost: 200,
     icon: 'value',
   },
+  autoSell: {
+    name: 'Auto Sell',
+    description: 'Auto-sell jelly periodically',
+    baseCost: 500,
+    icon: 'autoSell',
+  },
 };
 
 function getUpgradeCost(upgradeId) {
   const def = UPGRADE_DEFS[upgradeId];
   const level = gameState.upgrades[upgradeId];
-  return Math.floor(def.baseCost * Math.pow(1.15, level));
+  return Math.floor(def.baseCost * Math.pow(1.5, level));
+}
+
+function getUpgradeEffect(upgradeId) {
+  const level = gameState.upgrades[upgradeId];
+  if (upgradeId === 'autoSell') {
+    if (level === 0) return 'Off';
+    const interval = Math.max(1, 11 - level);
+    return `Every ${interval}s`;
+  }
+  return level;
+}
+
+function getUpgradeNextEffect(upgradeId) {
+  const level = gameState.upgrades[upgradeId] + 1;
+  if (upgradeId === 'autoSell') {
+    const interval = Math.max(1, 11 - level);
+    return `Every ${interval}s`;
+  }
+  return level;
 }
 
 function buyUpgrade(upgradeId) {
