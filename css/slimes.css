@@ -9,6 +9,7 @@
   cursor: pointer;
   transition: transform 0.1s;
   animation: bounce 2s infinite ease-in-out;
+  will-change: transform;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin: 0 auto 8px;
 }
