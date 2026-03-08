@@ -63,6 +63,7 @@ html, body {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
+  padding-top: calc(16px + env(safe-area-inset-top, 0px));
   position: sticky;
   top: 0;
   z-index: 10;
