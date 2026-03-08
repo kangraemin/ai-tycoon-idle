@@ -130,6 +130,7 @@ function renderUpgradeScreen() {
         </div>
         <div class="upgrade-card-bottom">
           <div class="upgrade-next-info">${getUpgradeEffect(id)} → ${getUpgradeNextEffect(id)}</div>
+          ${!canBuy ? `<div class="lock-hint">Need ${formatNumber(cost - gameState.gold)} more gold</div>` : ''}
           <button class="btn ${canBuy ? 'btn-primary' : 'btn-disabled'}"
                   onclick="doBuyUpgrade('${id}', event)" ${canBuy ? '' : 'disabled'}>
             ${formatNumber(cost)}
@@ -168,6 +169,7 @@ function renderUpgradeScreen() {
           </div>
           <div class="upgrade-card-bottom">
             <div class="upgrade-next-info">Next: +jelly boost</div>
+            ${!canLv ? `<div class="lock-hint">Need ${formatNumber(lvCost - gameState.gold)} more gold</div>` : ''}
             <button class="btn ${canLv ? 'btn-primary' : 'btn-disabled'}"
                     onclick="doLevelUpSlime('${id}', event)" ${canLv ? '' : 'disabled'}>
               ${formatNumber(lvCost)}
@@ -190,6 +192,10 @@ function renderUpgradeScreen() {
           </div>
           <div class="upgrade-card-bottom">
             <div class="upgrade-next-info">Unlock new slime</div>
+            ${!canBuy ? (getOwnedSlimes().length >= gameState.ranchSlots
+              ? `<div class="lock-hint">Ranch full — expand first</div>`
+              : `<div class="lock-hint">Need ${formatNumber(def.unlockCost - gameState.gold)} more gold</div>`)
+            : ''}
             <button class="btn ${canBuy ? 'btn-secondary' : 'btn-disabled'}"
                     onclick="doBuySlime('${id}', event)" ${canBuy ? '' : 'disabled'}>
               ${formatNumber(def.unlockCost)}

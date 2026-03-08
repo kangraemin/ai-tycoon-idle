@@ -948,6 +948,16 @@ html, body {
   border-radius: 2px;
 }
 
+/* ===== Lock Hints ===== */
+.lock-hint {
+  font-size: 11px;
+  color: var(--coral);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 /* ===== Toast Notifications ===== */
 #toast-container {
   position: fixed;

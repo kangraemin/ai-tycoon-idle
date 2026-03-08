@@ -67,8 +67,9 @@ function renderGachaScreen() {
           <div class="gacha-bubble-chute"></div>
         </div>
         <div class="gacha-pull-area">
-          <button class="gacha-pull-btn" onclick="doGachaPull()">PULL!</button>
+          <button class="gacha-pull-btn ${gameState.gems < GACHA_COST ? 'btn-disabled' : ''}" onclick="doGachaPull()">PULL!</button>
           <span class="gacha-pull-hint">${GACHA_COST} gems per pull</span>
+          ${gameState.gems < GACHA_COST ? `<div class="lock-hint" style="margin-top:8px">Earn gems from Prestige or achievements</div>` : ''}
         </div>
       </div>
       <div class="gacha-rates">
@@ -90,9 +91,8 @@ function doGachaPull() {
   SFX.gachaPull();
   const result = pullGacha();
   if (!result) {
-    showModal('Not Enough Gems', 'You need ' + GACHA_COST + ' gems to pull.', [
-      { text: 'OK', primary: true }
-    ]);
+    SFX.error();
+    showToast('Not enough gems!', 'error');
     return;
   }
 

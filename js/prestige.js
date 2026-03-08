@@ -101,6 +101,7 @@ function renderPrestigeScreen() {
       </div>
 
       <div class="prestige-btn-area">
+        ${!canDo ? `<div class="lock-hint" style="margin-bottom:12px">Produce ${formatNumber(getPrestigeThreshold() - gameState.totalJelly)} more jelly to prestige</div>` : ''}
         <button class="btn ${canDo ? 'btn-primary' : 'btn-disabled'}"
                 onclick="confirmPrestige()" ${canDo ? '' : 'disabled'}>
           ${canDo ? 'Prestige Now' : 'Not Ready Yet'}

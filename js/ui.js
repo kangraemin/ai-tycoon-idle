@@ -50,7 +50,7 @@ function updateCurrencyDisplay() {
   if (sellBtn) {
     const expectedGold = getExpectedGold();
     if (gameState.jelly > 0) {
-      sellBtn.textContent = `Sell (${formatNumber(expectedGold)})`;
+      sellBtn.textContent = `Sell → ${formatNumber(expectedGold)} gold`;
       sellBtn.disabled = false;
       sellBtn.classList.remove('btn-disabled');
     } else {
