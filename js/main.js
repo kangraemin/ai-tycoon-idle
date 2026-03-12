@@ -81,6 +81,8 @@ function gameLoop() {
     if (typeof tokenTick === 'function') tokenTick();
     if (typeof eventTick === 'function') eventTick(dt);
     if (typeof cleanupExpiredBuffs === 'function') cleanupExpiredBuffs();
+  } else {
+    lastTickTime = now;
   }
   updateCurrencyDisplay();
   if (typeof updateHintBanner === 'function') updateHintBanner();
