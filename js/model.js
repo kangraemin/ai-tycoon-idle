@@ -38,7 +38,9 @@ function getModelLps(modelState) {
 function getModelLevelUpCost(modelState) {
   const def = MODEL_DEFS[modelState.id];
   const baseCost = def.unlockCost > 0 ? def.unlockCost : 100000;
-  return Math.floor(baseCost * Math.pow(1.5, modelState.level - 1));
+  const raw = Math.floor(baseCost * Math.pow(1.5, modelState.level - 1));
+  const discount = getUpgradeEffect('skill', 'fineTuning');
+  return Math.max(1, Math.floor(raw * (1 - discount)));
 }
 
 function getOwnedModels() {
