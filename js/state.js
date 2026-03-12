@@ -4,34 +4,30 @@ const SAVE_KEY = 'aiTycoon';
 
 function createDefaultState() {
   return {
+    // Resources
     loc: 0,
     compute: 0,
     papers: 10,
     totalLoc: 0,
-
-    tokens: 5,
     reputation: 0,
-    gpuSlots: 1,
-    careerStage: 0,
-    discoveredFusions: [],
-    challengeStats: { played: 0, won: 0, bestGrade: null },
-    eventStats: { triggered: 0, responded: 0 },
+    tokens: 5,
     lastTokenRecharge: Date.now(),
-    lastEventTime: Date.now(),
 
+    // Models (10 types per spec)
     models: [
       { id: 'chatbot', level: 1, count: 1 },
-      { id: 'classifier', level: 1, count: 0 },
-      { id: 'summarizer', level: 1, count: 0 },
       { id: 'translator', level: 1, count: 0 },
-      { id: 'codeAssist', level: 1, count: 0 },
+      { id: 'summarizer', level: 1, count: 0 },
       { id: 'imageGen', level: 1, count: 0 },
-      { id: 'speechRec', level: 1, count: 0 },
-      { id: 'recommender', level: 1, count: 0 },
+      { id: 'codeGen', level: 1, count: 0 },
+      { id: 'voiceAI', level: 1, count: 0 },
+      { id: 'reasoning', level: 1, count: 0 },
+      { id: 'multimodal', level: 1, count: 0 },
       { id: 'agi', level: 1, count: 0 },
       { id: 'superAgi', level: 1, count: 0 },
     ],
 
+    // Upgrades (4 categories)
     upgrades: {
       agent: { toolUse: 0, memory: 0, planning: 0 },
       teamAgent: { multiAgent: 0, orchestrator: 0, delegation: 0 },
@@ -39,26 +35,31 @@ function createDefaultState() {
       infra: { batchSize: 0, distTraining: 0, quantization: 0, autoPipeline: 0 },
     },
 
-    prestigeLevel: 0,
+    // Systems
+    gpuSlots: 1,
+    careerStage: 0,
+    careerHistory: [],
     prestigeMultiplier: 1,
+    discoveredFusions: [],
+    challengeStats: { played: 0, bestGrade: null },
+    eventStats: { total: 0, responded: 0 },
+    lastEventTime: Date.now(),
 
-    lastSaveTime: Date.now(),
-    totalPlayTime: 0,
-    settings: {
-      musicOn: true,
-      sfxOn: true,
-    },
-
+    // Stats
     stats: {
       totalTaps: 0,
-      totalSells: 0,
+      totalCompiles: 0,
       totalCompute: 0,
-      gachaPulls: 0,
       modelsOwned: 1,
+      gachaPulls: 0,
     },
 
     achievements: {},
     tutorialStep: 0,
+    settings: { sfx: true, music: false, notifications: true },
+
+    lastSaveTime: Date.now(),
+    totalPlayTime: 0,
   };
 }
 
@@ -83,12 +84,16 @@ function loadGame() {
       // Safe merge: primitives
       for (const key of ['loc', 'compute', 'papers', 'totalLoc',
                           'tokens', 'reputation', 'gpuSlots', 'careerStage',
-                          'prestigeLevel', 'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime',
+                          'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime',
                           'lastTokenRecharge', 'lastEventTime', 'tutorialStep']) {
         if (parsed[key] !== undefined) defaults[key] = parsed[key];
       }
 
-      // Safe merge: upgrades (nested categories)
+      // Safe merge: arrays
+      if (Array.isArray(parsed.careerHistory)) defaults.careerHistory = parsed.careerHistory;
+      if (Array.isArray(parsed.discoveredFusions)) defaults.discoveredFusions = parsed.discoveredFusions;
+
+      // Safe merge: upgrades (nested)
       if (parsed.upgrades) {
         for (const category of Object.keys(defaults.upgrades)) {
           if (parsed.upgrades[category]) {
@@ -116,9 +121,7 @@ function loadGame() {
       }
 
       // Safe merge: achievements
-      if (parsed.achievements) {
-        defaults.achievements = parsed.achievements;
-      }
+      if (parsed.achievements) defaults.achievements = parsed.achievements;
 
       // Safe merge: challengeStats
       if (parsed.challengeStats) {
@@ -134,12 +137,7 @@ function loadGame() {
         }
       }
 
-      // Safe merge: discoveredFusions
-      if (parsed.discoveredFusions) {
-        defaults.discoveredFusions = parsed.discoveredFusions;
-      }
-
-      // Safe merge: models (restore saved data + keep new model types)
+      // Safe merge: models
       if (parsed.models) {
         for (const defaultModel of defaults.models) {
           const savedModel = parsed.models.find(m => m.id === defaultModel.id);
