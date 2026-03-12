@@ -52,9 +52,9 @@ function createDefaultState() {
     stats: {
       totalTaps: 0,
       totalSells: 0,
-      totalGold: 0,
+      totalCompute: 0,
       gachaPulls: 0,
-      slimesOwned: 1,
+      modelsOwned: 1,
     },
 
     achievements: {},

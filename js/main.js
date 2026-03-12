@@ -81,6 +81,7 @@ function startGame() {
   renderModelsScreen();
   renderUpgradeScreen();
   renderResearchScreen();
+  renderFusionScreen();
   renderCareerScreen();
   updateCurrencyDisplay();
 
@@ -254,6 +255,12 @@ function renderResearchScreen() {
   if (typeof renderGachaScreen === 'function') {
     renderGachaScreen();
   }
+}
+
+function renderFusionScreen() {
+  const container = document.getElementById('fusion-content');
+  if (!container) return;
+  container.innerHTML = '<div class="placeholder-message">Coming Soon: Model Fusion</div>';
 }
 
 function renderCareerScreen() {
