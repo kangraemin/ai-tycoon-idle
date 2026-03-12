@@ -16,13 +16,17 @@
     <!-- Top Bar: Currency Display -->
     <div class="top-bar">
       <div class="currency-group">
-        <div class="currency gold">
-          <span class="material-symbols-outlined currency-icon fill-1">monetization_on</span>
-          <span class="currency-value" id="gold-display">0</span>
+        <div class="currency compute">
+          <span class="material-symbols-outlined currency-icon fill-1">memory</span>
+          <span class="currency-value" id="compute-display">0</span>
         </div>
-        <div class="currency gems">
-          <span class="material-symbols-outlined currency-icon fill-1">diamond</span>
-          <span class="currency-value" id="gems-display">0</span>
+        <div class="currency papers">
+          <span class="material-symbols-outlined currency-icon fill-1">article</span>
+          <span class="currency-value" id="papers-display">0</span>
+        </div>
+        <div class="currency tokens">
+          <span class="material-symbols-outlined currency-icon fill-1">confirmation_number</span>
+          <span class="currency-value" id="tokens-display">0</span>
         </div>
       </div>
       <button class="settings-btn" onclick="showSettings()">
@@ -30,21 +34,21 @@
       </button>
     </div>
 
-    <!-- Jelly Bar -->
-    <div class="jelly-bar">
-      <div class="jelly-left">
-        <div class="jelly-icon-wrap">
-          <span class="material-symbols-outlined jelly-icon">potted_plant</span>
+    <!-- LoC Bar -->
+    <div class="loc-bar">
+      <div class="loc-left">
+        <div class="loc-icon-wrap">
+          <span class="material-symbols-outlined loc-icon">code</span>
         </div>
-        <div class="jelly-info">
-          <div class="jelly-label">Jelly Harvest</div>
-          <div class="jelly-amount-row">
-            <span class="jelly-amount" id="jelly-display">0</span>
+        <div class="loc-info">
+          <div class="loc-label">Lines of Code</div>
+          <div class="loc-amount-row">
+            <span class="loc-amount" id="loc-display">0</span>
           </div>
-          <div class="jelly-rate"><span class="material-symbols-outlined jelly-bolt">bolt</span> <span id="jps-display">0/s</span></div>
+          <div class="loc-rate"><span class="material-symbols-outlined loc-bolt">bolt</span> <span id="lps-display">0/s</span></div>
         </div>
       </div>
-      <button class="sell-btn" onclick="sellJelly()">Sell</button>
+      <button class="compile-btn" onclick="compileData()">Compile</button>
     </div>
 
     <!-- Hint Banner -->
@@ -52,16 +56,28 @@
 
     <!-- Screen Container -->
     <div class="screen-container">
-      <!-- Ranch Screen -->
-      <div class="screen active" id="screen-ranch">
-        <div class="ranch-header">
-          <h3 class="ranch-title">
-            <span class="material-symbols-outlined">pets</span>
-            Your Ranch
+      <!-- Editor Screen -->
+      <div class="screen active" id="screen-editor">
+        <div class="editor-header">
+          <h3 class="editor-title">
+            <span class="material-symbols-outlined">terminal</span>
+            Code Editor
           </h3>
-          <span class="ranch-slot-badge" id="ranch-slot-count"></span>
+          <span class="gpu-slot-badge" id="gpu-slot-count"></span>
         </div>
-        <div id="slime-grid"></div>
+        <div id="editor-content"></div>
+      </div>
+
+      <!-- Models Screen -->
+      <div class="screen" id="screen-models">
+        <div class="editor-header">
+          <h3 class="editor-title">
+            <span class="material-symbols-outlined">smart_toy</span>
+            AI Models
+          </h3>
+          <span class="gpu-slot-badge" id="model-slot-count"></span>
+        </div>
+        <div id="model-grid"></div>
       </div>
 
       <!-- Upgrade Screen -->
@@ -69,24 +85,35 @@
         <div id="upgrade-content"></div>
       </div>
 
-      <!-- Gacha Screen -->
-      <div class="screen" id="screen-gacha">
-        <div id="gacha-content"></div>
+      <!-- Research Screen -->
+      <div class="screen" id="screen-research">
+        <div id="research-content"></div>
       </div>
 
-      <!-- Prestige Screen -->
-      <div class="screen" id="screen-prestige">
-        <div id="prestige-content"></div>
+      <!-- Fusion Screen -->
+      <div class="screen" id="screen-fusion">
+        <div id="fusion-content"></div>
+      </div>
+
+      <!-- Career Screen -->
+      <div class="screen" id="screen-career">
+        <div id="career-content"></div>
       </div>
     </div>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-      <button class="nav-btn active" data-screen="ranch">
+      <button class="nav-btn active" data-screen="editor">
         <div class="nav-icon-wrap">
-          <span class="material-symbols-outlined fill-1">home</span>
+          <span class="material-symbols-outlined fill-1">terminal</span>
         </div>
-        <span class="nav-label">Ranch</span>
+        <span class="nav-label">Editor</span>
+      </button>
+      <button class="nav-btn" data-screen="models">
+        <div class="nav-icon-wrap">
+          <span class="material-symbols-outlined">smart_toy</span>
+        </div>
+        <span class="nav-label">Models</span>
       </button>
       <button class="nav-btn" data-screen="upgrade">
         <div class="nav-icon-wrap">
@@ -94,17 +121,23 @@
         </div>
         <span class="nav-label">Upgrade</span>
       </button>
-      <button class="nav-btn" data-screen="gacha">
+      <button class="nav-btn" data-screen="research">
         <div class="nav-icon-wrap">
-          <span class="material-symbols-outlined">featured_seasonal_and_gifts</span>
+          <span class="material-symbols-outlined">science</span>
         </div>
-        <span class="nav-label">Gacha</span>
+        <span class="nav-label">Research</span>
       </button>
-      <button class="nav-btn" data-screen="prestige">
+      <button class="nav-btn" data-screen="fusion">
         <div class="nav-icon-wrap">
-          <span class="material-symbols-outlined">military_tech</span>
+          <span class="material-symbols-outlined">merge</span>
         </div>
-        <span class="nav-label">Prestige</span>
+        <span class="nav-label">Fusion</span>
+      </button>
+      <button class="nav-btn" data-screen="career">
+        <div class="nav-icon-wrap">
+          <span class="material-symbols-outlined">work</span>
+        </div>
+        <span class="nav-label">Career</span>
       </button>
     </nav>
 

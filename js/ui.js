@@ -1,6 +1,6 @@
 // ui.js - DOM rendering + UI updates
 
-let currentScreen = 'ranch';
+let currentScreen = 'editor';
 
 function switchScreen(screen) {
   if (currentScreen === screen) return;
@@ -42,22 +42,22 @@ function switchScreen(screen) {
 }
 
 function updateCurrencyDisplay() {
-  document.getElementById('gold-display').textContent = formatNumber(gameState.gold);
-  document.getElementById('gems-display').textContent = formatNumber(gameState.gems);
-  document.getElementById('jelly-display').textContent = formatNumber(gameState.jelly);
-  document.getElementById('jps-display').textContent = formatNumber(getJellyPerSecond()) + '/s';
+  document.getElementById('compute-display').textContent = formatNumber(gameState.compute);
+  document.getElementById('papers-display').textContent = formatNumber(gameState.papers);
+  document.getElementById('tokens-display').textContent = formatNumber(gameState.tokens);
+  document.getElementById('loc-display').textContent = formatNumber(gameState.loc);
+  document.getElementById('lps-display').textContent = formatNumber(getLocPerSecond()) + '/s';
 
-  const sellBtn = document.querySelector('.sell-btn');
-  if (sellBtn) {
-    const expectedGold = getExpectedGold();
-    if (gameState.jelly > 0) {
-      sellBtn.textContent = `Sell → ${formatNumber(expectedGold)} gold`;
-      sellBtn.disabled = false;
-      sellBtn.classList.remove('btn-disabled');
+  const compileBtn = document.querySelector('.compile-btn');
+  if (compileBtn) {
+    if (gameState.loc > 0) {
+      compileBtn.textContent = `Compile`;
+      compileBtn.disabled = false;
+      compileBtn.classList.remove('btn-disabled');
     } else {
-      sellBtn.textContent = 'Sell';
-      sellBtn.disabled = true;
-      sellBtn.classList.add('btn-disabled');
+      compileBtn.textContent = 'Compile';
+      compileBtn.disabled = true;
+      compileBtn.classList.add('btn-disabled');
     }
   }
 }
@@ -68,7 +68,7 @@ function showFloatingText(x, y, text) {
   el.textContent = text;
   el.style.left = x + 'px';
   el.style.top = y + 'px';
-  document.getElementById('screen-ranch').appendChild(el);
+  document.getElementById('screen-editor').appendChild(el);
   setTimeout(() => el.remove(), 1000);
 }
 
@@ -145,6 +145,5 @@ function initUI() {
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
   });
-  // Ranch is already active via HTML class; just sync nav state
-  currentScreen = 'ranch';
+  currentScreen = 'editor';
 }
