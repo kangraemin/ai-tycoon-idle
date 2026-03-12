@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Tycoon E2E Tests</title>
+  <style>
+    body { font-family: 'Fira Code', monospace; background: #1e1e1e; color: #d4d4d4; padding: 20px; }
+    .pass { color: #6a9955; }
+    .fail { color: #f44747; }
+    .group { color: #569cd6; font-weight: bold; margin-top: 16px; }
+    .result { margin: 4px 0 4px 20px; font-size: 13px; }
+    #summary { margin-top: 20px; font-size: 16px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>AI Tycoon — E2E Tests</h1>
+  <div id="test-output"></div>
+  <div id="summary"></div>
+
+  <!-- Stub DOM elements needed by game code -->
+  <div id="app" style="display:none">
+    <div id="compute-display"></div>
+    <div id="papers-display"></div>
+    <div id="tokens-display"></div>
+    <div id="loc-display"></div>
+    <div id="lps-display"></div>
+    <div id="hint-banner" style="display:none"></div>
+    <div id="event-banner" style="display:none"></div>
+    <div id="challenge-overlay" style="display:none">
+      <div id="challenge-title"></div>
+      <div id="challenge-timer"></div>
+      <div id="challenge-body"></div>
+      <div id="challenge-result" style="display:none"></div>
+    </div>
+    <div class="screen active" id="screen-editor"><div id="editor-content"></div></div>
+    <div class="screen" id="screen-models"><div id="model-grid"></div></div>
+    <div class="screen" id="screen-upgrade"><div id="upgrade-content"></div></div>
+    <div class="screen" id="screen-research"><div id="research-content"></div></div>
+    <div class="screen" id="screen-fusion"><div id="fusion-content"></div></div>
+    <div class="screen" id="screen-career"><div id="career-content"></div></div>
+    <div id="modal-overlay"><div id="modal-title"></div><div id="modal-message"></div><div id="modal-buttons"></div></div>
+    <div id="toast-container"></div>
+    <div id="tutorial-overlay"><div id="tutorial-spotlight"></div><div id="tutorial-bubble"></div></div>
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-screen="editor"><div class="nav-icon-wrap"><span class="material-symbols-outlined fill-1">terminal</span></div></button>
+    </nav>
+    <span id="gpu-slot-count"></span>
+    <span id="model-slot-count"></span>
+  </div>
+
+  <!-- Load game scripts in order -->
+  <script src="../js/format.js"></script>
+  <script src="../js/state.js"></script>
+  <script src="../js/model.js"></script>
+  <script src="../js/production.js"></script>
+  <script src="../js/upgrade.js"></script>
+  <script src="../js/research.js"></script>
+  <script src="../js/career.js"></script>
+  <script src="../js/challenge.js"></script>
+  <script src="../js/fusion.js"></script>
+  <script src="../js/events.js"></script>
+  <script src="../js/offline.js"></script>
+  <script src="../js/sound.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/hints.js"></script>
+  <script src="../js/achievements.js"></script>
+  <script src="../js/tutorial.js"></script>
+  <script src="../js/main.js"></script>
+
+  <!-- Test runner -->
+  <script src="e2e.js"></script>
+</body>
+</html>
