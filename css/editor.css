@@ -157,20 +157,14 @@
   gap: 4px;
 }
 
-/* Typing effect */
-.code-typing {
-  position: relative;
+/* Typing effect — active line glow */
+.code-line.typing {
+  background: rgba(86, 156, 214, 0.06);
 }
 
-.code-typing::after {
-  content: '';
-  display: inline-block;
-  width: 2px;
-  height: 14px;
-  background: #d4d4d4;
-  animation: blink 1s step-end infinite;
-  vertical-align: text-bottom;
-  margin-left: 1px;
+/* Future lines dimmed */
+.code-line-future {
+  opacity: 0.3;
 }
 
 /* Tap area overlay */

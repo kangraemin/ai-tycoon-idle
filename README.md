@@ -1,17 +1,18 @@
-# 🟢 Slime Ranch Idle
+# 🤖 AI Tycoon Idle
 
-> Raise adorable slimes, harvest jelly, and build the ultimate slime empire.
+> Train AI models, publish papers, and build your tech empire.
 
-A cozy idle/clicker game where cute slimes produce jelly while you're away. Collect rare slimes through gacha, upgrade your ranch, and prestige for permanent bonuses.
+An idle/typing game where you play as an AI developer. Write code, train models, boost your reputation, and job-hop your way from a tiny startup to founding your own AI company.
 
 ## ✨ Features
 
-- **Idle Production** — Slimes auto-produce jelly, even when you're offline
-- **Tap & Collect** — Tap slimes for bonus jelly
-- **10 Unique Slimes** — From common Green to legendary Diamond
-- **Gacha System** — Pull for rare slimes with 5 rarity tiers
-- **Prestige** — Reset for permanent multiplier bonuses
-- **Offline Earnings** — Come back to a pile of jelly waiting for you
+- **Code Typing** — Tap to write code in a dark-themed editor with keyboard sounds
+- **AI Models** — Train 10 models from simple Chatbot to legendary AGI
+- **Skill Challenges** — Type real AI code snippets for bonus rewards
+- **Paper Research** — Pull for rare models with gacha mechanics
+- **Job Hopping** — Prestige system disguised as career progression
+- **Idle Earnings** — Your models keep training while you're away
+- **Achievement System** — 22 AI-themed milestones with paper rewards
 
 ## 🎮 Play
 
@@ -27,17 +28,16 @@ open index.html
 |-------|------|
 | Frontend | Vanilla HTML/CSS/JS |
 | Rendering | DOM-based (no canvas) |
-| Slime Art | Pure CSS blobs |
+| UI Theme | Code editor dark theme |
 | Save | localStorage |
 | Mobile | Capacitor (planned) |
 
 ## 📱 Roadmap
 
-- [ ] Pastel meadow UI redesign
 - [ ] Capacitor mobile build (iOS/Android)
 - [ ] In-app purchases + AdMob
-- [ ] Sound effects & BGM
-- [ ] Seasonal limited slimes
+- [ ] Real AI news event integration
+- [ ] Part 2: Company founding arc
 - [ ] Leaderboard
 
 ## 📄 License

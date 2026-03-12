@@ -79,6 +79,10 @@ function tapEditor(event) {
       );
     }
   }
+  // Advance typing animation on tap (3-5 chars)
+  if (typeof advanceTyping === 'function') {
+    advanceTyping(3 + Math.floor(Math.random() * 3));
+  }
   if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
 }
 

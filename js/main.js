@@ -57,6 +57,102 @@ const CODE_LINES = [
 let gameLoopId = null;
 let autoSaveId = null;
 let currentCodeLine = 0;
+let currentCharIndex = 0;
+let autoTypeAccum = 0;
+
+// Advance typing by N characters in the editor
+function advanceTyping(chars) {
+  const line = CODE_LINES[currentCodeLine];
+  if (!line) return;
+
+  const fullText = line.text;
+  currentCharIndex += chars;
+
+  // Move to next line(s) if current line is complete
+  while (currentCharIndex >= CODE_LINES[currentCodeLine].text.length) {
+    const overflow = currentCharIndex - CODE_LINES[currentCodeLine].text.length;
+    currentCodeLine = (currentCodeLine + 1) % CODE_LINES.length;
+    currentCharIndex = 0;
+
+    // If we wrapped around, reset the editor display
+    if (currentCodeLine === 0) {
+      renderEditorScreen();
+      return;
+    }
+
+    // Skip empty lines automatically
+    if (CODE_LINES[currentCodeLine].text.length === 0) {
+      updateEditorLine(currentCodeLine - 1, true);
+      currentCharIndex = 0;
+      continue;
+    }
+
+    currentCharIndex = Math.min(overflow, CODE_LINES[currentCodeLine].text.length);
+  }
+
+  updateEditorDOM();
+}
+
+// Update only the changed parts of the editor DOM (no full re-render)
+function updateEditorDOM() {
+  const codeContent = document.querySelector('.code-content');
+  const lineNumbers = document.querySelector('.line-numbers');
+  if (!codeContent || !lineNumbers) return;
+
+  const codeLines = codeContent.querySelectorAll('.code-line');
+  const lineNums = lineNumbers.querySelectorAll('.line-number');
+
+  codeLines.forEach((el, i) => {
+    const line = CODE_LINES[i];
+    const isActive = i === currentCodeLine;
+    const isPast = i < currentCodeLine;
+
+    // Update active states
+    el.classList.toggle('active-line', isActive);
+    el.classList.toggle('typing', isActive);
+    if (lineNums[i]) lineNums[i].classList.toggle('active', isActive);
+
+    if (isActive) {
+      // Show partial text with cursor
+      const visibleText = line.text.substring(0, currentCharIndex);
+      el.innerHTML = `<span class="code-${line.type}">${escapeHtml(visibleText)}</span><span class="editor-cursor"></span>`;
+    } else if (isPast) {
+      // Completed lines show full text
+      el.innerHTML = `<span class="code-${line.type}">${escapeHtml(line.text)}</span>`;
+    }
+    // Future lines stay as-is (dimmed/empty from render)
+  });
+
+  // Update status bar line number
+  const statusRight = document.querySelector('.editor-status-right .editor-status-item');
+  if (statusRight) statusRight.textContent = `Ln ${currentCodeLine + 1}`;
+
+  // Auto-scroll to keep current line visible
+  const editorBody = document.querySelector('.editor-body');
+  const activeLine = codeContent.querySelector('.code-line.active-line');
+  if (editorBody && activeLine) {
+    const bodyRect = editorBody.getBoundingClientRect();
+    const lineRect = activeLine.getBoundingClientRect();
+    if (lineRect.bottom > bodyRect.bottom || lineRect.top < bodyRect.top) {
+      activeLine.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }
+}
+
+function updateEditorLine(lineIndex, completed) {
+  const codeContent = document.querySelector('.code-content');
+  if (!codeContent) return;
+  const codeLines = codeContent.querySelectorAll('.code-line');
+  if (codeLines[lineIndex]) {
+    const line = CODE_LINES[lineIndex];
+    codeLines[lineIndex].innerHTML = `<span class="code-${line.type}">${escapeHtml(line.text)}</span>`;
+    codeLines[lineIndex].classList.remove('active-line', 'typing');
+  }
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
 function tokenTick() {
   const now = Date.now();
@@ -81,6 +177,17 @@ function gameLoop() {
     if (typeof tokenTick === 'function') tokenTick();
     if (typeof eventTick === 'function') eventTick(dt);
     if (typeof cleanupExpiredBuffs === 'function') cleanupExpiredBuffs();
+
+    // Auto-typing: advance characters based on LPS
+    const lps = getLocPerSecond();
+    if (lps > 0) {
+      autoTypeAccum += lps * dt * 0.5; // 0.5 chars per LoC for readable speed
+      const chars = Math.floor(autoTypeAccum);
+      if (chars > 0) {
+        autoTypeAccum -= chars;
+        advanceTyping(Math.min(chars, 3)); // Cap at 3 chars per tick for readability
+      }
+    }
   } else {
     lastTickTime = now;
   }
@@ -155,8 +262,19 @@ function renderEditorScreen() {
   html += '</div>';
   html += '<div class="code-content">';
   CODE_LINES.forEach((line, i) => {
-    const activeClass = i === currentCodeLine ? ' active-line' : '';
-    html += `<div class="code-line${activeClass}"><span class="code-${line.type}">${line.text}</span>${i === currentCodeLine ? '<span class="editor-cursor"></span>' : ''}</div>`;
+    const isActive = i === currentCodeLine;
+    const isPast = i < currentCodeLine;
+    const activeClass = isActive ? ' active-line typing' : '';
+    const dimClass = !isPast && !isActive ? ' code-line-future' : '';
+
+    if (isActive) {
+      const visibleText = line.text.substring(0, currentCharIndex);
+      html += `<div class="code-line${activeClass}"><span class="code-${line.type}">${escapeHtml(visibleText)}</span><span class="editor-cursor"></span></div>`;
+    } else if (isPast) {
+      html += `<div class="code-line"><span class="code-${line.type}">${escapeHtml(line.text)}</span></div>`;
+    } else {
+      html += `<div class="code-line${dimClass}"><span class="code-${line.type}" style="opacity:0.3">${escapeHtml(line.text)}</span></div>`;
+    }
   });
   html += '</div>';
   html += '</div>';
