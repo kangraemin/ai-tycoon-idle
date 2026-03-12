@@ -24,10 +24,36 @@ const UPGRADE_DEFS = {
   },
 };
 
+function getUpgradeEffect(category, id) {
+  const level = gameState.upgrades[category][id];
+  const effects = {
+    'agent.toolUse':       level * 0.20,
+    'agent.memory':        level * 3600,
+    'agent.planning':      level,
+    'teamAgent.multiAgent':   level,
+    'teamAgent.orchestrator': level * 0.15,
+    'teamAgent.delegation':   level * 0.10,
+    'skill.rag':           level * 0.15,
+    'skill.fineTuning':    level * 0.10,
+    'skill.rlhf':          level * 0.20,
+    'infra.batchSize':     level,
+    'infra.distTraining':  level * 0.10,
+    'infra.quantization':  level * 0.05,
+    'infra.autoPipeline':  level,
+  };
+  return effects[category + '.' + id] || 0;
+}
+
 function getUpgradeCost(category, id) {
   const def = UPGRADE_DEFS[category][id];
   const level = gameState.upgrades[category][id];
-  return Math.floor(def.baseCost * Math.pow(1.5, level));
+  const raw = Math.floor(def.baseCost * Math.pow(1.5, level));
+  const discount = getUpgradeEffect('infra', 'quantization');
+  return Math.max(1, Math.floor(raw * (1 - discount)));
+}
+
+function getEffectiveGpuSlots() {
+  return gameState.gpuSlots + getUpgradeEffect('teamAgent', 'multiAgent');
 }
 
 function buyUpgrade(category, id) {

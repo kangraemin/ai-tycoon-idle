@@ -1,23 +1,23 @@
 {
-  "workflow_phase": "done",
+  "workflow_phase": "development",
   "mode": "normal",
   "planning": {
     "no_question_streak": 0
   },
   "plan_approved": true,
   "team_name": "dev-ai-tycoon",
-  "current_dev_phase": 1,
-  "current_step": 8,
+  "current_dev_phase": 2,
+  "current_step": 9,
   "dev_phases": {
     "1": {
       "name": "코어 전환 (기초)",
       "steps": [1, 2, 3, 4, 5, 6, 7, 8],
-      "status": "pending"
+      "status": "done"
     },
     "2": {
       "name": "업그레이드 효과 연동",
       "steps": [9],
-      "status": "pending"
+      "status": "in_progress"
     },
     "3": {
       "name": "스킬 챌린지 + 토큰",
@@ -43,7 +43,7 @@
   "verification": {
     "rounds_passed": 0
   },
-  "task_dir": "/Users/ram/programming/vibecoding/game/docs/2026-03-12/ai-tycoon-reskin",
-  "active_file": "/Users/ram/programming/vibecoding/game/docs/2026-03-12/ai-tycoon-reskin/.active",
+  "task_dir": "docs/2026-03-12/ai-tycoon-reskin",
+  "active_file": "docs/2026-03-12/ai-tycoon-reskin/.active",
   "persistent_mode": false
 }
