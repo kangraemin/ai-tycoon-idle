@@ -1,44 +1,52 @@
 // offline.js - Offline earnings calculation
 
-const MAX_OFFLINE_SECONDS = 8 * 3600;
+const BASE_MAX_OFFLINE_SECONDS = 8 * 3600;
 const OFFLINE_EFFICIENCY = 0.5;
 
 function calculateOfflineEarnings() {
   const now = Date.now();
   const elapsed = (now - gameState.lastSaveTime) / 1000;
-
   if (elapsed < 10) return null;
 
-  const cappedElapsed = Math.min(elapsed, MAX_OFFLINE_SECONDS);
-  const jps = getJellyPerSecond();
-  const offlineJelly = jps * cappedElapsed * OFFLINE_EFFICIENCY;
-  const offlineGold = offlineJelly * gameState.upgrades.jellyValue * 0.5;
+  const memoryBonus = getUpgradeEffect('agent', 'memory');
+  const maxOffline = BASE_MAX_OFFLINE_SECONDS + memoryBonus;
+  const cappedElapsed = Math.min(elapsed, maxOffline);
+
+  const lps = getLocPerSecond();
+  const offlineLoc = lps * cappedElapsed * OFFLINE_EFFICIENCY;
+
+  let offlineCompute = 0;
+  if (gameState.upgrades.infra.autoPipeline > 0) {
+    const ragLevel = gameState.upgrades.skill.rag;
+    const compileRate = 1 + (ragLevel * 0.15);
+    offlineCompute = offlineLoc * compileRate * 0.15;
+  }
 
   return {
     elapsed: cappedElapsed,
-    jelly: offlineJelly,
-    gold: offlineGold,
+    loc: offlineLoc,
+    compute: offlineCompute,
   };
 }
 
 function applyOfflineEarnings() {
   const earnings = calculateOfflineEarnings();
-  if (!earnings || earnings.jelly <= 0) return;
+  if (!earnings || earnings.loc <= 0) return;
 
-  if (gameState.upgrades.autoSell > 0) {
-    gameState.gold += earnings.gold;
-    gameState.totalJelly += earnings.jelly;
+  gameState.loc += earnings.loc;
+  gameState.totalLoc += earnings.loc;
+
+  if (earnings.compute > 0) {
+    gameState.compute += earnings.compute;
     showModal(
       'Welcome Back!',
-      `Auto-sold ${formatNumber(earnings.jelly)} jelly for ${formatNumber(earnings.gold)} gold while away (${formatTime(earnings.elapsed)})`,
+      `Auto-compiled ${formatNumber(earnings.loc)} LoC into ${formatNumber(earnings.compute)} compute while away (${formatTime(earnings.elapsed)})`,
       [{ text: 'Collect', primary: true }]
     );
   } else {
-    gameState.jelly += earnings.jelly;
-    gameState.totalJelly += earnings.jelly;
     showModal(
       'Welcome Back!',
-      `You earned ${formatNumber(earnings.jelly)} jelly while away (${formatTime(earnings.elapsed)})`,
+      `You wrote ${formatNumber(earnings.loc)} LoC while away (${formatTime(earnings.elapsed)})`,
       [{ text: 'Collect', primary: true }]
     );
   }
