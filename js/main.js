@@ -267,13 +267,7 @@ function renderUpgradeScreen() {
   container.innerHTML = html;
 }
 
-function renderResearchScreen() {
-  const container = document.getElementById('research-content');
-  if (!container) return;
-  if (typeof renderGachaScreen === 'function') {
-    renderGachaScreen();
-  }
-}
+// renderResearchScreen is now defined in research.js
 
 function renderFusionScreen() {
   const container = document.getElementById('fusion-content');
