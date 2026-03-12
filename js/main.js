@@ -84,6 +84,7 @@ function gameLoop() {
   }
   updateCurrencyDisplay();
   if (typeof updateHintBanner === 'function') updateHintBanner();
+  if (typeof renderEventBanner === 'function') renderEventBanner();
   if (typeof checkAchievements === 'function') checkAchievements();
 }
 
@@ -290,11 +291,7 @@ function renderUpgradeScreen() {
 
 // renderResearchScreen is now defined in research.js
 
-function renderFusionScreen() {
-  const container = document.getElementById('fusion-content');
-  if (!container) return;
-  container.innerHTML = '<div class="placeholder-message">Coming Soon: Model Fusion</div>';
-}
+// renderFusionScreen is now defined in fusion.js
 
 function renderCareerScreen() {
   const container = document.getElementById('career-content');
