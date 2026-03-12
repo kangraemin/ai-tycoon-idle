@@ -1,0 +1,235 @@
+/* editor.css - IDE Code Editor UI */
+
+.code-editor {
+  background: #1e1e1e;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+  margin-bottom: 12px;
+}
+
+/* Editor Tab Bar */
+.editor-tab-bar {
+  display: flex;
+  align-items: center;
+  background: #252526;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0;
+  overflow-x: auto;
+}
+
+.editor-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #9e9e9e;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Fira Code', monospace;
+}
+
+.editor-tab.active {
+  color: #d4d4d4;
+  background: #1e1e1e;
+  border-bottom-color: #569cd6;
+}
+
+.editor-tab-icon {
+  font-size: 14px;
+}
+
+/* Editor Body */
+.editor-body {
+  display: flex;
+  min-height: 200px;
+  max-height: 320px;
+  overflow-y: auto;
+  cursor: pointer;
+  position: relative;
+}
+
+.editor-body:active {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Line Numbers */
+.line-numbers {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  background: #1e1e1e;
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  min-width: 40px;
+  text-align: right;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.line-number {
+  font-size: 11px;
+  line-height: 20px;
+  padding: 0 8px;
+  color: #4a4a4a;
+  font-family: 'Fira Code', monospace;
+}
+
+.line-number.active {
+  color: #c6c6c6;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Code Content */
+.code-content {
+  flex: 1;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.code-line {
+  font-size: 12px;
+  line-height: 20px;
+  white-space: pre;
+  color: #d4d4d4;
+  font-family: 'Fira Code', monospace;
+}
+
+.code-line.active-line {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Syntax Highlighting */
+.code-keyword { color: #569cd6; }
+.code-string { color: #ce9178; }
+.code-function { color: #dcdcaa; }
+.code-variable { color: #9cdcfe; }
+.code-comment { color: #6a9955; font-style: italic; }
+.code-number { color: #b5cea8; }
+.code-operator { color: #d4d4d4; }
+.code-type { color: #4ec9b0; }
+.code-property { color: #9cdcfe; }
+.code-decorator { color: #c586c0; }
+
+/* Cursor */
+.editor-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 16px;
+  background: #d4d4d4;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Editor Status Bar */
+.editor-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 12px;
+  background: #007acc;
+  font-size: 11px;
+  color: white;
+  font-weight: 500;
+  font-family: 'Fira Code', monospace;
+}
+
+.editor-status-left,
+.editor-status-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.editor-status-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Typing effect */
+.code-typing {
+  position: relative;
+}
+
+.code-typing::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: #d4d4d4;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 1px;
+}
+
+/* Tap area overlay */
+.editor-tap-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  cursor: pointer;
+}
+
+/* Tap feedback */
+.editor-body.tap-active {
+  background: rgba(86, 156, 214, 0.05);
+}
+
+/* Minimap (decorative) */
+.editor-minimap {
+  width: 40px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.minimap-line {
+  height: 3px;
+  margin: 1px 4px;
+  border-radius: 1px;
+  opacity: 0.3;
+}
+
+.minimap-line.keyword { background: #569cd6; }
+.minimap-line.string { background: #ce9178; }
+.minimap-line.function { background: #dcdcaa; }
+.minimap-line.comment { background: #6a9955; }
+.minimap-line.default { background: #d4d4d4; }
+
+/* Compile animation */
+@keyframes compileProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.compile-bar {
+  height: 3px;
+  background: transparent;
+  overflow: hidden;
+}
+
+.compile-bar.active .compile-bar-fill {
+  animation: compileProgress 1s ease-out;
+}
+
+.compile-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #569cd6, #4ec9b0);
+  width: 0%;
+}
