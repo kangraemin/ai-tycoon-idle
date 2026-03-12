@@ -1,4 +1,4 @@
-// sound.js - Web Audio API synthesized sound effects
+// sound.js - Web Audio API synthesized sound effects (AI Tycoon theme)
 
 const SFX = (() => {
   let ctx = null;
@@ -35,17 +35,46 @@ const SFX = (() => {
     });
   }
 
+  function playNoise(duration, volume) {
+    if (!isEnabled()) return;
+    const c = getCtx();
+    const bufferSize = c.sampleRate * duration;
+    const buffer = c.createBuffer(1, bufferSize, c.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * 0.5;
+    }
+    const noise = c.createBufferSource();
+    noise.buffer = buffer;
+    const bandpass = c.createBiquadFilter();
+    bandpass.type = 'bandpass';
+    bandpass.frequency.value = 4000;
+    bandpass.Q.value = 0.5;
+    const gain = c.createGain();
+    gain.gain.setValueAtTime(volume || 0.08, c.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + duration);
+    noise.connect(bandpass);
+    bandpass.connect(gain);
+    gain.connect(c.destination);
+    noise.start(c.currentTime);
+    noise.stop(c.currentTime + duration);
+  }
+
   return {
+    // Keyboard keystroke sound — short noise burst + click tone
     tap() {
-      playTone(600, 0.08, 'sine', 0.12, 900);
+      playNoise(0.04, 0.1);
+      playTone(1200 + Math.random() * 400, 0.03, 'square', 0.04);
     },
 
+    // Compile success — ascending digital chime
     sell() {
       playNotes([
-        { freq: 800, dur: 0.06 },
-        { freq: 1000, dur: 0.06 },
-        { freq: 1200, dur: 0.1 },
-      ], 50);
+        { freq: 880, dur: 0.06, type: 'square', vol: 0.1 },
+        { freq: 1100, dur: 0.06, type: 'square', vol: 0.1 },
+        { freq: 1320, dur: 0.08, type: 'triangle', vol: 0.12 },
+        { freq: 1760, dur: 0.12, type: 'sine', vol: 0.15 },
+      ], 40);
     },
 
     buy() {
