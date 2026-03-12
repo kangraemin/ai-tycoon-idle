@@ -1,47 +1,74 @@
 {
-  "workflow_phase": "development",
+  "workflow_phase": "done",
   "mode": "normal",
   "planning": {
     "no_question_streak": 0
   },
   "plan_approved": true,
-  "team_name": "dev-ai-tycoon",
+  "team_name": "phase2-upgrade-effects",
   "current_dev_phase": 2,
-  "current_step": 9,
+  "current_step": 10,
   "dev_phases": {
     "1": {
-      "name": "코어 전환 (기초)",
-      "steps": [1, 2, 3, 4, 5, 6, 7, 8],
+      "name": "\ucf54\uc5b4 \uc804\ud658 (\uae30\ucd08)",
+      "steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
       "status": "done"
     },
     "2": {
-      "name": "업그레이드 효과 연동",
-      "steps": [9],
-      "status": "in_progress"
+      "name": "\uc5c5\uadf8\ub808\uc774\ub4dc \ud6a8\uacfc \uc5f0\ub3d9",
+      "steps": [
+        9
+      ],
+      "status": "done"
     },
     "3": {
-      "name": "스킬 챌린지 + 토큰",
-      "steps": [10, 11, 12],
+      "name": "\uc2a4\ud0ac \ucc4c\ub9b0\uc9c0 + \ud1a0\ud070",
+      "steps": [
+        10,
+        11,
+        12
+      ],
       "status": "pending"
     },
     "4": {
-      "name": "합성 시스템",
-      "steps": [13, 14],
+      "name": "\ud569\uc131 \uc2dc\uc2a4\ud15c",
+      "steps": [
+        13,
+        14
+      ],
       "status": "pending"
     },
     "5": {
-      "name": "랜덤 이벤트",
-      "steps": [15, 16],
+      "name": "\ub79c\ub364 \uc774\ubca4\ud2b8",
+      "steps": [
+        15,
+        16
+      ],
       "status": "pending"
     },
     "6": {
-      "name": "이직 시스템 + 마무리",
-      "steps": [17, 18, 19, 20, 21],
+      "name": "\uc774\uc9c1 \uc2dc\uc2a4\ud15c + \ub9c8\ubb34\ub9ac",
+      "steps": [
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
       "status": "pending"
     }
   },
   "verification": {
-    "rounds_passed": 0
+    "rounds_passed": 3
   },
   "task_dir": "docs/2026-03-12/ai-tycoon-reskin",
   "active_file": "docs/2026-03-12/ai-tycoon-reskin/.active",
