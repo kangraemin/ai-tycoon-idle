@@ -19,16 +19,16 @@ const UPGRADE_ICONS = {
 };
 
 const MODEL_ICON_STYLES = [
-  { bg: 'agent-bg',  icon: 'chat' },
-  { bg: 'skill-bg',  icon: 'category' },
-  { bg: 'team-bg',   icon: 'summarize' },
-  { bg: 'agent-bg',  icon: 'translate' },
-  { bg: 'infra-bg',  icon: 'code' },
-  { bg: 'skill-bg',  icon: 'image' },
-  { bg: 'team-bg',   icon: 'mic' },
-  { bg: 'infra-bg',  icon: 'recommend' },
-  { bg: 'agent-bg',  icon: 'psychology' },
-  { bg: 'skill-bg',  icon: 'auto_awesome' },
+  { bg: 'agent-bg',  icon: 'chat' },         // chatbot
+  { bg: 'skill-bg',  icon: 'translate' },     // translator
+  { bg: 'team-bg',   icon: 'summarize' },     // summarizer
+  { bg: 'agent-bg',  icon: 'image' },         // imageGen
+  { bg: 'infra-bg',  icon: 'code' },          // codeGen
+  { bg: 'skill-bg',  icon: 'mic' },           // voiceAI
+  { bg: 'team-bg',   icon: 'psychology' },    // reasoning
+  { bg: 'infra-bg',  icon: 'hub' },           // multimodal
+  { bg: 'agent-bg',  icon: 'auto_awesome' },  // agi
+  { bg: 'skill-bg',  icon: 'bolt' },          // superAgi
 ];
 
 // Code snippets for editor display
@@ -67,10 +67,13 @@ function gameLoop() {
   if (dt > 0 && dt < 10) {
     produceTick(dt);
     autoCompileTick(dt);
+    if (typeof tokenTick === 'function') tokenTick();
+    if (typeof eventTick === 'function') eventTick(dt);
+    if (typeof cleanupExpiredBuffs === 'function') cleanupExpiredBuffs();
   }
   updateCurrencyDisplay();
-  updateHintBanner();
-  checkAchievements();
+  if (typeof updateHintBanner === 'function') updateHintBanner();
+  if (typeof checkAchievements === 'function') checkAchievements();
 }
 
 function startGame() {
@@ -92,6 +95,21 @@ function startGame() {
   if (gameState.tutorialStep < 6) {
     startTutorial();
   }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    // Skip if modal or challenge is active
+    if (document.getElementById('modal-overlay')?.classList.contains('active')) return;
+    if (document.getElementById('challenge-overlay')?.style.display !== 'none') return;
+
+    if (e.code === 'Space') {
+      e.preventDefault();
+      tapEditor(null);
+    } else if (e.code === 'Enter') {
+      e.preventDefault();
+      compileData();
+    }
+  });
 
   lastTickTime = performance.now();
   gameLoopId = setInterval(gameLoop, 100);
@@ -287,13 +305,13 @@ function flashPurchase(btnEl, success) {
 function doBuyUpgrade(category, id, event) {
   const btn = event ? event.currentTarget : null;
   if (buyUpgrade(category, id)) {
-    SFX.buy();
-    if (getTutorialTrigger() === 'buy') advanceTutorial();
+    if (typeof SFX !== 'undefined' && SFX.buy) SFX.buy();
+    if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'buy') advanceTutorial();
     flashPurchase(btn, true);
     renderUpgradeScreen();
     updateCurrencyDisplay();
   } else {
-    SFX.error();
+    if (typeof SFX !== 'undefined' && SFX.error) SFX.error();
     flashPurchase(btn, false);
     showToast('Not enough compute!', 'error');
   }
@@ -302,13 +320,13 @@ function doBuyUpgrade(category, id, event) {
 function doBuyGpuSlot(event) {
   const btn = event ? event.currentTarget : null;
   if (buyGpuSlot()) {
-    SFX.buy();
+    if (typeof SFX !== 'undefined' && SFX.buy) SFX.buy();
     flashPurchase(btn, true);
     renderModelsScreen();
     renderUpgradeScreen();
     updateCurrencyDisplay();
   } else {
-    SFX.error();
+    if (typeof SFX !== 'undefined' && SFX.error) SFX.error();
     flashPurchase(btn, false);
     showToast('Not enough compute!', 'error');
   }

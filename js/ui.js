@@ -4,8 +4,8 @@ let currentScreen = 'editor';
 
 function switchScreen(screen) {
   if (currentScreen === screen) return;
-  SFX.navigate();
-  if (getTutorialTrigger() === 'navigate' && screen === 'upgrade') advanceTutorial();
+  if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
+  if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'navigate' && screen === 'upgrade') advanceTutorial();
 
   const oldScreen = document.getElementById('screen-' + currentScreen);
   const newScreen = document.getElementById('screen-' + screen);
@@ -94,11 +94,11 @@ function showModal(title, message, buttons) {
 }
 
 function showSettings() {
-  const sfxState = gameState.settings?.sfxOn !== false;
+  const sfxState = gameState.settings?.sfx !== false;
   showModal('Settings', '', [
     { text: `SFX: ${sfxState ? 'ON' : 'OFF'}`, onClick: () => {
       if (!gameState.settings) gameState.settings = {};
-      gameState.settings.sfxOn = !sfxState;
+      gameState.settings.sfx = !sfxState;
       saveGame();
       showSettings();
     }},

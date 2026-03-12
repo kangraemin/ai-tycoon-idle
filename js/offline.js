@@ -19,7 +19,9 @@ function calculateOfflineEarnings() {
   if (gameState.upgrades.infra.autoPipeline > 0) {
     const ragLevel = gameState.upgrades.skill.rag;
     const compileRate = 1 + (ragLevel * 0.15);
-    offlineCompute = offlineLoc * compileRate * 0.15;
+    const autoPipelineLevel = gameState.upgrades.infra.autoPipeline;
+    const convertRatio = autoPipelineLevel * 0.05;
+    offlineCompute = offlineLoc * compileRate * convertRatio;
   }
 
   return {
