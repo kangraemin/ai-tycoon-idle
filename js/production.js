@@ -10,7 +10,9 @@ function getLocPerSecond() {
       total += getModelLps(model);
     }
   }
-  return total * gameState.prestigeMultiplier;
+  const toolUseBonus = 1 + getUpgradeEffect('agent', 'toolUse');
+  const distBonus = 1 + getUpgradeEffect('infra', 'distTraining');
+  return total * toolUseBonus * distBonus * gameState.prestigeMultiplier;
 }
 
 function produceTick(dt) {
@@ -23,7 +25,9 @@ function produceTick(dt) {
 function autoCompileTick(dt) {
   const autoPipelineLevel = gameState.upgrades.infra.autoPipeline;
   if (autoPipelineLevel <= 0) return;
-  const interval = Math.max(1, 11 - autoPipelineLevel);
+  const baseInterval = 11 - autoPipelineLevel;
+  const orchBonus = 1 - getUpgradeEffect('teamAgent', 'orchestrator');
+  const interval = Math.max(1, baseInterval * orchBonus);
   autoCompileTimer += dt;
   if (autoCompileTimer >= interval) {
     autoCompileTimer -= interval;
@@ -38,7 +42,7 @@ function autoCompileTick(dt) {
 
 function tapEditor(event) {
   SFX.tap();
-  const tapPower = 1 * gameState.prestigeMultiplier;
+  const tapPower = (1 + getUpgradeEffect('infra', 'batchSize')) * gameState.prestigeMultiplier;
   gameState.loc += tapPower;
   gameState.totalLoc += tapPower;
   if (gameState.stats) gameState.stats.totalTaps++;
