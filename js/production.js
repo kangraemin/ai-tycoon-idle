@@ -70,7 +70,7 @@ function compileData() {
   gameState.compute += computeEarned;
   if (gameState.stats) {
     gameState.stats.totalSells++;
-    gameState.stats.totalGold += computeEarned;
+    gameState.stats.totalCompute += computeEarned;
   }
   gameState.loc = 0;
   if (getTutorialTrigger() === 'sell') advanceTutorial();
