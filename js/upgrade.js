@@ -1,99 +1,51 @@
-// upgrade.js - Upgrade system
+// upgrade.js - AI upgrade system (4 categories, 13 upgrades)
 
 const UPGRADE_DEFS = {
-  tapPower: {
-    name: 'Tap Power',
-    description: 'Increase jelly per tap',
-    baseCost: 50,
-    icon: 'tap',
+  agent: {
+    toolUse:    { name: 'Tool Use',    baseCost: 500,  description: 'Better tool integration' },
+    memory:     { name: 'Memory',      baseCost: 800,  description: 'Longer context retention' },
+    planning:   { name: 'Planning',    baseCost: 1200, description: 'Multi-step reasoning' },
   },
-  productionSpeed: {
-    name: 'Production Speed',
-    description: 'Boost all slime production',
-    baseCost: 100,
-    icon: 'speed',
+  teamAgent: {
+    multiAgent:   { name: 'Multi-Agent',   baseCost: 1000, description: 'Run parallel agents' },
+    orchestrator: { name: 'Orchestrator',   baseCost: 1500, description: 'Coordinate agent teams' },
+    delegation:   { name: 'Delegation',     baseCost: 2000, description: 'Smart task routing' },
   },
-  jellyValue: {
-    name: 'Jelly Value',
-    description: 'Increase gold per jelly sold',
-    baseCost: 200,
-    icon: 'value',
+  skill: {
+    rag:        { name: 'RAG',         baseCost: 300,  description: 'Retrieval-augmented generation' },
+    fineTuning: { name: 'Fine-tuning', baseCost: 600,  description: 'Domain-specific training' },
+    rlhf:       { name: 'RLHF',       baseCost: 1000, description: 'Human feedback alignment' },
   },
-  autoSell: {
-    name: 'Auto Sell',
-    description: 'Auto-sell jelly periodically',
-    baseCost: 500,
-    icon: 'autoSell',
+  infra: {
+    batchSize:    { name: 'Batch Size',    baseCost: 50,   description: 'Larger training batches' },
+    distTraining: { name: 'Distributed',   baseCost: 100,  description: 'Multi-GPU training' },
+    quantization: { name: 'Quantization',  baseCost: 200,  description: 'Model compression' },
+    autoPipeline: { name: 'Auto Pipeline', baseCost: 500,  description: 'Automated CI/CD for models' },
   },
 };
 
-function getUpgradeCost(upgradeId) {
-  const def = UPGRADE_DEFS[upgradeId];
-  const level = gameState.upgrades[upgradeId];
+function getUpgradeCost(category, id) {
+  const def = UPGRADE_DEFS[category][id];
+  const level = gameState.upgrades[category][id];
   return Math.floor(def.baseCost * Math.pow(1.5, level));
 }
 
-function getUpgradeEffect(upgradeId) {
-  const level = gameState.upgrades[upgradeId];
-  if (upgradeId === 'autoSell') {
-    if (level === 0) return 'Off';
-    const interval = Math.max(1, 11 - level);
-    return `Every ${interval}s`;
-  }
-  return level;
-}
-
-function getUpgradeNextEffect(upgradeId) {
-  const level = gameState.upgrades[upgradeId] + 1;
-  if (upgradeId === 'autoSell') {
-    const interval = Math.max(1, 11 - level);
-    return `Every ${interval}s`;
-  }
-  return level;
-}
-
-function buyUpgrade(upgradeId) {
-  const cost = getUpgradeCost(upgradeId);
-  if (gameState.gold < cost) return false;
-  gameState.gold -= cost;
-  gameState.upgrades[upgradeId]++;
+function buyUpgrade(category, id) {
+  const cost = getUpgradeCost(category, id);
+  if (gameState.compute < cost) return false;
+  gameState.compute -= cost;
+  gameState.upgrades[category][id]++;
   return true;
 }
 
-function buySlime(slimeId) {
-  const def = SLIME_DEFS[slimeId];
-  if (def.unlockCost < 0) return false;
-  if (gameState.gold < def.unlockCost) return false;
-
-  const owned = getOwnedSlimes().length;
-  if (owned >= gameState.ranchSlots) return false;
-
-  const slimeState = getSlimeState(slimeId);
-  if (slimeState.count > 0) return false;
-
-  gameState.gold -= def.unlockCost;
-  slimeState.count = 1;
-  return true;
+function getGpuSlotCost() {
+  return Math.floor(1000 * Math.pow(2, gameState.gpuSlots - 1));
 }
 
-function levelUpSlime(slimeId) {
-  const slimeState = getSlimeState(slimeId);
-  if (slimeState.count <= 0) return false;
-  const cost = getSlimeLevelUpCost(slimeState);
-  if (gameState.gold < cost) return false;
-  gameState.gold -= cost;
-  slimeState.level++;
+function buyGpuSlot() {
+  const cost = getGpuSlotCost();
+  if (gameState.compute < cost) return false;
+  gameState.compute -= cost;
+  gameState.gpuSlots++;
   return true;
-}
-
-function buyRanchSlot() {
-  const cost = getRanchSlotCost();
-  if (gameState.gold < cost) return false;
-  gameState.gold -= cost;
-  gameState.ranchSlots++;
-  return true;
-}
-
-function getRanchSlotCost() {
-  return Math.floor(1000 * Math.pow(2, gameState.ranchSlots - 5));
 }
