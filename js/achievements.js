@@ -1,31 +1,45 @@
-// achievements.js - Achievement system with gem rewards
+// achievements.js - AI Tycoon achievement system (22 achievements)
 
 const ACHIEVEMENT_DEFS = [
   // Tapping
-  { id: 'tap_10', name: 'First Taps', desc: 'Tap slimes 10 times', icon: 'touch_app', gems: 2, check: s => s.totalTaps >= 10 },
-  { id: 'tap_100', name: 'Tappy Fingers', desc: 'Tap slimes 100 times', icon: 'touch_app', gems: 5, check: s => s.totalTaps >= 100 },
-  { id: 'tap_1000', name: 'Tap Master', desc: 'Tap slimes 1,000 times', icon: 'touch_app', gems: 10, check: s => s.totalTaps >= 1000 },
+  { id: 'tap_10',      name: 'Hello World',        desc: 'Write 10 lines of code',         icon: 'code',          papers: 2,  check: s => s.totalTaps >= 10 },
+  { id: 'tap_100',     name: 'Script Kiddie',       desc: 'Write 100 lines of code',        icon: 'code',          papers: 5,  check: s => s.totalTaps >= 100 },
+  { id: 'tap_1000',    name: 'Code Monkey',         desc: 'Write 1,000 lines of code',      icon: 'code',          papers: 10, check: s => s.totalTaps >= 1000 },
+  { id: 'tap_10000',   name: '10x Developer',       desc: 'Write 10,000 lines of code',     icon: 'code',          papers: 20, check: s => s.totalTaps >= 10000 },
 
-  // Selling
-  { id: 'sell_10', name: 'First Sales', desc: 'Sell jelly 10 times', icon: 'sell', gems: 2, check: s => s.totalSells >= 10 },
-  { id: 'sell_100', name: 'Merchant', desc: 'Sell jelly 100 times', icon: 'sell', gems: 5, check: s => s.totalSells >= 100 },
+  // Compiling
+  { id: 'compile_10',  name: 'First Build',         desc: 'Compile 10 times',               icon: 'build',         papers: 2,  check: s => s.totalCompiles >= 10 },
+  { id: 'compile_100', name: 'Build Master',         desc: 'Compile 100 times',              icon: 'build',         papers: 10, check: s => s.totalCompiles >= 100 },
 
-  // Gold
-  { id: 'gold_1k', name: 'Gold Rush', desc: 'Earn 1,000 total gold', icon: 'monetization_on', gems: 5, check: s => s.totalGold >= 1000 },
-  { id: 'gold_100k', name: 'Gold Mine', desc: 'Earn 100,000 total gold', icon: 'monetization_on', gems: 10, check: s => s.totalGold >= 100000 },
+  // Models
+  { id: 'models_3',    name: 'Model Zoo',           desc: 'Own 3 different models',          icon: 'smart_toy',     papers: 5,  check: s => s.modelsOwned >= 3 },
+  { id: 'models_5',    name: 'AI Portfolio',        desc: 'Own 5 different models',          icon: 'smart_toy',     papers: 10, check: s => s.modelsOwned >= 5 },
+  { id: 'models_10',   name: 'Full Stack AI',       desc: 'Own all 10 models',               icon: 'smart_toy',     papers: 20, check: s => s.modelsOwned >= 10 },
 
-  // Slimes
-  { id: 'slimes_3', name: 'Collector', desc: 'Own 3 different slimes', icon: 'pets', gems: 5, check: s => s.slimesOwned >= 3 },
-  { id: 'slimes_6', name: 'Rancher', desc: 'Own 6 different slimes', icon: 'pets', gems: 10, check: s => s.slimesOwned >= 6 },
-  { id: 'slimes_10', name: 'Full Ranch', desc: 'Own all 10 slimes', icon: 'pets', gems: 15, check: s => s.slimesOwned >= 10 },
+  // Research
+  { id: 'research_5',  name: 'Lab Rat',             desc: 'Do 5 research pulls',             icon: 'science',       papers: 5,  check: s => s.gachaPulls >= 5 },
+  { id: 'research_20', name: 'Research Director',   desc: 'Do 20 research pulls',            icon: 'science',       papers: 10, check: s => s.gachaPulls >= 20 },
 
-  // Gacha
-  { id: 'gacha_5', name: 'Lucky Draw', desc: 'Pull gacha 5 times', icon: 'featured_seasonal_and_gifts', gems: 5, check: s => s.gachaPulls >= 5 },
-  { id: 'gacha_20', name: 'Gacha Addict', desc: 'Pull gacha 20 times', icon: 'featured_seasonal_and_gifts', gems: 10, check: s => s.gachaPulls >= 20 },
+  // Compute
+  { id: 'compute_1k',  name: 'GPU Warm',            desc: 'Earn 1,000 total compute',        icon: 'memory',        papers: 5,  check: s => s.totalCompute >= 1000 },
+  { id: 'compute_1m',  name: 'Datacenter',          desc: 'Earn 1,000,000 total compute',    icon: 'memory',        papers: 15, check: s => s.totalCompute >= 1000000 },
 
-  // Prestige
-  { id: 'prestige_1', name: 'Reborn', desc: 'Prestige for the first time', icon: 'military_tech', gems: 10, check: () => gameState.prestigeLevel >= 1 },
-  { id: 'prestige_5', name: 'Star Rancher', desc: 'Reach prestige level 5', icon: 'military_tech', gems: 12, check: () => gameState.prestigeLevel >= 5 },
+  // Career
+  { id: 'career_1',    name: 'Promoted',            desc: 'Advance career once',             icon: 'work',          papers: 10, check: () => gameState.careerStage >= 1 },
+  { id: 'career_3',    name: 'Career Climber',      desc: 'Reach career stage 3',            icon: 'work',          papers: 15, check: () => gameState.careerStage >= 3 },
+  { id: 'career_7',    name: 'Founder',             desc: 'Reach the final career stage',    icon: 'rocket_launch', papers: 30, check: () => gameState.careerStage >= 7 },
+
+  // Challenge
+  { id: 'challenge_1', name: 'First Challenge',     desc: 'Complete a challenge',            icon: 'emoji_events',  papers: 3,  check: () => gameState.challengeStats.played >= 1 },
+  { id: 'challenge_s', name: 'S-Rank',              desc: 'Get an S grade in a challenge',   icon: 'star',          papers: 15, check: () => gameState.challengeStats.bestGrade === 'S' },
+
+  // Fusion
+  { id: 'fusion_1',    name: 'First Fusion',        desc: 'Fuse two models',                 icon: 'merge',         papers: 5,  check: () => gameState.discoveredFusions.length >= 1 },
+  { id: 'fusion_all',  name: 'Fusion Master',       desc: 'Discover all fusion recipes',     icon: 'merge',         papers: 20, check: () => gameState.discoveredFusions.length >= 7 },
+
+  // Events
+  { id: 'event_5',     name: 'Incident Responder',  desc: 'Respond to 5 events',             icon: 'notifications', papers: 5,  check: () => gameState.eventStats.responded >= 5 },
+  { id: 'event_20',    name: 'On-Call Hero',         desc: 'Respond to 20 events',            icon: 'notifications', papers: 15, check: () => gameState.eventStats.responded >= 20 },
 ];
 
 function getStats() {
@@ -34,7 +48,7 @@ function getStats() {
 
 function updateLiveStats() {
   if (!gameState.stats) return;
-  gameState.stats.slimesOwned = getOwnedSlimes().length;
+  gameState.stats.modelsOwned = typeof getOwnedModels === 'function' ? getOwnedModels().length : 0;
 }
 
 let lastAchievementCheck = 0;
@@ -52,13 +66,15 @@ function checkAchievements() {
 
   for (const ach of ACHIEVEMENT_DEFS) {
     if (gameState.achievements[ach.id]) continue;
-    if (ach.check(stats)) {
-      gameState.achievements[ach.id] = Date.now();
-      gameState.gems += ach.gems;
-      SFX.achievement();
-      showToast(`🏆 ${ach.name} — +${ach.gems} gems!`, 'success');
-      updateCurrencyDisplay();
-    }
+    try {
+      if (ach.check(stats)) {
+        gameState.achievements[ach.id] = Date.now();
+        gameState.papers += ach.papers;
+        if (typeof SFX !== 'undefined' && SFX.achievement) SFX.achievement();
+        if (typeof showToast === 'function') showToast(ach.name + ' — +' + ach.papers + ' papers!', 'success');
+        if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+      }
+    } catch (e) { /* ignore check errors */ }
   }
 }
 
@@ -72,16 +88,12 @@ function renderAchievementList() {
   let html = '<div style="text-align:left;max-height:300px;overflow-y:auto;margin:0 -8px">';
   for (const ach of ACHIEVEMENT_DEFS) {
     const done = gameState.achievements && gameState.achievements[ach.id];
-    html += `
-      <div style="display:flex;align-items:center;gap:10px;padding:8px;opacity:${done ? 1 : 0.5};border-bottom:1px solid var(--border-light)">
-        <span class="material-symbols-outlined" style="font-size:20px;color:${done ? 'var(--gold)' : 'var(--text-muted)'}">${ach.icon}</span>
-        <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:13px">${ach.name} ${done ? '✓' : ''}</div>
-          <div style="font-size:11px;color:var(--text-secondary)">${ach.desc}</div>
-        </div>
-        <div style="font-size:12px;font-weight:700;color:var(--gem)">+${ach.gems}💎</div>
-      </div>
-    `;
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:8px;opacity:' + (done ? 1 : 0.5) + ';border-bottom:1px solid var(--border-light)">';
+    html += '<span class="material-symbols-outlined" style="font-size:20px;color:' + (done ? 'var(--accent)' : 'var(--text-muted)') + '">' + ach.icon + '</span>';
+    html += '<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">' + ach.name + (done ? ' ✓' : '') + '</div>';
+    html += '<div style="font-size:11px;color:var(--text-secondary)">' + ach.desc + '</div></div>';
+    html += '<div style="font-size:12px;font-weight:700;color:var(--papers)">+' + ach.papers + '</div>';
+    html += '</div>';
   }
   html += '</div>';
   return html;
