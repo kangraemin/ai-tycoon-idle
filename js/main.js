@@ -58,6 +58,17 @@ let gameLoopId = null;
 let autoSaveId = null;
 let currentCodeLine = 0;
 
+function tokenTick() {
+  const now = Date.now();
+  const elapsed = now - gameState.lastTokenRecharge;
+  const rechargeInterval = 10 * 60 * 1000; // 10 minutes
+  if (elapsed >= rechargeInterval && gameState.tokens < 10) {
+    const charges = Math.floor(elapsed / rechargeInterval);
+    gameState.tokens = Math.min(10, gameState.tokens + charges);
+    gameState.lastTokenRecharge = now;
+  }
+}
+
 function gameLoop() {
   const now = performance.now();
   if (lastTickTime === 0) lastTickTime = now;
@@ -145,6 +156,16 @@ function renderEditorScreen() {
     html += `<div class="code-line${activeClass}"><span class="code-${line.type}">${line.text}</span>${i === currentCodeLine ? '<span class="editor-cursor"></span>' : ''}</div>`;
   });
   html += '</div>';
+  html += '</div>';
+  html += '<div class="editor-challenge-area" style="padding:8px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">';
+  const challengeTypes = typeof CHALLENGE_TYPES !== 'undefined' ? Object.keys(CHALLENGE_TYPES) : [];
+  const canChallenge = typeof canStartChallenge === 'function' && canStartChallenge();
+  if (challengeTypes.length > 0) {
+    const randomType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
+    html += `<button class="btn ${canChallenge ? 'btn-primary' : 'btn-disabled'}" onclick="startChallenge('${randomType}')" ${canChallenge ? '' : 'disabled'} style="font-size:12px;padding:6px 16px">`;
+    html += `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> Challenge (1 Token)`;
+    html += '</button>';
+  }
   html += '</div>';
   html += '<div class="editor-status-bar">';
   html += '<div class="editor-status-left"><span class="editor-status-item">Python</span></div>';
