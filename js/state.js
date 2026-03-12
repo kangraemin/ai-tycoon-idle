@@ -1,35 +1,44 @@
 // state.js - Game state management + localStorage save/load
 
-const SAVE_KEY = 'slimeRanchIdle';
+const SAVE_KEY = 'aiTycoon';
 
 function createDefaultState() {
   return {
-    gold: 0,
-    jelly: 0,
-    gems: 10,
-    totalJelly: 0,
+    loc: 0,
+    compute: 0,
+    papers: 10,
+    totalLoc: 0,
 
-    slimes: [
-      { id: 'normal', level: 1, count: 1 },
-      { id: 'fire', level: 1, count: 0 },
-      { id: 'ice', level: 1, count: 0 },
-      { id: 'poison', level: 1, count: 0 },
-      { id: 'electric', level: 1, count: 0 },
-      { id: 'water', level: 1, count: 0 },
-      { id: 'earth', level: 1, count: 0 },
-      { id: 'wind', level: 1, count: 0 },
-      { id: 'gold', level: 1, count: 0 },
-      { id: 'diamond', level: 1, count: 0 },
+    tokens: 5,
+    reputation: 0,
+    gpuSlots: 1,
+    careerStage: 0,
+    discoveredFusions: [],
+    challengeStats: { played: 0, won: 0, bestGrade: null },
+    eventStats: { triggered: 0, responded: 0 },
+    lastTokenRecharge: Date.now(),
+    lastEventTime: Date.now(),
+
+    models: [
+      { id: 'chatbot', level: 1, count: 1 },
+      { id: 'classifier', level: 1, count: 0 },
+      { id: 'summarizer', level: 1, count: 0 },
+      { id: 'translator', level: 1, count: 0 },
+      { id: 'codeAssist', level: 1, count: 0 },
+      { id: 'imageGen', level: 1, count: 0 },
+      { id: 'speechRec', level: 1, count: 0 },
+      { id: 'recommender', level: 1, count: 0 },
+      { id: 'agi', level: 1, count: 0 },
+      { id: 'superAgi', level: 1, count: 0 },
     ],
 
     upgrades: {
-      tapPower: 1,
-      productionSpeed: 1,
-      jellyValue: 1,
-      autoSell: 0,
+      agent: { toolUse: 0, memory: 0, planning: 0 },
+      teamAgent: { multiAgent: 0, orchestrator: 0, delegation: 0 },
+      skill: { rag: 0, fineTuning: 0, rlhf: 0 },
+      infra: { batchSize: 0, distTraining: 0, quantization: 0, autoPipeline: 0 },
     },
 
-    ranchSlots: 5,
     prestigeLevel: 0,
     prestigeMultiplier: 1,
 
@@ -72,15 +81,23 @@ function loadGame() {
       const defaults = createDefaultState();
 
       // Safe merge: primitives
-      for (const key of ['gold', 'jelly', 'gems', 'totalJelly', 'ranchSlots',
-                          'prestigeLevel', 'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime', 'tutorialStep']) {
+      for (const key of ['loc', 'compute', 'papers', 'totalLoc',
+                          'tokens', 'reputation', 'gpuSlots', 'careerStage',
+                          'prestigeLevel', 'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime',
+                          'lastTokenRecharge', 'lastEventTime', 'tutorialStep']) {
         if (parsed[key] !== undefined) defaults[key] = parsed[key];
       }
 
-      // Safe merge: upgrades (preserve new keys from defaults)
+      // Safe merge: upgrades (nested categories)
       if (parsed.upgrades) {
-        for (const key of Object.keys(defaults.upgrades)) {
-          if (parsed.upgrades[key] !== undefined) defaults.upgrades[key] = parsed.upgrades[key];
+        for (const category of Object.keys(defaults.upgrades)) {
+          if (parsed.upgrades[category]) {
+            for (const key of Object.keys(defaults.upgrades[category])) {
+              if (parsed.upgrades[category][key] !== undefined) {
+                defaults.upgrades[category][key] = parsed.upgrades[category][key];
+              }
+            }
+          }
         }
       }
 
@@ -103,13 +120,32 @@ function loadGame() {
         defaults.achievements = parsed.achievements;
       }
 
-      // Safe merge: slimes (restore saved data + keep new slime types)
-      if (parsed.slimes) {
-        for (const defaultSlime of defaults.slimes) {
-          const savedSlime = parsed.slimes.find(s => s.id === defaultSlime.id);
-          if (savedSlime) {
-            defaultSlime.level = savedSlime.level || 1;
-            defaultSlime.count = savedSlime.count || 0;
+      // Safe merge: challengeStats
+      if (parsed.challengeStats) {
+        for (const key of Object.keys(defaults.challengeStats)) {
+          if (parsed.challengeStats[key] !== undefined) defaults.challengeStats[key] = parsed.challengeStats[key];
+        }
+      }
+
+      // Safe merge: eventStats
+      if (parsed.eventStats) {
+        for (const key of Object.keys(defaults.eventStats)) {
+          if (parsed.eventStats[key] !== undefined) defaults.eventStats[key] = parsed.eventStats[key];
+        }
+      }
+
+      // Safe merge: discoveredFusions
+      if (parsed.discoveredFusions) {
+        defaults.discoveredFusions = parsed.discoveredFusions;
+      }
+
+      // Safe merge: models (restore saved data + keep new model types)
+      if (parsed.models) {
+        for (const defaultModel of defaults.models) {
+          const savedModel = parsed.models.find(m => m.id === defaultModel.id);
+          if (savedModel) {
+            defaultModel.level = savedModel.level || 1;
+            defaultModel.count = savedModel.count || 0;
           }
         }
       }

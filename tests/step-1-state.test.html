@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Step 1: state.js 테스트</title>
+<style>
+body { font-family: monospace; background: #1e1e1e; color: #d4d4d4; padding: 20px; }
+.pass { color: #4ec9b0; }
+.fail { color: #f44747; }
+.section { color: #569cd6; font-weight: bold; margin-top: 16px; }
+#summary { margin-top: 20px; padding: 10px; border: 1px solid #555; }
+</style>
+</head>
+<body>
+<h2>Step 1: state.js — 자원 체계 전환 테스트</h2>
+<div id="results"></div>
+<div id="summary"></div>
+
+<script>
+// --- Test Framework ---
+let passed = 0, failed = 0, total = 0;
+const results = document.getElementById('results');
+
+function section(name) {
+  const el = document.createElement('div');
+  el.className = 'section';
+  el.textContent = `\n[${name}]`;
+  results.appendChild(el);
+}
+
+function assert(name, condition, detail) {
+  total++;
+  const el = document.createElement('div');
+  if (condition) {
+    passed++;
+    el.className = 'pass';
+    el.textContent = `  ✓ ${name}`;
+  } else {
+    failed++;
+    el.className = 'fail';
+    el.textContent = `  ✗ ${name}` + (detail ? ` — ${detail}` : '');
+  }
+  results.appendChild(el);
+}
+
+function showSummary() {
+  const sum = document.getElementById('summary');
+  const status = failed === 0 ? 'ALL PASSED' : `${failed} FAILED`;
+  sum.className = failed === 0 ? 'pass' : 'fail';
+  sum.textContent = `${status} (${passed}/${total})`;
+  // For CLI parsing
+  console.log(failed === 0 ? '[STEP:1:테스트통과]' : '[STEP:1:테스트실패]');
+  console.log(`Results: ${passed}/${total} passed, ${failed} failed`);
+}
+</script>
+
+<!-- Load state.js (production code) -->
+<script>
+// Mock localStorage
+const mockStorage = {};
+const _localStorage = {
+  getItem(k) { return mockStorage[k] || null; },
+  setItem(k, v) { mockStorage[k] = v; },
+  removeItem(k) { delete mockStorage[k]; },
+  clear() { for (const k in mockStorage) delete mockStorage[k]; }
+};
+Object.defineProperty(window, 'localStorage', { value: _localStorage, writable: true });
+</script>
+<script src="../js/state.js"></script>
+
+<script>
+// ============================================================
+// TC-1.1: SAVE_KEY 변경
+// ============================================================
+section('TC-1.1: SAVE_KEY');
+
+assert('SAVE_KEY === "aiTycoon"',
+  typeof SAVE_KEY !== 'undefined' && SAVE_KEY === 'aiTycoon',
+  `got: "${typeof SAVE_KEY !== 'undefined' ? SAVE_KEY : 'undefined'}"`);
+
+// ============================================================
+// TC-1.2: 기존 자원명 제거 확인
+// ============================================================
+section('TC-1.2: 기존 자원명 제거');
+
+(() => {
+  const state = createDefaultState();
+  assert('jelly 필드 없음', !('jelly' in state), 'jelly still exists');
+  assert('gold 필드 없음', !('gold' in state), 'gold still exists');
+  assert('gems 필드 없음', !('gems' in state), 'gems still exists');
+  assert('totalJelly 필드 없음', !('totalJelly' in state), 'totalJelly still exists');
+  assert('slimes 필드 없음', !('slimes' in state), 'slimes still exists');
+  assert('ranchSlots 필드 없음', !('ranchSlots' in state), 'ranchSlots still exists');
+})();
+
+// ============================================================
+// TC-1.3: 자원명 변경 (jelly→loc, gold→compute, gems→papers, totalJelly→totalLoc)
+// ============================================================
+section('TC-1.3: 자원명 변경');
+
+(() => {
+  const state = createDefaultState();
+  assert('loc 필드 존재', 'loc' in state, 'loc missing');
+  assert('loc 초기값 === 0', state.loc === 0, `got: ${state.loc}`);
+  assert('compute 필드 존재', 'compute' in state, 'compute missing');
+  assert('compute 초기값 === 0', state.compute === 0, `got: ${state.compute}`);
+  assert('papers 필드 존재', 'papers' in state, 'papers missing');
+  assert('papers 초기값 === 10', state.papers === 10, `got: ${state.papers}`);
+  assert('totalLoc 필드 존재', 'totalLoc' in state, 'totalLoc missing');
+  assert('totalLoc 초기값 === 0', state.totalLoc === 0, `got: ${state.totalLoc}`);
+})();
+
+// ============================================================
+// TC-1.4: 신규 필드 추가
+// ============================================================
+section('TC-1.4: 신규 필드');
+
+(() => {
+  const state = createDefaultState();
+
+  // tokens
+  assert('tokens 필드 존재', 'tokens' in state, 'tokens missing');
+  assert('tokens 초기값 >= 0 (숫자)', typeof state.tokens === 'number' && state.tokens >= 0, `got: ${state.tokens}`);
+
+  // reputation
+  assert('reputation 필드 존재', 'reputation' in state, 'reputation missing');
+  assert('reputation 초기값 === 0', state.reputation === 0, `got: ${state.reputation}`);
+
+  // gpuSlots
+  assert('gpuSlots 필드 존재', 'gpuSlots' in state, 'gpuSlots missing');
+  assert('gpuSlots 초기값 >= 1 (숫자)', typeof state.gpuSlots === 'number' && state.gpuSlots >= 1, `got: ${state.gpuSlots}`);
+
+  // careerStage
+  assert('careerStage 필드 존재', 'careerStage' in state, 'careerStage missing');
+  assert('careerStage 초기값 === 0', state.careerStage === 0, `got: ${state.careerStage}`);
+
+  // discoveredFusions
+  assert('discoveredFusions 필드 존재', 'discoveredFusions' in state, 'discoveredFusions missing');
+  assert('discoveredFusions 초기값 빈 배열', Array.isArray(state.discoveredFusions) && state.discoveredFusions.length === 0,
+    `got: ${JSON.stringify(state.discoveredFusions)}`);
+
+  // challengeStats
+  assert('challengeStats 필드 존재', 'challengeStats' in state, 'challengeStats missing');
+  assert('challengeStats 초기값 객체', typeof state.challengeStats === 'object' && state.challengeStats !== null && !Array.isArray(state.challengeStats),
+    `got: ${JSON.stringify(state.challengeStats)}`);
+
+  // eventStats
+  assert('eventStats 필드 존재', 'eventStats' in state, 'eventStats missing');
+  assert('eventStats 초기값 객체', typeof state.eventStats === 'object' && state.eventStats !== null && !Array.isArray(state.eventStats),
+    `got: ${JSON.stringify(state.eventStats)}`);
+
+  // lastTokenRecharge
+  assert('lastTokenRecharge 필드 존재', 'lastTokenRecharge' in state, 'lastTokenRecharge missing');
+  assert('lastTokenRecharge 초기값 숫자(타임스탬프)', typeof state.lastTokenRecharge === 'number' && state.lastTokenRecharge > 0,
+    `got: ${state.lastTokenRecharge}`);
+
+  // lastEventTime
+  assert('lastEventTime 필드 존재', 'lastEventTime' in state, 'lastEventTime missing');
+  assert('lastEventTime 초기값 숫자(타임스탬프)', typeof state.lastEventTime === 'number' && state.lastEventTime > 0,
+    `got: ${state.lastEventTime}`);
+})();
+
+// ============================================================
+// TC-1.4b: models 배열 (slimes → models)
+// ============================================================
+section('TC-1.4b: models 배열');
+
+(() => {
+  const state = createDefaultState();
+  assert('models 필드 존재', 'models' in state, 'models missing');
+  assert('models는 배열', Array.isArray(state.models), `got: ${typeof state.models}`);
+  assert('models 길이 > 0', state.models.length > 0, 'models is empty');
+
+  // 각 모델에 id, level, count 필드 존재
+  const first = state.models[0];
+  assert('모델에 id 필드', 'id' in first, 'id missing');
+  assert('모델에 level 필드', 'level' in first, 'level missing');
+  assert('모델에 count 필드', 'count' in first, 'count missing');
+  assert('첫 모델 count >= 1', first.count >= 1, `got: ${first.count}`);
+})();
+
+// ============================================================
+// TC-1.5: upgrades 4카테고리 구조
+// ============================================================
+section('TC-1.5: upgrades 4카테고리 구조');
+
+(() => {
+  const state = createDefaultState();
+  const u = state.upgrades;
+
+  assert('upgrades 필드 존재', typeof u === 'object' && u !== null, 'upgrades missing or not object');
+  assert('upgrades.agent 카테고리 존재', typeof u.agent === 'object' && u.agent !== null, 'agent category missing');
+  assert('upgrades.teamAgent 카테고리 존재', typeof u.teamAgent === 'object' && u.teamAgent !== null, 'teamAgent category missing');
+  assert('upgrades.skill 카테고리 존재', typeof u.skill === 'object' && u.skill !== null, 'skill category missing');
+  assert('upgrades.infra 카테고리 존재', typeof u.infra === 'object' && u.infra !== null, 'infra category missing');
+
+  // agent 카테고리 키/값
+  assert('agent.toolUse === 0', u.agent.toolUse === 0, `got: ${u.agent.toolUse}`);
+  assert('agent.memory === 0', u.agent.memory === 0, `got: ${u.agent.memory}`);
+  assert('agent.planning === 0', u.agent.planning === 0, `got: ${u.agent.planning}`);
+
+  // teamAgent 카테고리 키/값
+  assert('teamAgent.multiAgent === 0', u.teamAgent.multiAgent === 0, `got: ${u.teamAgent.multiAgent}`);
+  assert('teamAgent.orchestrator === 0', u.teamAgent.orchestrator === 0, `got: ${u.teamAgent.orchestrator}`);
+  assert('teamAgent.delegation === 0', u.teamAgent.delegation === 0, `got: ${u.teamAgent.delegation}`);
+
+  // skill 카테고리 키/값
+  assert('skill.rag === 0', u.skill.rag === 0, `got: ${u.skill.rag}`);
+  assert('skill.fineTuning === 0', u.skill.fineTuning === 0, `got: ${u.skill.fineTuning}`);
+  assert('skill.rlhf === 0', u.skill.rlhf === 0, `got: ${u.skill.rlhf}`);
+
+  // infra 카테고리 키/값
+  assert('infra.batchSize === 0', u.infra.batchSize === 0, `got: ${u.infra.batchSize}`);
+  assert('infra.distTraining === 0', u.infra.distTraining === 0, `got: ${u.infra.distTraining}`);
+  assert('infra.quantization === 0', u.infra.quantization === 0, `got: ${u.infra.quantization}`);
+  assert('infra.autoPipeline === 0', u.infra.autoPipeline === 0, `got: ${u.infra.autoPipeline}`);
+
+  // 기존 flat 키 없어야 함
+  assert('기존 tapPower 없음', !('tapPower' in u), 'tapPower still exists');
+  assert('기존 productionSpeed 없음', !('productionSpeed' in u), 'productionSpeed still exists');
+  assert('기존 jellyValue 없음', !('jellyValue' in u), 'jellyValue still exists');
+  assert('기존 autoSell 없음', !('autoSell' in u), 'autoSell still exists');
+})();
+
+// ============================================================
+// TC-1.6: 기존 유지 필드
+// ============================================================
+section('TC-1.6: 기존 유지 필드');
+
+(() => {
+  const state = createDefaultState();
+  assert('lastSaveTime 존재 (숫자)', typeof state.lastSaveTime === 'number', `got: ${typeof state.lastSaveTime}`);
+  assert('totalPlayTime 존재', 'totalPlayTime' in state, 'totalPlayTime missing');
+  assert('settings 존재', typeof state.settings === 'object', 'settings missing');
+  assert('settings.musicOn 존재', 'musicOn' in state.settings, 'musicOn missing');
+  assert('settings.sfxOn 존재', 'sfxOn' in state.settings, 'sfxOn missing');
+  assert('stats 존재', typeof state.stats === 'object', 'stats missing');
+  assert('achievements 존재', typeof state.achievements === 'object', 'achievements missing');
+  assert('tutorialStep 존재', 'tutorialStep' in state, 'tutorialStep missing');
+})();
+
+// ============================================================
+// TC-1.7: saveGame — 새 키로 저장
+// ============================================================
+section('TC-1.7: saveGame');
+
+(() => {
+  _localStorage.clear();
+  gameState = createDefaultState();
+  gameState.loc = 999;
+  saveGame();
+
+  assert('aiTycoon 키로 저장됨', _localStorage.getItem('aiTycoon') !== null, 'aiTycoon key not found in storage');
+  assert('slimeRanchIdle 키 사용 안 함', _localStorage.getItem('slimeRanchIdle') === null, 'old key still used');
+  assert('slimeRanch 키 사용 안 함', _localStorage.getItem('slimeRanch') === null, 'old key still used');
+
+  const saved = JSON.parse(_localStorage.getItem('aiTycoon'));
+  assert('저장 데이터에 loc=999', saved.loc === 999, `got: ${saved.loc}`);
+})();
+
+// ============================================================
+// TC-1.8: loadGame — 새 키로 로드
+// ============================================================
+section('TC-1.8: loadGame');
+
+(() => {
+  _localStorage.clear();
+  const testState = createDefaultState();
+  testState.compute = 500;
+  testState.papers = 25;
+  _localStorage.setItem('aiTycoon', JSON.stringify(testState));
+
+  gameState = createDefaultState();
+  const loaded = loadGame();
+
+  assert('loadGame 반환값 true', loaded === true, `got: ${loaded}`);
+  assert('compute 복원', gameState.compute === 500, `got: ${gameState.compute}`);
+  assert('papers 복원', gameState.papers === 25, `got: ${gameState.papers}`);
+})();
+
+// ============================================================
+// TC-1.9: resetGame — 새 키로 초기화
+// ============================================================
+section('TC-1.9: resetGame');
+
+(() => {
+  _localStorage.clear();
+  _localStorage.setItem('aiTycoon', '{"test":true}');
+  resetGame();
+
+  assert('aiTycoon 키 삭제됨', _localStorage.getItem('aiTycoon') === null, 'key not removed');
+  assert('gameState 초기화됨', gameState.loc === 0 && gameState.compute === 0, 'state not reset');
+})();
+
+// ============================================================
+// Summary
+// ============================================================
+showSummary();
+</script>
+</body>
+</html>
