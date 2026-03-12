@@ -9,7 +9,7 @@ const SFX = (() => {
   }
 
   function isEnabled() {
-    return typeof gameState !== 'undefined' && gameState.settings.sfxOn;
+    return typeof gameState !== 'undefined' && gameState.settings && gameState.settings.sfx !== false;
   }
 
   function playTone(freq, duration, type, volume, ramp) {
@@ -148,6 +148,52 @@ const SFX = (() => {
         { freq: 988, dur: 0.1, type: 'triangle', vol: 0.2 },
         { freq: 1175, dur: 0.2, type: 'sine', vol: 0.25 },
       ], 100);
+    },
+
+    // Challenge start
+    challengeStart() {
+      playNotes([
+        { freq: 440, dur: 0.08, type: 'square', vol: 0.1 },
+        { freq: 660, dur: 0.08, type: 'square', vol: 0.1 },
+        { freq: 880, dur: 0.12, type: 'triangle', vol: 0.15 },
+      ], 80);
+    },
+
+    // Event positive
+    eventPositive() {
+      playNotes([
+        { freq: 523, dur: 0.1, type: 'sine', vol: 0.15 },
+        { freq: 784, dur: 0.15, type: 'sine', vol: 0.2 },
+      ], 100);
+    },
+
+    // Event negative
+    eventNegative() {
+      playNotes([
+        { freq: 300, dur: 0.15, type: 'sawtooth', vol: 0.1 },
+        { freq: 200, dur: 0.2, type: 'sawtooth', vol: 0.1 },
+      ], 100);
+    },
+
+    // Fusion success
+    fusion() {
+      playNotes([
+        { freq: 400, dur: 0.1, type: 'triangle', vol: 0.15 },
+        { freq: 600, dur: 0.1, type: 'triangle', vol: 0.15 },
+        { freq: 800, dur: 0.1, type: 'triangle', vol: 0.15 },
+        { freq: 1200, dur: 0.25, type: 'sine', vol: 0.2 },
+      ], 80);
+    },
+
+    // Career promote
+    promote() {
+      playNotes([
+        { freq: 392, dur: 0.15, type: 'triangle', vol: 0.2 },
+        { freq: 523, dur: 0.15, type: 'triangle', vol: 0.2 },
+        { freq: 659, dur: 0.15, type: 'triangle', vol: 0.2 },
+        { freq: 784, dur: 0.15, type: 'triangle', vol: 0.2 },
+        { freq: 1047, dur: 0.4, type: 'sine', vol: 0.25 },
+      ], 120);
     },
   };
 })();
