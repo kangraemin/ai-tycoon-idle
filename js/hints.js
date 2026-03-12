@@ -1,76 +1,76 @@
-// hints.js - Context-aware "next goal" hint system
+// hints.js - Context-aware hint system (AI Tycoon)
 
 const HINTS = [
   {
-    id: 'tap-slime',
-    check: () => gameState.totalJelly < 10,
-    text: 'Tap your slime to produce jelly!',
-    screen: 'ranch',
-    icon: 'touch_app',
+    id: 'write-code',
+    check: () => gameState.totalLoc < 10,
+    text: 'Tap the editor to write code!',
+    screen: 'editor',
+    icon: 'code',
   },
   {
-    id: 'sell-jelly',
-    check: () => gameState.jelly >= 5 && gameState.gold < 10,
-    text: 'Sell your jelly for gold!',
+    id: 'compile-code',
+    check: () => gameState.loc >= 10 && gameState.compute < 10,
+    text: 'Compile your code to earn Compute!',
     screen: null,
-    icon: 'sell',
+    icon: 'memory',
   },
   {
     id: 'buy-upgrade',
     check: () => {
-      for (const id of Object.keys(UPGRADE_DEFS)) {
-        if (gameState.gold >= getUpgradeCost(id)) return true;
+      if (typeof UPGRADE_DEFS === 'undefined') return false;
+      for (const cat of Object.keys(UPGRADE_DEFS)) {
+        for (const id of Object.keys(UPGRADE_DEFS[cat])) {
+          if (typeof getUpgradeCost === 'function' && gameState.compute >= getUpgradeCost(cat, id)) return true;
+        }
       }
       return false;
     },
     text: 'You can afford an upgrade!',
     screen: 'upgrade',
-    icon: 'bolt',
+    icon: 'trending_up',
   },
   {
-    id: 'buy-slime',
-    check: () => {
-      const owned = getOwnedSlimes();
-      if (owned.length >= gameState.ranchSlots) return false;
-      for (const [, def] of Object.entries(SLIME_DEFS)) {
-        if (def.unlockCost >= 0 && def.unlockCost <= gameState.gold) {
-          const s = getSlimeState(def.name ? Object.keys(SLIME_DEFS).find(k => SLIME_DEFS[k] === def) : '');
-          if (!s || s.count === 0) return true;
-        }
-      }
-      return false;
-    },
-    text: 'Unlock a new slime!',
-    screen: 'upgrade',
-    icon: 'pets',
+    id: 'do-research',
+    check: () => gameState.papers >= 10,
+    text: 'Research new AI models!',
+    screen: 'research',
+    icon: 'science',
   },
   {
-    id: 'try-gacha',
-    check: () => gameState.gems >= GACHA_COST,
-    text: 'Try the gacha for rare slimes!',
-    screen: 'gacha',
-    icon: 'featured_seasonal_and_gifts',
+    id: 'try-challenge',
+    check: () => gameState.tokens >= 1 && typeof canStartChallenge === 'function' && canStartChallenge(),
+    text: 'Try a coding challenge!',
+    screen: 'editor',
+    icon: 'emoji_events',
   },
   {
-    id: 'prestige-ready',
-    check: () => canPrestige(),
-    text: 'You can prestige for a bonus!',
-    screen: 'prestige',
-    icon: 'military_tech',
+    id: 'try-fusion',
+    check: () => typeof getOwnedModels === 'function' && getOwnedModels().length >= 2,
+    text: 'Try fusing two models!',
+    screen: 'fusion',
+    icon: 'merge',
   },
   {
-    id: 'earn-gold',
-    check: () => gameState.jelly > 0 && gameState.gold < 50,
-    text: 'Sell jelly to earn gold for upgrades',
+    id: 'career-ready',
+    check: () => typeof canPromote === 'function' && canPromote(),
+    text: 'You can advance your career!',
+    screen: 'career',
+    icon: 'work',
+  },
+  {
+    id: 'earn-compute',
+    check: () => gameState.loc > 0 && gameState.compute < 100,
+    text: 'Compile code to earn Compute for upgrades',
     screen: null,
-    icon: 'monetization_on',
+    icon: 'memory',
   },
   {
-    id: 'keep-tapping',
+    id: 'keep-coding',
     check: () => true,
-    text: 'Keep tapping to produce more jelly!',
-    screen: 'ranch',
-    icon: 'touch_app',
+    text: 'Keep coding to build your AI empire!',
+    screen: 'editor',
+    icon: 'code',
   },
 ];
 
@@ -81,19 +81,17 @@ function updateHintBanner() {
   if (!banner) return;
 
   for (const hint of HINTS) {
-    if (hint.check()) {
-      if (currentHint !== hint.id) {
-        currentHint = hint.id;
-        banner.innerHTML = `
-          <span class="material-symbols-outlined hint-icon">${hint.icon}</span>
-          <span class="hint-text">${hint.text}</span>
-          <span class="material-symbols-outlined hint-arrow">chevron_right</span>
-        `;
-        banner.dataset.screen = hint.screen || '';
-        banner.style.display = 'flex';
+    try {
+      if (hint.check()) {
+        if (currentHint !== hint.id) {
+          currentHint = hint.id;
+          banner.innerHTML = '<span class="material-symbols-outlined hint-icon">' + hint.icon + '</span><span class="hint-text">' + hint.text + '</span><span class="material-symbols-outlined hint-arrow">chevron_right</span>';
+          banner.dataset.screen = hint.screen || '';
+          banner.style.display = 'flex';
+        }
+        return;
       }
-      return;
-    }
+    } catch (e) { /* ignore */ }
   }
 
   banner.style.display = 'none';

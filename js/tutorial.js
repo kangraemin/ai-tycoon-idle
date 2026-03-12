@@ -1,26 +1,26 @@
-// tutorial.js - First-play onboarding tutorial (6 steps)
+// tutorial.js - First-play onboarding (AI Tycoon, 6 steps)
 
 const TUTORIAL_STEPS = [
   {
     id: 'welcome',
     type: 'modal',
-    title: 'Welcome to Slime Ranch!',
-    message: 'Raise slimes, harvest jelly, and build your dream ranch! Let me show you how.',
-    btnText: 'Let\'s Go!',
+    title: 'Welcome to AI Tycoon!',
+    message: 'Build AI models, write code, and climb the career ladder! Let me show you how.',
+    btnText: "Let's Go!",
   },
   {
-    id: 'tap-slime',
+    id: 'tap-editor',
     type: 'spotlight',
-    selector: '.slime-slot:first-child .slime',
-    message: 'Tap your slime to produce jelly!',
+    selector: '.editor-body',
+    message: 'Tap here to write code!',
     position: 'below',
     trigger: 'tap',
   },
   {
-    id: 'sell-jelly',
+    id: 'compile',
     type: 'spotlight',
-    selector: '.sell-btn',
-    message: 'Sell jelly to earn gold!',
+    selector: '.compile-btn',
+    message: 'Compile your code into Compute!',
     position: 'below',
     trigger: 'sell',
   },
@@ -28,7 +28,7 @@ const TUTORIAL_STEPS = [
     id: 'go-upgrade',
     type: 'spotlight',
     selector: '[data-screen="upgrade"]',
-    message: 'Go to the Upgrade tab!',
+    message: 'Check out Upgrades!',
     position: 'above',
     trigger: 'navigate',
   },
@@ -43,8 +43,8 @@ const TUTORIAL_STEPS = [
   {
     id: 'complete',
     type: 'modal',
-    title: 'You\'re Ready!',
-    message: 'Explore gacha, prestige, and more. Have fun ranching!',
+    title: "You're Ready!",
+    message: 'Explore Research, Fusion, Challenges, and Career. Build your AI empire!',
     btnText: 'Start Playing!',
   },
 ];
@@ -72,29 +72,23 @@ function showTutorialStep(step) {
 
   if (s.type === 'modal') {
     overlay.classList.add('active');
-    spotlight.style.display = 'none';
+    if (spotlight) spotlight.style.display = 'none';
     bubble.className = 'tutorial-bubble tutorial-modal-mode';
-    bubble.innerHTML = `
-      <div class="tutorial-modal-title">${s.title}</div>
-      <div class="tutorial-modal-msg">${s.message}</div>
-      <button class="btn btn-primary tutorial-next-btn" onclick="advanceTutorial()">${s.btnText}</button>
-      <button class="tutorial-skip" onclick="skipTutorial()">Skip Tutorial</button>
-    `;
+    bubble.innerHTML = '<div class="tutorial-modal-title">' + s.title + '</div><div class="tutorial-modal-msg">' + s.message + '</div><button class="btn btn-primary tutorial-next-btn" onclick="advanceTutorial()">' + s.btnText + '</button><button class="tutorial-skip" onclick="skipTutorial()">Skip Tutorial</button>';
   } else if (s.type === 'spotlight') {
     overlay.classList.add('active');
     const target = document.querySelector(s.selector);
-    if (!target) {
-      advanceTutorial();
-      return;
-    }
+    if (!target) { advanceTutorial(); return; }
 
     const rect = target.getBoundingClientRect();
     const pad = 8;
-    spotlight.style.display = 'block';
-    spotlight.style.top = (rect.top - pad) + 'px';
-    spotlight.style.left = (rect.left - pad) + 'px';
-    spotlight.style.width = (rect.width + pad * 2) + 'px';
-    spotlight.style.height = (rect.height + pad * 2) + 'px';
+    if (spotlight) {
+      spotlight.style.display = 'block';
+      spotlight.style.top = (rect.top - pad) + 'px';
+      spotlight.style.left = (rect.left - pad) + 'px';
+      spotlight.style.width = (rect.width + pad * 2) + 'px';
+      spotlight.style.height = (rect.height + pad * 2) + 'px';
+    }
 
     const isAbove = s.position === 'above';
     bubble.className = 'tutorial-bubble tutorial-spotlight-mode';
@@ -107,12 +101,8 @@ function showTutorialStep(step) {
     }
     bubble.style.left = '50%';
     bubble.style.transform = 'translateX(-50%)';
-    bubble.innerHTML = `
-      <div class="tutorial-msg">${s.message}</div>
-      <button class="tutorial-skip" onclick="skipTutorial()">Skip</button>
-    `;
+    bubble.innerHTML = '<div class="tutorial-msg">' + s.message + '</div><button class="tutorial-skip" onclick="skipTutorial()">Skip</button>';
 
-    // Make target clickable above overlay
     target.style.position = 'relative';
     target.style.zIndex = '1001';
     target.dataset.tutorialTarget = 'true';
@@ -120,16 +110,13 @@ function showTutorialStep(step) {
 }
 
 function advanceTutorial() {
-  // Clean up previous spotlight target
   const prevTarget = document.querySelector('[data-tutorial-target]');
   if (prevTarget) {
     prevTarget.style.zIndex = '';
     delete prevTarget.dataset.tutorialTarget;
   }
-
   gameState.tutorialStep++;
-  saveGame();
-
+  if (typeof saveGame === 'function') saveGame();
   if (gameState.tutorialStep >= TUTORIAL_STEPS.length) {
     endTutorial();
   } else {
@@ -143,9 +130,8 @@ function skipTutorial() {
     prevTarget.style.zIndex = '';
     delete prevTarget.dataset.tutorialTarget;
   }
-
   gameState.tutorialStep = TUTORIAL_STEPS.length;
-  saveGame();
+  if (typeof saveGame === 'function') saveGame();
   endTutorial();
 }
 
