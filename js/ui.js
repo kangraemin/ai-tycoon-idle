@@ -124,6 +124,7 @@ function showSettings() {
         }},
       ]);
     }},
+    { text: 'Shortcuts: Space=Type, Enter=Compile' },
     { text: 'Close', primary: true },
   ]);
 }
@@ -141,9 +142,55 @@ function showToast(message, type) {
   }, 1800);
 }
 
+const CURRENCY_INFO = {
+  compute: { name: 'Compute', earn: 'Earned by compiling your code', spend: 'Spend on upgrades and GPU expansion' },
+  papers:  { name: 'Papers',  earn: 'Earned from career advances and achievements', spend: 'Spend on Research to discover new AI models' },
+  tokens:  { name: 'Tokens',  earn: 'Recharges 1 every 10 min (max 10)', spend: 'Spend on coding challenges for rewards' },
+};
+
+function showCurrencyTooltip(el, type) {
+  dismissCurrencyTooltip();
+  const info = CURRENCY_INFO[type];
+  if (!info) return;
+
+  const tooltip = document.createElement('div');
+  tooltip.className = 'currency-tooltip ' + type;
+  tooltip.innerHTML = '<div class="tooltip-title">' + info.name + '</div>'
+    + '<div class="tooltip-body">'
+    + '<div>' + info.earn + '</div>'
+    + '<div>' + info.spend + '</div>'
+    + '</div>';
+  document.body.appendChild(tooltip);
+
+  const rect = el.getBoundingClientRect();
+  tooltip.style.top = (rect.bottom + 6) + 'px';
+  tooltip.style.left = Math.max(8, Math.min(rect.left, window.innerWidth - 200)) + 'px';
+
+  setTimeout(dismissCurrencyTooltip, 3000);
+  setTimeout(() => {
+    document.addEventListener('click', dismissCurrencyTooltip, { once: true, capture: true });
+  }, 50);
+}
+
+function dismissCurrencyTooltip() {
+  const existing = document.querySelector('.currency-tooltip');
+  if (existing) existing.remove();
+}
+
 function initUI() {
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
   });
+
+  document.querySelectorAll('.currency').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.onclick = function(e) {
+      e.stopPropagation();
+      const type = this.classList.contains('compute') ? 'compute'
+                 : this.classList.contains('papers') ? 'papers' : 'tokens';
+      showCurrencyTooltip(this, type);
+    };
+  });
+
   currentScreen = 'editor';
 }

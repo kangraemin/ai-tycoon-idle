@@ -337,7 +337,7 @@ function renderModelsScreen() {
 function renderUpgradeScreen() {
   const container = document.getElementById('upgrade-content');
   if (!container) return;
-  let html = '';
+  let html = '<div class="screen-desc">Spend Compute to buy upgrades and boost your AI capabilities.</div>';
 
   const categories = {
     agent: { name: 'Agent', icon: 'smart_toy' },
@@ -363,15 +363,15 @@ function renderUpgradeScreen() {
             </div>
             <div class="upgrade-info">
               <div class="upgrade-name">
-                ${id}
+                ${UPGRADE_DEFS[catId][id].name}
                 <span class="upgrade-level-badge">Lv. ${level}</span>
               </div>
-              <div class="upgrade-desc">Enhances ${catDef.name.toLowerCase()} capabilities</div>
+              <div class="upgrade-desc">${UPGRADE_DEFS[catId][id].description}</div>
             </div>
           </div>
           <div class="upgrade-card-bottom">
             <div class="upgrade-next-info">Level ${level} → ${level + 1}</div>
-            ${!canBuy ? `<div class="lock-hint">Need ${formatNumber(cost - gameState.compute)} more compute</div>` : ''}
+            ${!canBuy ? `<div class="lock-hint"><span class="material-symbols-outlined" style="font-size:14px">lock</span> Need ${formatNumber(cost - gameState.compute)} more compute</div>` : ''}
             <button class="btn ${canBuy ? 'btn-primary' : 'btn-disabled'}"
                     onclick="doBuyUpgrade('${catId}', '${id}', event)" ${canBuy ? '' : 'disabled'}>
               ${formatNumber(cost)}
