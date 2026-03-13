@@ -222,3 +222,60 @@ const SFX = (() => {
     },
   };
 })();
+
+// BGM - Background music player with track rotation
+const BGM = (() => {
+  const tracks = ['assets/bgm-1.mp3', 'assets/bgm-2.mp3'];
+  let current = null;
+  let currentIndex = 0;
+  let volume = 0.3;
+  let _started = false;
+
+  function isEnabled() {
+    return typeof gameState !== 'undefined' && gameState.settings && gameState.settings.music === true;
+  }
+
+  function play() {
+    if (!isEnabled()) return;
+    _started = true;
+    if (current) { current.play().catch(() => {}); return; }
+    current = new Audio(tracks[currentIndex]);
+    current.loop = false;
+    current.volume = volume;
+    current.addEventListener('ended', () => { next(); });
+    current.play().catch(() => {});
+  }
+
+  function pause() {
+    if (current) current.pause();
+  }
+
+  function stop() {
+    if (current) { current.pause(); current.currentTime = 0; current = null; }
+    _started = false;
+  }
+
+  function next() {
+    if (current) { current.pause(); current = null; }
+    currentIndex = (currentIndex + 1) % tracks.length;
+    current = new Audio(tracks[currentIndex]);
+    current.loop = false;
+    current.volume = volume;
+    current.addEventListener('ended', () => { next(); });
+    if (isEnabled()) current.play().catch(() => {});
+  }
+
+  function setVolume(v) {
+    volume = v;
+    if (current) current.volume = v;
+  }
+
+  function toggle() {
+    if (!gameState.settings) gameState.settings = {};
+    gameState.settings.music = !gameState.settings.music;
+    if (gameState.settings.music) play();
+    else stop();
+  }
+
+  return { play, pause, stop, next, setVolume, toggle, isEnabled, get started() { return _started; } };
+})();

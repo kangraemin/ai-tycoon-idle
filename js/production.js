@@ -55,6 +55,7 @@ function autoCompileTick(dt) {
 }
 
 function tapEditor(event) {
+  if (typeof BGM !== 'undefined' && BGM.isEnabled() && !BGM.started) BGM.play();
   if (typeof SFX !== 'undefined' && SFX.tap) SFX.tap();
   if (typeof trackTapBehavior === 'function') trackTapBehavior();
   const tapPower = (1 + getUpgradeEffect('infra', 'batchSize')) * gameState.prestigeMultiplier;

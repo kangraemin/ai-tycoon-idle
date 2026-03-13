@@ -100,10 +100,16 @@ function showModal(title, message, buttons) {
 
 function showSettings() {
   const sfxState = gameState.settings?.sfx !== false;
+  const musicState = gameState.settings?.music === true;
   showModal('Settings', 'Shortcuts: Space = Type, Enter = Compile', [
     { text: `SFX: ${sfxState ? 'ON' : 'OFF'}`, onClick: () => {
       if (!gameState.settings) gameState.settings = {};
       gameState.settings.sfx = !sfxState;
+      saveGame();
+      showSettings();
+    }},
+    { text: `Music: ${musicState ? 'ON' : 'OFF'}`, onClick: () => {
+      if (typeof BGM !== 'undefined') BGM.toggle();
       saveGame();
       showSettings();
     }},
