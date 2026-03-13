@@ -54,6 +54,66 @@ const CODE_LINES = [
   { text: '            self.optimizer.step()', type: 'function' },
 ];
 
+const CODE_SNIPPET_SETS = {
+  NLP: [
+    { text: 'from transformers import pipeline', type: 'keyword' },
+    { text: 'from datasets import load_dataset', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class SentimentAnalyzer:', type: 'type' },
+    { text: '    def __init__(self):', type: 'function' },
+    { text: '        self.pipe = pipeline("sentiment-analysis")', type: 'string' },
+    { text: '', type: 'default' },
+    { text: '    def analyze(self, texts):', type: 'function' },
+    { text: '        results = self.pipe(texts)', type: 'variable' },
+    { text: '        return [r["label"] for r in results]', type: 'variable' },
+    { text: '', type: 'default' },
+    { text: '    # Batch processing for efficiency', type: 'comment' },
+    { text: '    def train_classifier(self, dataset):', type: 'function' },
+    { text: '        tokenized = self.tokenize(dataset)', type: 'function' },
+    { text: '        self.model.train(tokenized)', type: 'function' },
+    { text: '        metrics = self.evaluate()', type: 'function' },
+    { text: '        return metrics["f1_score"]', type: 'string' },
+  ],
+  Vision: [
+    { text: 'import torch.nn as nn', type: 'keyword' },
+    { text: 'from torchvision import models', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class ImageClassifier(nn.Module):', type: 'type' },
+    { text: '    def __init__(self, num_classes=10):', type: 'function' },
+    { text: '        super().__init__()', type: 'function' },
+    { text: '        self.backbone = models.resnet50(pretrained=True)', type: 'string' },
+    { text: '', type: 'default' },
+    { text: '    def forward(self, x):', type: 'function' },
+    { text: '        features = self.backbone(x)', type: 'variable' },
+    { text: '        return self.classifier(features)', type: 'variable' },
+    { text: '', type: 'default' },
+    { text: '    # Fine-tune on custom data', type: 'comment' },
+    { text: '    def fit(self, loader, epochs=5):', type: 'function' },
+    { text: '        for epoch in range(epochs):', type: 'keyword' },
+    { text: '            for batch in loader:', type: 'keyword' },
+    { text: '                loss = self.step(batch)', type: 'function' },
+  ],
+  CodeGen: [
+    { text: 'from openai import OpenAI', type: 'keyword' },
+    { text: 'import ast', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class CodeAssistant:', type: 'type' },
+    { text: '    def __init__(self, model="gpt-4"):', type: 'function' },
+    { text: '        self.client = OpenAI()', type: 'variable' },
+    { text: '        self.model = model', type: 'variable' },
+    { text: '', type: 'default' },
+    { text: '    def complete(self, context, lang="python"):', type: 'function' },
+    { text: '        resp = self.client.chat.completions.create(', type: 'function' },
+    { text: '            model=self.model,', type: 'string' },
+    { text: '            messages=[{"role": "user", "content": context}]', type: 'string' },
+    { text: '        )', type: 'default' },
+    { text: '        code = resp.choices[0].message.content', type: 'variable' },
+    { text: '        # Validate generated code', type: 'comment' },
+    { text: '        ast.parse(code)', type: 'function' },
+    { text: '        return code', type: 'variable' },
+  ],
+};
+
 let gameLoopId = null;
 let autoSaveId = null;
 let currentCodeLine = 0;
@@ -74,8 +134,20 @@ function advanceTyping(chars) {
     currentCodeLine = (currentCodeLine + 1) % CODE_LINES.length;
     currentCharIndex = 0;
 
-    // If we wrapped around, reset the editor display
+    // If we wrapped around, swap snippet & reset display
     if (currentCodeLine === 0) {
+      const owned = typeof getOwnedModels === 'function' ? getOwnedModels() : [];
+      const themes = owned.map(m => MODEL_DEFS[m.id]?.codeTheme).filter(Boolean);
+      const available = Object.keys(CODE_SNIPPET_SETS);
+      const candidates = themes.filter(t => available.includes(t));
+      const pick = candidates.length > 0
+        ? candidates[Math.floor(Math.random() * candidates.length)]
+        : available[Math.floor(Math.random() * available.length)];
+      const newLines = CODE_SNIPPET_SETS[pick];
+      if (newLines) {
+        CODE_LINES.length = 0;
+        newLines.forEach(l => CODE_LINES.push(l));
+      }
       renderEditorScreen();
       return;
     }
