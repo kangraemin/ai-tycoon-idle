@@ -1396,3 +1396,13 @@ html, body {
   0% { opacity: 1; }
   100% { opacity: 0; }
 }
+
+/* Fusion success flash */
+@keyframes fusionFlash {
+  0% { filter: brightness(1); }
+  30% { filter: brightness(2.5); }
+  100% { filter: brightness(1); }
+}
+.fusion-success-flash {
+  animation: fusionFlash 0.6s ease-out;
+}

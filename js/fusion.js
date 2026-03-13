@@ -194,7 +194,11 @@ function updateFusionPreview() {
     const cost = getFusionCost(recipe);
     const resultDef = getModelDef(recipe.result);
     const canDo = canFuse(recipe);
+    const previewIcon = (MODEL_ICON_STYLES[Object.keys(MODEL_DEFS).indexOf(recipe.result)] || MODEL_ICON_STYLES[0]).icon;
     preview.innerHTML = `
+      <div class="model-visual rarity-${resultDef.rarity}" style="--model-color:${resultDef.color};width:48px;height:48px;margin:0 auto 8px">
+        <span class="material-symbols-outlined">${previewIcon}</span>
+      </div>
       <div style="color:var(--accent);font-weight:700;margin-bottom:8px">→ ${resultDef.name}</div>
       <div class="rarity-badge ${resultDef.rarity}" style="margin-bottom:8px">${resultDef.rarity}</div>
       <button class="btn ${canDo ? 'btn-primary' : 'btn-disabled'}" onclick="doFusionUI()" ${canDo ? '' : 'disabled'}>
@@ -212,13 +216,23 @@ function doFusionUI() {
   if (!recipe) return;
 
   if (doFusion(recipe)) {
-    if (typeof SFX !== 'undefined' && SFX.buy) SFX.buy();
+    if (typeof SFX !== 'undefined' && SFX.fusion) SFX.fusion();
     if (typeof showToast === 'function') showToast(`Fused ${getModelDef(recipe.result).name}!`, 'success');
+
+    // Flash animation
+    const container = document.getElementById('fusion-content');
+    if (container) {
+      container.classList.add('fusion-success-flash');
+      setTimeout(() => container.classList.remove('fusion-success-flash'), 600);
+    }
+
     fusionSlotA = null;
     fusionSlotB = null;
-    renderFusionScreen();
-    if (typeof renderModelsScreen === 'function') renderModelsScreen();
-    if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+    setTimeout(() => {
+      renderFusionScreen();
+      if (typeof renderModelsScreen === 'function') renderModelsScreen();
+      if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+    }, 600);
   }
 }
 
