@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Tycoon — UX/UI E2E Tests</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/models.css">
+  <link rel="stylesheet" href="../css/editor.css">
+  <style>
+    body { font-family: 'Fira Code', monospace; background: #1e1e1e; color: #d4d4d4; padding: 20px; }
+    .pass { color: #6a9955; }
+    .fail { color: #f44747; }
+    .group { color: #569cd6; font-weight: bold; margin-top: 16px; }
+    .result { margin: 4px 0 4px 20px; font-size: 13px; }
+    #summary { margin-top: 20px; font-size: 16px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>AI Tycoon — UX/UI E2E Tests</h1>
+  <div id="test-output"></div>
+  <div id="summary"></div>
+
+  <!-- Full game DOM (from index.html) -->
+  <div id="app" style="display:none">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="currency-group">
+        <div class="currency compute">
+          <span class="material-symbols-outlined currency-icon fill-1">memory</span>
+          <span class="currency-value" id="compute-display">0</span>
+        </div>
+        <div class="currency papers">
+          <span class="material-symbols-outlined currency-icon fill-1">article</span>
+          <span class="currency-value" id="papers-display">0</span>
+        </div>
+        <div class="currency tokens">
+          <span class="material-symbols-outlined currency-icon fill-1">confirmation_number</span>
+          <span class="currency-value" id="tokens-display">0</span>
+        </div>
+      </div>
+      <button class="settings-btn" onclick="showSettings()">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+    </div>
+
+    <!-- LoC Bar -->
+    <div class="loc-bar">
+      <div class="loc-left">
+        <div class="loc-icon-wrap">
+          <span class="material-symbols-outlined loc-icon">code</span>
+        </div>
+        <div class="loc-info">
+          <div class="loc-label">Lines of Code</div>
+          <div class="loc-amount-row">
+            <span class="loc-amount" id="loc-display">0</span>
+          </div>
+          <div class="loc-rate"><span class="material-symbols-outlined loc-bolt">bolt</span> <span id="lps-display">0/s</span></div>
+        </div>
+      </div>
+      <button class="compile-btn" onclick="compileData()">Compile</button>
+    </div>
+
+    <!-- Hint Banner -->
+    <div id="hint-banner" class="hint-banner" style="display:none" onclick="if(this.dataset.screen) switchScreen(this.dataset.screen)"></div>
+
+    <!-- Event Banner -->
+    <div id="event-banner" class="event-banner" style="display:none"></div>
+
+    <!-- Screen Container -->
+    <div class="screen-container">
+      <div class="screen active" id="screen-editor">
+        <div class="editor-header">
+          <h3 class="editor-title"><span class="material-symbols-outlined">terminal</span> Code Editor</h3>
+          <span class="gpu-slot-badge" id="gpu-slot-count"></span>
+        </div>
+        <div id="editor-content"></div>
+      </div>
+      <div class="screen" id="screen-models">
+        <div class="editor-header">
+          <h3 class="editor-title"><span class="material-symbols-outlined">smart_toy</span> AI Models</h3>
+          <span class="gpu-slot-badge" id="model-slot-count"></span>
+        </div>
+        <div id="model-grid"></div>
+      </div>
+      <div class="screen" id="screen-upgrade"><div id="upgrade-content"></div></div>
+      <div class="screen" id="screen-research"><div id="research-content"></div></div>
+      <div class="screen" id="screen-fusion"><div id="fusion-content"></div></div>
+      <div class="screen" id="screen-career"><div id="career-content"></div></div>
+    </div>
+
+    <!-- Challenge Overlay -->
+    <div id="challenge-overlay" class="challenge-overlay" style="display:none">
+      <div class="challenge-content">
+        <div class="challenge-header">
+          <h2 id="challenge-title"></h2>
+          <div class="challenge-timer" id="challenge-timer"></div>
+        </div>
+        <div id="challenge-body"></div>
+        <div id="challenge-result" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-screen="editor">
+        <div class="nav-icon-wrap"><span class="material-symbols-outlined fill-1">terminal</span></div>
+        <span class="nav-label">Editor</span>
+      </button>
+      <button class="nav-btn" data-screen="models">
+        <div class="nav-icon-wrap"><span class="material-symbols-outlined">smart_toy</span></div>
+        <span class="nav-label">Models</span>
+      </button>
+      <button class="nav-btn" data-screen="upgrade">
+        <div class="nav-icon-wrap"><span class="material-symbols-outlined">trending_up</span></div>
+        <span class="nav-label">Upgrade</span>
+      </button>
+      <button class="nav-btn" data-screen="research">
+        <div class="nav-icon-wrap"><span class="material-symbols-outlined">science</span></div>
+        <span class="nav-label">Research</span>
+      </button>
+      <button class="nav-btn" data-screen="fusion">
+        <div class="nav-icon-wrap"><span class="material-symbols-outlined">merge</span></div>
+        <span class="nav-label">Fusion</span>
+      </button>
+      <button class="nav-btn" data-screen="career">
+        <div class="nav-icon-wrap"><span class="material-symbols-outlined">work</span></div>
+        <span class="nav-label">Career</span>
+      </button>
+    </nav>
+
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay" class="tutorial-overlay">
+      <div id="tutorial-spotlight" class="tutorial-spotlight"></div>
+      <div id="tutorial-bubble" class="tutorial-bubble"></div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal">
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-message" id="modal-message"></div>
+        <div class="modal-buttons" id="modal-buttons"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load game scripts in order -->
+  <script src="../js/format.js"></script>
+  <script src="../js/state.js"></script>
+  <script src="../js/model.js"></script>
+  <script src="../js/production.js"></script>
+  <script src="../js/upgrade.js"></script>
+  <script src="../js/research.js"></script>
+  <script src="../js/career.js"></script>
+  <script src="../js/challenge.js"></script>
+  <script src="../js/fusion.js"></script>
+  <script src="../js/events.js"></script>
+  <script src="../js/offline.js"></script>
+  <script src="../js/sound.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/hints.js"></script>
+  <script src="../js/achievements.js"></script>
+  <script src="../js/tutorial.js"></script>
+  <script src="../js/main.js"></script>
+
+  <!-- Test runner -->
+  <script src="ux-e2e.js"></script>
+</body>
+</html>
