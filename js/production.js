@@ -65,20 +65,26 @@ function tapEditor(event) {
   if (gameState.stats) gameState.stats.totalTaps++;
   if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'tap') advanceTutorial();
 
-  if (event) {
-    const editorEl = event.currentTarget;
-    editorEl.classList.remove('tap-active');
-    void editorEl.offsetWidth;
-    editorEl.classList.add('tap-active');
-    setTimeout(() => editorEl.classList.remove('tap-active'), 150);
+  {
+    const editorEl = event ? event.currentTarget : document.getElementById('screen-editor');
+    if (editorEl) {
+      editorEl.classList.remove('tap-active');
+      void editorEl.offsetWidth;
+      editorEl.classList.add('tap-active');
+      setTimeout(() => editorEl.classList.remove('tap-active'), 150);
 
-    const rect = editorEl.getBoundingClientRect();
-    if (typeof showFloatingText === 'function') {
-      showFloatingText(
-        event.clientX - rect.left,
-        event.clientY - rect.top - 20,
-        '+' + formatNumber(tapPower) + ' LoC'
-      );
+      if (typeof showFloatingText === 'function') {
+        let fx, fy;
+        if (event) {
+          const rect = editorEl.getBoundingClientRect();
+          fx = event.clientX - rect.left;
+          fy = event.clientY - rect.top - 20;
+        } else {
+          fx = Math.random() * (editorEl.clientWidth * 0.6) + editorEl.clientWidth * 0.2;
+          fy = Math.random() * (editorEl.clientHeight * 0.4) + editorEl.clientHeight * 0.2;
+        }
+        showFloatingText(fx, fy, '+' + formatNumber(tapPower) + ' LoC');
+      }
     }
   }
   // Advance typing animation on tap (3-5 chars)
