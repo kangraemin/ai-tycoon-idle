@@ -137,8 +137,8 @@ function showSettings() {
     { text: 'Reset Data', onClick: () => {
       showModal('Reset Data', 'Are you sure? All progress will be lost!', [
         { text: 'Cancel' },
-        { text: 'Reset', primary: true, onClick: () => {
-          localStorage.removeItem(SAVE_KEY);
+        { text: 'Reset', primary: true, onClick: async () => {
+          await Storage.remove(SAVE_KEY);
           location.reload();
         }},
       ]);
