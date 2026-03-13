@@ -333,7 +333,7 @@ function renderEditorScreen() {
   let html = '<div class="code-editor">';
   html += '<div class="editor-tab-bar">';
   html += '<div class="editor-tab active"><span class="editor-tab-icon">PY</span> agent.py</div>';
-  html += '<div class="editor-tab"><span class="editor-tab-icon">JS</span> train.js</div>';
+  html += '<div class="editor-tab" style="opacity:0.35;cursor:default;pointer-events:none"><span class="editor-tab-icon">JS</span> train.js</div>';
   html += '</div>';
   html += '<div class="editor-body" onclick="tapEditor(event)">';
   html += '<div class="line-numbers">';
@@ -414,6 +414,8 @@ function renderModelsScreen() {
       <div class="model-name">${def.name}</div>
       <div class="model-lps">${formatNumber(getModelLps(model))}/s</div>
     `;
+    el.style.cursor = 'pointer';
+    el.onclick = () => showModelDetail(model.id);
     grid.appendChild(el);
   });
 
@@ -429,6 +431,17 @@ function renderModelsScreen() {
     el.onclick = () => switchScreen('research');
     grid.appendChild(el);
   }
+}
+
+function showModelDetail(modelId) {
+  const def = MODEL_DEFS[modelId];
+  const model = getModelState(modelId);
+  if (!def || !model) return;
+  const lps = formatNumber(getModelLps(model));
+  const message = `Rarity: ${def.rarity}\nLevel: ${model.level} (x${model.count})\nOutput: ${lps} LoC/s\nTheme: ${def.codeTheme}\n\n${def.codeSnippet}`;
+  showModal(def.name, message, [
+    { text: 'Close', primary: true }
+  ]);
 }
 
 function renderUpgradeScreen() {
