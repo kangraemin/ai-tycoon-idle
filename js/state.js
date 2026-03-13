@@ -67,18 +67,35 @@ function createDefaultState() {
 
 let gameState = createDefaultState();
 
-function saveGame() {
+const Storage = {
+  isElectron: !!(typeof window !== 'undefined' && window.electronAPI),
+  async save(key, data) {
+    const json = JSON.stringify(data);
+    if (this.isElectron) await window.electronAPI.saveGame(json);
+    else localStorage.setItem(key, json);
+  },
+  async load(key) {
+    if (this.isElectron) return await window.electronAPI.loadGame();
+    return localStorage.getItem(key);
+  },
+  async remove(key) {
+    if (this.isElectron) await window.electronAPI.deleteGame();
+    else localStorage.removeItem(key);
+  }
+};
+
+async function saveGame() {
   gameState.lastSaveTime = Date.now();
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
+    await Storage.save(SAVE_KEY, gameState);
   } catch (e) {
     console.warn('Save failed:', e);
   }
 }
 
-function loadGame() {
+async function loadGame() {
   try {
-    const saved = localStorage.getItem(SAVE_KEY);
+    const saved = await Storage.load(SAVE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
       const defaults = createDefaultState();
@@ -160,7 +177,7 @@ function loadGame() {
   return false;
 }
 
-function resetGame() {
-  localStorage.removeItem(SAVE_KEY);
+async function resetGame() {
+  await Storage.remove(SAVE_KEY);
   gameState = createDefaultState();
 }
