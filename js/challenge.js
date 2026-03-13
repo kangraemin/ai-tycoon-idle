@@ -56,6 +56,8 @@ const CHALLENGE_PROBLEMS = {
 
 let activeChallenge = null;
 let challengeTimerId = null;
+let lastChallengeCompleteTime = 0;
+const CHALLENGE_COOLDOWN = 30000;
 
 const DAILY_FREE_CHALLENGES = 3;
 
@@ -70,7 +72,13 @@ function hasFreeChallenge() {
 }
 
 function canStartChallenge() {
+  if (Date.now() - lastChallengeCompleteTime < CHALLENGE_COOLDOWN) return false;
   return (gameState.tokens > 0 || hasFreeChallenge()) && !activeChallenge;
+}
+
+function getChallengeCooldown() {
+  const remaining = CHALLENGE_COOLDOWN - (Date.now() - lastChallengeCompleteTime);
+  return remaining > 0 ? remaining : 0;
 }
 
 function startChallenge(type) {
@@ -292,6 +300,7 @@ function submitChallenge(forcedAnswer) {
 function closeChallengeOverlay() {
   const overlay = document.getElementById('challenge-overlay');
   if (overlay) overlay.style.display = 'none';
+  lastChallengeCompleteTime = Date.now();
   activeChallenge = null;
   const bodyEl = document.getElementById('challenge-body');
   if (bodyEl) bodyEl.style.display = 'block';

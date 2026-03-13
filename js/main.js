@@ -119,6 +119,7 @@ let autoSaveId = null;
 let currentCodeLine = 0;
 let currentCharIndex = 0;
 let autoTypeAccum = 0;
+let currentChallengeType = null;
 
 // Advance typing by N characters in the editor
 function advanceTyping(chars) {
@@ -365,9 +366,17 @@ function renderEditorScreen() {
     ? (DAILY_FREE_CHALLENGES - (gameState.freeChallengesUsed || 0)) : 0;
   const costLabel = freeLeft > 0 ? `Free (${freeLeft} left)` : '1 Token';
   if (challengeTypes.length > 0) {
-    const randomType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
-    html += `<button class="btn ${canChallenge ? 'btn-primary' : 'btn-disabled'}" onclick="startChallenge('${randomType}')" ${canChallenge ? '' : 'disabled'} style="font-size:12px;padding:6px 16px">`;
-    html += `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> Challenge (${costLabel})`;
+    if (!currentChallengeType || !challengeTypes.includes(currentChallengeType)) {
+      currentChallengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
+    }
+    const cooldown = typeof getChallengeCooldown === 'function' ? getChallengeCooldown() : 0;
+    const isOnCooldown = cooldown > 0;
+    const btnDisabled = !canChallenge || isOnCooldown;
+    const btnLabel = isOnCooldown
+      ? `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ${Math.ceil(cooldown / 1000)}s`
+      : `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> Challenge (${costLabel})`;
+    html += `<button class="btn ${btnDisabled ? 'btn-disabled' : 'btn-primary'}" onclick="startChallenge('${currentChallengeType}')" ${btnDisabled ? 'disabled' : ''} style="font-size:12px;padding:6px 16px">`;
+    html += btnLabel;
     html += '</button>';
   }
   html += '</div>';
