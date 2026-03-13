@@ -461,8 +461,42 @@ function showModelDetail(modelId) {
   const model = getModelState(modelId);
   if (!def || !model) return;
   const lps = formatNumber(getModelLps(model));
-  const message = `Rarity: ${def.rarity}\nLevel: ${model.level} (x${model.count})\nOutput: ${lps} LoC/s\nTheme: ${def.codeTheme}\n\n${def.codeSnippet}`;
-  showModal(def.name, message, [
+  const modelIndex = Object.keys(MODEL_DEFS).indexOf(modelId);
+  const style = MODEL_ICON_STYLES[modelIndex] || MODEL_ICON_STYLES[0];
+
+  const html = `
+    <div class="model-detail">
+      <div class="model-detail-header">
+        <div class="model-visual rarity-${def.rarity}" style="--model-color:${def.color};width:64px;height:64px">
+          <span class="material-symbols-outlined" style="font-size:32px">${style.icon}</span>
+        </div>
+        <div class="rarity-badge ${def.rarity}">${def.rarity}</div>
+      </div>
+      <div class="model-detail-stats">
+        <div class="model-detail-row">
+          <span class="model-detail-label">Level</span>
+          <span class="model-detail-value">${model.level}</span>
+        </div>
+        <div class="model-detail-row">
+          <span class="model-detail-label">Count</span>
+          <span class="model-detail-value">x${model.count}</span>
+        </div>
+        <div class="model-detail-row">
+          <span class="model-detail-label">Output</span>
+          <span class="model-detail-value accent">${lps} LoC/s</span>
+        </div>
+        <div class="model-detail-row">
+          <span class="model-detail-label">Domain</span>
+          <span class="model-detail-value">${def.codeTheme}</span>
+        </div>
+      </div>
+      <div class="model-detail-snippet">
+        <code>${def.codeSnippet}</code>
+      </div>
+    </div>
+  `;
+
+  showModalHtml(def.name, html, [
     { text: 'Close', primary: true }
   ]);
 }

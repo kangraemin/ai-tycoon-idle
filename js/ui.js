@@ -98,6 +98,27 @@ function showModal(title, message, buttons) {
   overlay.classList.add('active');
 }
 
+function showModalHtml(title, htmlContent, buttons) {
+  const overlay = document.getElementById('modal-overlay');
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-message').innerHTML = htmlContent;
+
+  const btnContainer = document.getElementById('modal-buttons');
+  btnContainer.innerHTML = '';
+  buttons.forEach(btn => {
+    const el = document.createElement('button');
+    el.className = 'btn ' + (btn.primary ? 'btn-primary' : 'btn-secondary');
+    el.textContent = btn.text;
+    el.onclick = () => {
+      overlay.classList.remove('active');
+      if (btn.onClick) btn.onClick();
+    };
+    btnContainer.appendChild(el);
+  });
+
+  overlay.classList.add('active');
+}
+
 function showSettings() {
   const sfxState = gameState.settings?.sfx !== false;
   const musicState = gameState.settings?.music === true;

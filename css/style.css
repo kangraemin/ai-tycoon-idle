@@ -942,6 +942,67 @@ html, body {
   font-size: 12px;
 }
 
+/* ===== Model Detail Modal ===== */
+.model-detail {
+  text-align: center;
+}
+
+.model-detail-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.model-detail-stats {
+  background: var(--bg-main);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.model-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.model-detail-row + .model-detail-row {
+  border-top: 1px solid var(--border-light);
+}
+
+.model-detail-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.model-detail-value {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.model-detail-value.accent {
+  color: var(--accent);
+}
+
+.model-detail-snippet {
+  background: #1e1e2e;
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.model-detail-snippet code {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 11px;
+  color: #a6e3a1;
+  word-break: break-all;
+}
+
 /* ===== Scrollbar ===== */
 .screen-container::-webkit-scrollbar {
   width: 4px;
