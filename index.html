@@ -16,6 +16,11 @@
     <!-- Top Bar: Currency Display -->
     <div class="top-bar">
       <div class="currency-group">
+        <div class="currency loc">
+          <span class="material-symbols-outlined currency-icon fill-1">code</span>
+          <span class="currency-value" id="loc-display">0</span>
+          <span class="loc-rate-inline" id="lps-display">0/s</span>
+        </div>
         <div class="currency compute">
           <span class="material-symbols-outlined currency-icon fill-1">memory</span>
           <span class="currency-value" id="compute-display">0</span>
@@ -29,26 +34,12 @@
           <span class="currency-value" id="tokens-display">0</span>
         </div>
       </div>
-      <button class="settings-btn" onclick="showSettings()">
-        <span class="material-symbols-outlined">settings</span>
-      </button>
-    </div>
-
-    <!-- LoC Bar -->
-    <div class="loc-bar">
-      <div class="loc-left">
-        <div class="loc-icon-wrap">
-          <span class="material-symbols-outlined loc-icon">code</span>
-        </div>
-        <div class="loc-info">
-          <div class="loc-label">Lines of Code</div>
-          <div class="loc-amount-row">
-            <span class="loc-amount" id="loc-display">0</span>
-          </div>
-          <div class="loc-rate"><span class="material-symbols-outlined loc-bolt">bolt</span> <span id="lps-display">0/s</span></div>
-        </div>
+      <div class="top-bar-actions">
+        <button class="compile-btn-mini" onclick="compileData()">Compile</button>
+        <button class="settings-btn" onclick="showSettings()">
+          <span class="material-symbols-outlined">settings</span>
+        </button>
       </div>
-      <button class="compile-btn" onclick="compileData()">Compile</button>
     </div>
 
     <!-- Hint Banner -->
@@ -61,28 +52,31 @@
     <div class="screen-container">
       <!-- Editor Screen -->
       <div class="screen active" id="screen-editor">
-        <div class="editor-header">
-          <h3 class="editor-title">
-            <span class="material-symbols-outlined">terminal</span>
-            Code Editor
-          </h3>
-          <span class="gpu-slot-badge" id="gpu-slot-count"></span>
-        </div>
-        <div class="screen-desc">Tap to write code and generate Lines of Code (LoC). Hit Compile to convert into Compute.</div>
         <div id="editor-content"></div>
       </div>
 
       <!-- Models Screen -->
       <div class="screen" id="screen-models">
         <div class="editor-header">
-          <h3 class="editor-title">
-            <span class="material-symbols-outlined">smart_toy</span>
-            AI Models
-          </h3>
+          <h3 class="editor-title"><span class="material-symbols-outlined">smart_toy</span> AI Models</h3>
           <span class="gpu-slot-badge" id="model-slot-count"></span>
         </div>
-        <div class="screen-desc">Your AI models generate LoC automatically. Research new models or fuse existing ones.</div>
-        <div id="model-grid"></div>
+        <div class="models-sub-tabs" id="models-sub-tabs">
+          <button class="sub-tab active" data-subtab="models-grid" onclick="switchModelsSubTab('models-grid')">
+            <span class="material-symbols-outlined">grid_view</span> Models
+          </button>
+          <button class="sub-tab sub-tab-locked" data-subtab="research" data-sub-unlock="papers" onclick="switchModelsSubTab('research')">
+            <span class="material-symbols-outlined">science</span> Research
+          </button>
+          <button class="sub-tab sub-tab-locked" data-subtab="fusion" data-sub-unlock="fusion" onclick="switchModelsSubTab('fusion')">
+            <span class="material-symbols-outlined">merge</span> Fusion
+          </button>
+        </div>
+        <div class="models-sub-content">
+          <div class="sub-panel active" id="sub-models-grid"><div id="model-grid"></div></div>
+          <div class="sub-panel" id="sub-research"><div id="research-content"></div></div>
+          <div class="sub-panel" id="sub-fusion"><div id="fusion-content"></div></div>
+        </div>
       </div>
 
       <!-- Upgrade Screen -->
@@ -90,32 +84,9 @@
         <div id="upgrade-content"></div>
       </div>
 
-      <!-- Research Screen -->
-      <div class="screen" id="screen-research">
-        <div id="research-content"></div>
-      </div>
-
-      <!-- Fusion Screen -->
-      <div class="screen" id="screen-fusion">
-        <div id="fusion-content"></div>
-      </div>
-
       <!-- Career Screen -->
       <div class="screen" id="screen-career">
         <div id="career-content"></div>
-      </div>
-
-      <!-- Achievements Screen -->
-      <div class="screen" id="screen-achievements">
-        <div class="editor-header">
-          <h3 class="editor-title">
-            <span class="material-symbols-outlined">emoji_events</span>
-            Achievements
-          </h3>
-          <span class="gpu-slot-badge" id="achievement-progress"></span>
-        </div>
-        <div class="screen-desc">Track your milestones and earn bonus Papers.</div>
-        <div id="achievement-grid"></div>
       </div>
     </div>
 
@@ -151,29 +122,11 @@
         </div>
         <span class="nav-label">Upgrade</span>
       </button>
-      <button class="nav-btn nav-locked" data-screen="research" data-unlock="papers">
-        <div class="nav-icon-wrap">
-          <span class="material-symbols-outlined">science</span>
-        </div>
-        <span class="nav-label">Research</span>
-      </button>
-      <button class="nav-btn nav-locked" data-screen="fusion" data-unlock="fusion">
-        <div class="nav-icon-wrap">
-          <span class="material-symbols-outlined">merge</span>
-        </div>
-        <span class="nav-label">Fusion</span>
-      </button>
       <button class="nav-btn nav-locked" data-screen="career" data-unlock="career">
         <div class="nav-icon-wrap">
           <span class="material-symbols-outlined">work</span>
         </div>
         <span class="nav-label">Career</span>
-      </button>
-      <button class="nav-btn" data-screen="achievements">
-        <div class="nav-icon-wrap">
-          <span class="material-symbols-outlined">emoji_events</span>
-        </div>
-        <span class="nav-label">Achieve</span>
       </button>
     </nav>
 

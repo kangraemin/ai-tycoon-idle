@@ -116,6 +116,16 @@ html, body {
 .currency.tokens .currency-icon { color: var(--tokens); }
 .currency.tokens .currency-value { color: var(--tokens); font-weight: 700; }
 
+/* ===== LoC in Top Bar ===== */
+.currency.loc { border-color: rgba(78, 201, 176, 0.2); }
+.currency.loc .currency-icon { color: var(--loc); }
+.currency.loc .currency-value { color: var(--loc); font-weight: 700; }
+.loc-rate-inline { font-size:9px; color:var(--accent-green); font-family:var(--font-code); opacity:0.8; }
+.top-bar-actions { display:flex; align-items:center; gap:6px; }
+.compile-btn-mini { padding:6px 14px; font-size:11px; font-weight:700; background:var(--accent); color:var(--bg-primary); border:none; border-radius:9999px; cursor:pointer; transition:transform 0.1s; box-shadow:0 2px 8px rgba(86,156,214,0.2); }
+.compile-btn-mini:active { transform:scale(0.95); }
+.compile-btn-mini.btn-disabled { background:var(--bg-elevated); color:var(--text-muted); cursor:not-allowed; }
+
 .settings-btn {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -289,6 +299,15 @@ html, body {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
+
+/* ===== Models Sub-Tabs ===== */
+.models-sub-tabs { display:flex; gap:4px; margin-bottom:12px; background:var(--bg-secondary); border-radius:10px; padding:4px; }
+.sub-tab { flex:1; display:flex; align-items:center; justify-content:center; gap:4px; padding:8px 4px; background:none; border:none; border-radius:8px; color:var(--text-muted); font-size:11px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.sub-tab .material-symbols-outlined { font-size:16px; }
+.sub-tab.active { background:var(--bg-card); color:var(--accent); box-shadow:var(--shadow-sm); }
+.sub-tab.sub-tab-locked { opacity:0.35; }
+.sub-panel { display:none; }
+.sub-panel.active { display:block; }
 
 /* ===== Upgrade Screen ===== */
 .section-header {
@@ -1180,12 +1199,15 @@ html, body {
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  margin: 0 12px 8px;
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  right: 12px;
+  z-index: 5;
   background: var(--bg-card);
   border-radius: 10px;
   border: 1px solid var(--border-light);
   cursor: pointer;
-  flex-shrink: 0;
   animation: hintSlideIn 0.3s ease-out;
 }
 
@@ -1313,7 +1335,11 @@ html, body {
 /* ===== Event Banner ===== */
 .event-banner {
   padding: 10px 16px;
-  margin: 0 12px 8px;
+  position: absolute;
+  top: 48px;
+  left: 12px;
+  right: 12px;
+  z-index: 5;
   border-radius: 10px;
   font-size: 13px;
   font-weight: 600;
@@ -1321,7 +1347,6 @@ html, body {
   align-items: center;
   gap: 8px;
   animation: hintSlideIn 0.3s ease-out;
-  flex-shrink: 0;
 }
 
 .event-banner.positive {

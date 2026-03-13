@@ -3,6 +3,11 @@
 let currentScreen = 'editor';
 
 function switchScreen(screen) {
+  // 제거된 탭 → Models 서브탭으로 리다이렉트
+  if (screen === 'research') { switchScreen('models'); switchModelsSubTab('research'); return; }
+  if (screen === 'fusion') { switchScreen('models'); switchModelsSubTab('fusion'); return; }
+  if (screen === 'achievements') { showAchievementsModal(); return; }
+
   if (currentScreen === screen) return;
   const btn = document.querySelector(`[data-screen="${screen}"]`);
   if (btn && btn.classList.contains('nav-locked')) {
@@ -46,6 +51,22 @@ function switchScreen(screen) {
   }
 }
 
+let currentModelsSubTab = 'models-grid';
+function switchModelsSubTab(subTab) {
+  const btn = document.querySelector(`[data-subtab="${subTab}"]`);
+  if (btn && btn.classList.contains('sub-tab-locked')) {
+    showToast('Complete earlier goals to unlock!', 'info');
+    return;
+  }
+  if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
+  currentModelsSubTab = subTab;
+  document.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.sub-panel').forEach(el => el.classList.remove('active'));
+  const panel = document.getElementById('sub-' + subTab);
+  if (panel) panel.classList.add('active');
+}
+
 function updateCurrencyDisplay() {
   document.getElementById('compute-display').textContent = formatNumber(gameState.compute);
   document.getElementById('papers-display').textContent = formatNumber(gameState.papers);
@@ -53,7 +74,7 @@ function updateCurrencyDisplay() {
   document.getElementById('loc-display').textContent = formatNumber(gameState.loc);
   document.getElementById('lps-display').textContent = formatNumber(getLocPerSecond()) + '/s';
 
-  const compileBtn = document.querySelector('.compile-btn');
+  const compileBtn = document.querySelector('.compile-btn-mini');
   if (compileBtn) {
     if (gameState.loc > 0) {
       compileBtn.textContent = `Compile`;
@@ -134,6 +155,7 @@ function showSettings() {
       saveGame();
       showSettings();
     }},
+    { text: 'Achievements', onClick: () => showAchievementsModal() },
     { text: 'Reset Data', onClick: () => {
       showModal('Reset Data', 'Are you sure? All progress will be lost!', [
         { text: 'Cancel' },
@@ -277,16 +299,31 @@ function checkTabUnlock() {
   if (now - lastTabUnlockCheck < 2000) return;
   lastTabUnlockCheck = now;
 
+  // 메인 네비 (Career만 남음)
   document.querySelectorAll('.nav-btn[data-unlock]').forEach(btn => {
     const cond = btn.dataset.unlock;
     let unlocked = false;
-    if (cond === 'papers' && gameState.papers >= 10) unlocked = true;
-    if (cond === 'fusion' && getOwnedModels().length >= 2) unlocked = true;
     if (cond === 'career' && gameState.reputation >= 5000) unlocked = true;
-
     if (unlocked && btn.classList.contains('nav-locked')) {
       btn.classList.remove('nav-locked');
       if (typeof showToast === 'function') showToast(`${btn.querySelector('.nav-label').textContent} unlocked!`, 'success');
     }
   });
+  // Models 서브탭 언락
+  document.querySelectorAll('.sub-tab[data-sub-unlock]').forEach(btn => {
+    const cond = btn.dataset.subUnlock;
+    let unlocked = false;
+    if (cond === 'papers' && gameState.papers >= 10) unlocked = true;
+    if (cond === 'fusion' && getOwnedModels().length >= 2) unlocked = true;
+    if (unlocked && btn.classList.contains('sub-tab-locked')) {
+      btn.classList.remove('sub-tab-locked');
+      if (typeof showToast === 'function') showToast(`${btn.textContent.trim()} unlocked!`, 'success');
+    }
+  });
+}
+
+function showAchievementsModal() {
+  const { unlocked, total } = getAchievementProgress();
+  const html = renderAchievementList();
+  showModalHtml(`Achievements (${unlocked}/${total})`, html, [{ text: 'Close', primary: true }]);
 }

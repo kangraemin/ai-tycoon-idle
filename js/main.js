@@ -288,7 +288,6 @@ async function startGame() {
   renderResearchScreen();
   renderFusionScreen();
   renderCareerScreen();
-  if (typeof renderAchievementScreen === 'function') renderAchievementScreen();
   updateCurrencyDisplay();
 
   if (loaded) {
@@ -429,7 +428,7 @@ function renderModelsScreen() {
       </div>
       <div class="empty-slot-label">Empty</div>
     `;
-    el.onclick = () => switchScreen('research');
+    el.onclick = () => switchModelsSubTab('research');
     grid.appendChild(el);
   }
 
