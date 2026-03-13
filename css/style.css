@@ -1211,6 +1211,15 @@ html, body {
   color: var(--coral);
 }
 
+.fix-btn.tap-flash {
+  transform: scale(1.15);
+  filter: brightness(1.3);
+}
+
+.fix-btn {
+  transition: transform 0.1s ease, filter 0.1s ease;
+}
+
 /* ===== Challenge Overlay ===== */
 .challenge-overlay {
   position: fixed;

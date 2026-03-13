@@ -100,7 +100,7 @@ function showModal(title, message, buttons) {
 
 function showSettings() {
   const sfxState = gameState.settings?.sfx !== false;
-  showModal('Settings', '', [
+  showModal('Settings', 'Shortcuts: Space = Type, Enter = Compile', [
     { text: `SFX: ${sfxState ? 'ON' : 'OFF'}`, onClick: () => {
       if (!gameState.settings) gameState.settings = {};
       gameState.settings.sfx = !sfxState;
@@ -129,7 +129,6 @@ function showSettings() {
         }},
       ]);
     }},
-    { text: 'Shortcuts: Space=Type, Enter=Compile' },
     { text: 'Close', primary: true },
   ]);
 }

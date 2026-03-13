@@ -331,8 +331,8 @@ function renderEditorScreen() {
 
   let html = '<div class="code-editor">';
   html += '<div class="editor-tab-bar">';
-  html += '<button class="editor-tab active"><span class="editor-tab-icon">PY</span> agent.py</button>';
-  html += '<button class="editor-tab"><span class="editor-tab-icon">JS</span> train.js</button>';
+  html += '<div class="editor-tab active"><span class="editor-tab-icon">PY</span> agent.py</div>';
+  html += '<div class="editor-tab"><span class="editor-tab-icon">JS</span> train.js</div>';
   html += '</div>';
   html += '<div class="editor-body" onclick="tapEditor(event)">';
   html += '<div class="line-numbers">';

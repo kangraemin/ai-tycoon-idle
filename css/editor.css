@@ -30,7 +30,7 @@
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  cursor: pointer;
+  cursor: default;
   white-space: nowrap;
   font-family: 'Fira Code', monospace;
 }

@@ -24,6 +24,8 @@ const EVENT_SPAWN_MAX = 300;  // 5 minutes
 let activeEvent = null;
 let activeBuffs = [];
 let eventFixTaps = 0;
+let lastRenderedEventId = null;
+let lastRenderedBuffCount = -1;
 
 // Behavior tracking
 let consecutiveTaps = 0;
@@ -74,6 +76,7 @@ function spawnEvent() {
     });
     // Auto-resolve timed events
     activeEvent = null;
+    lastRenderedEventId = null;
   }
 
   renderEventBanner();
@@ -86,6 +89,18 @@ function tapFixEvent() {
   if (!def.fixTaps || def.fixTaps <= 0) return;
 
   eventFixTaps++;
+
+  // Immediate counter update (no full re-render)
+  const counter = document.querySelector('.fix-counter');
+  if (counter) counter.textContent = `${eventFixTaps}/${def.fixTaps}`;
+
+  // Tap feedback on button
+  const btn = document.querySelector('.fix-btn');
+  if (btn) {
+    btn.classList.add('tap-flash');
+    setTimeout(() => btn.classList.remove('tap-flash'), 150);
+  }
+
   if (eventFixTaps >= def.fixTaps) {
     // Event resolved — bonus
     gameState.eventStats.responded++;
@@ -97,6 +112,7 @@ function tapFixEvent() {
     });
     if (typeof showToast === 'function') showToast('Event resolved! 2x LoC for 30s', 'success');
     activeEvent = null;
+    lastRenderedEventId = null;
     renderEventBanner();
     if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
   }
@@ -129,6 +145,7 @@ function cleanupExpiredBuffs() {
     const eventAge = (now - activeEvent.startTime) / 1000;
     if (eventAge > 120) {
       activeEvent = null;
+      lastRenderedEventId = null;
       renderEventBanner();
     }
   }
@@ -140,26 +157,49 @@ function renderEventBanner() {
 
   if (activeEvent) {
     const def = activeEvent.def;
+
+    // Same fix-tap event: only update counter text (preserve DOM + click handlers)
+    if (lastRenderedEventId === activeEvent.id && def.fixTaps > 0) {
+      const counter = banner.querySelector('.fix-counter');
+      if (counter) counter.textContent = `${eventFixTaps}/${def.fixTaps}`;
+      return;
+    }
+    // Same non-fix event: skip re-render entirely
+    if (lastRenderedEventId === activeEvent.id) return;
+
+    lastRenderedEventId = activeEvent.id;
+    lastRenderedBuffCount = -1;
     banner.style.display = 'flex';
     banner.className = 'event-banner ' + (def.type === 'positive' ? 'positive' : 'negative');
     let bannerHtml = `<span class="material-symbols-outlined">${def.type === 'positive' ? 'celebration' : 'warning'}</span>`;
     bannerHtml += `<span style="flex:1;font-size:12px"><strong>${def.name}</strong> ${def.desc}</span>`;
     if (def.fixTaps > 0) {
-      bannerHtml += `<span style="font-family:var(--font-code);font-size:11px">${eventFixTaps}/${def.fixTaps}</span>`;
-      bannerHtml += `<button class="btn btn-primary" style="font-size:11px;padding:4px 10px;min-width:auto" onclick="tapFixEvent()">Fix!</button>`;
+      bannerHtml += `<span class="fix-counter" style="font-family:var(--font-code);font-size:11px">${eventFixTaps}/${def.fixTaps}</span>`;
+      bannerHtml += `<button class="btn btn-primary fix-btn" style="font-size:11px;padding:4px 10px;min-width:auto" onclick="tapFixEvent()">Fix!</button>`;
     }
     banner.innerHTML = bannerHtml;
   } else if (activeBuffs.length > 0) {
     const buff = activeBuffs[0];
     const remaining = Math.max(0, Math.ceil((buff.endTime - Date.now()) / 1000));
+
+    // Buff timer: update only remaining seconds text
+    if (lastRenderedBuffCount === activeBuffs.length && lastRenderedEventId === null) {
+      const timerSpan = banner.querySelector('.buff-timer');
+      if (timerSpan) { timerSpan.textContent = `${remaining}s`; return; }
+    }
+
+    lastRenderedEventId = null;
+    lastRenderedBuffCount = activeBuffs.length;
     const def = EVENT_DEFS[buff.id] || { name: 'Buff Active', type: 'positive' };
     banner.style.display = 'flex';
     banner.className = 'event-banner ' + (buff.multiplier >= 1 ? 'positive' : 'negative');
     banner.innerHTML = `
       <span class="material-symbols-outlined">${buff.multiplier >= 1 ? 'trending_up' : 'trending_down'}</span>
-      <span style="flex:1;font-size:12px"><strong>${def.name || 'Buff'}</strong> ${buff.multiplier}x ${buff.target} (${remaining}s)</span>
+      <span style="flex:1;font-size:12px"><strong>${def.name || 'Buff'}</strong> ${buff.multiplier}x ${buff.target} (<span class="buff-timer">${remaining}s</span>)</span>
     `;
   } else {
+    lastRenderedEventId = null;
+    lastRenderedBuffCount = -1;
     banner.style.display = 'none';
   }
 }
