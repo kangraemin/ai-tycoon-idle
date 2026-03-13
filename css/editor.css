@@ -104,17 +104,59 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
-/* Syntax Highlighting */
-.code-keyword { color: #569cd6; }
-.code-string { color: #ce9178; }
-.code-function { color: #dcdcaa; }
-.code-variable { color: #9cdcfe; }
-.code-comment { color: #6a9955; font-style: italic; }
-.code-number { color: #b5cea8; }
-.code-operator { color: #d4d4d4; }
-.code-type { color: #4ec9b0; }
-.code-property { color: #9cdcfe; }
-.code-decorator { color: #c586c0; }
+/* Syntax Highlighting — CSS Variable based */
+.code-editor {
+  --syn-keyword: #569cd6;
+  --syn-string: #ce9178;
+  --syn-function: #dcdcaa;
+  --syn-variable: #9cdcfe;
+  --syn-comment: #6a9955;
+  --syn-type: #4ec9b0;
+  --syn-number: #b5cea8;
+  --syn-operator: #d4d4d4;
+  --syn-property: #9cdcfe;
+  --syn-decorator: #c586c0;
+}
+.code-keyword { color: var(--syn-keyword); }
+.code-string { color: var(--syn-string); }
+.code-function { color: var(--syn-function); }
+.code-variable { color: var(--syn-variable); }
+.code-comment { color: var(--syn-comment); font-style: italic; }
+.code-number { color: var(--syn-number); }
+.code-operator { color: var(--syn-operator); }
+.code-type { color: var(--syn-type); }
+.code-property { color: var(--syn-property); }
+.code-decorator { color: var(--syn-decorator); }
+
+/* Career Theme Overrides */
+.code-editor.theme-monokai {
+  --syn-keyword: #f92672; --syn-string: #e6db74; --syn-function: #a6e22e;
+  --syn-variable: #fd971f; --syn-comment: #75715e; --syn-type: #66d9ef;
+}
+.code-editor.theme-dracula {
+  --syn-keyword: #ff79c6; --syn-string: #f1fa8c; --syn-function: #50fa7b;
+  --syn-variable: #8be9fd; --syn-comment: #6272a4; --syn-type: #bd93f9;
+}
+.code-editor.theme-solarized {
+  --syn-keyword: #859900; --syn-string: #2aa198; --syn-function: #268bd2;
+  --syn-variable: #b58900; --syn-comment: #586e75; --syn-type: #cb4b16;
+}
+.code-editor.theme-nord {
+  --syn-keyword: #81a1c1; --syn-string: #a3be8c; --syn-function: #88c0d0;
+  --syn-variable: #d8dee9; --syn-comment: #616e88; --syn-type: #8fbcbb;
+}
+.code-editor.theme-github-dark {
+  --syn-keyword: #ff7b72; --syn-string: #a5d6ff; --syn-function: #d2a8ff;
+  --syn-variable: #ffa657; --syn-comment: #8b949e; --syn-type: #79c0ff;
+}
+.code-editor.theme-synthwave {
+  --syn-keyword: #f97e72; --syn-string: #ff8b39; --syn-function: #36f9f6;
+  --syn-variable: #ff7edb; --syn-comment: #848bbd; --syn-type: #fede5d;
+}
+.code-editor.theme-golden {
+  --syn-keyword: #ffd700; --syn-string: #f0e68c; --syn-function: #daa520;
+  --syn-variable: #ffec8b; --syn-comment: #b8860b; --syn-type: #ff8c00;
+}
 
 /* Cursor */
 .editor-cursor {

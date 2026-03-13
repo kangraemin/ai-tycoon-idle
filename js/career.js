@@ -166,6 +166,7 @@ function confirmCareerAdvance() {
         if (typeof SFX !== 'undefined' && SFX.prestige) SFX.prestige();
         doCareerAdvance();
         renderCareerScreen();
+        if (typeof applyCareerTheme === 'function') applyCareerTheme();
         if (typeof renderModelsScreen === 'function') renderModelsScreen();
         if (typeof renderUpgradeScreen === 'function') renderUpgradeScreen();
         if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
@@ -173,6 +174,26 @@ function confirmCareerAdvance() {
       }},
     ]);
   }
+}
+
+const CAREER_THEMES = [
+  '',                // 0: NullPointer — default (VSCode Dark)
+  'theme-monokai',   // 1: BugFarm
+  'theme-dracula',   // 2: StackUnderflow
+  'theme-solarized', // 3: Cloudish
+  'theme-nord',      // 4: ChatJBT
+  'theme-github-dark', // 5: FAANG
+  'theme-synthwave', // 6: AI Lab
+  'theme-golden',    // 7: Founder
+];
+
+function applyCareerTheme() {
+  const editor = document.querySelector('.code-editor');
+  if (!editor) return;
+  // Remove all theme classes
+  CAREER_THEMES.forEach(t => { if (t) editor.classList.remove(t); });
+  const theme = CAREER_THEMES[gameState.careerStage] || '';
+  if (theme) editor.classList.add(theme);
 }
 
 // Backward compatibility alias

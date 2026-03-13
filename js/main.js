@@ -378,6 +378,7 @@ function renderEditorScreen() {
   html += '</div>';
 
   container.innerHTML = html;
+  if (typeof applyCareerTheme === 'function') applyCareerTheme();
 }
 
 function renderModelsScreen() {
