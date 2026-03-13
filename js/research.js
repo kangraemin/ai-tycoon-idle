@@ -82,7 +82,7 @@ function renderResearchScreen() {
         <div class="research-bubble-window">
           <span class="material-symbols-outlined" style="font-size:48px;color:var(--papers)">science</span>
         </div>
-        ${ownedCount >= maxSlots ? '<div class="lock-hint" style="margin:8px 0"><span class="material-symbols-outlined" style="font-size:14px">lock</span> GPU slots full — expand in Upgrades</div>' : ''}
+        ${ownedCount >= maxSlots ? `<div class="lock-hint" style="margin:8px 0;cursor:pointer;text-decoration:underline" onclick="switchScreen('upgrade')"><span class="material-symbols-outlined" style="font-size:14px">lock</span> GPU full — <strong>Go to Upgrades</strong> (${formatNumber(getGpuSlotCost())} compute)</div>` : ''}
         <div class="research-pull-area">
           <button class="research-pull-btn ${gameState.papers < RESEARCH_COST ? 'btn-disabled' : ''}"
                   onclick="doResearchPull()" ${gameState.papers < RESEARCH_COST ? 'disabled' : ''}>
@@ -113,6 +113,13 @@ function doResearchPull() {
   if (!result) {
     if (typeof SFX !== 'undefined' && SFX.error) SFX.error();
     if (typeof showToast === 'function') showToast('Not enough papers!', 'error');
+    return;
+  }
+
+  if (result.slotFull) {
+    if (typeof SFX !== 'undefined' && SFX.error) SFX.error();
+    if (typeof showToast === 'function') showToast('GPU slots full! Upgrade first.', 'error');
+    renderResearchScreen();
     return;
   }
 
@@ -155,7 +162,7 @@ function doResearchPull() {
         </div>
         <div class="research-name">${def.name}</div>
         <div class="rarity-badge ${result.rarity}">${result.rarity}</div>
-        ${result.slotFull ? '<div style="color:var(--coral);font-size:12px;margin-top:4px">GPU slots full! Expand first.</div>' : ''}
+
       </div>
       <div class="research-pull-area" style="margin-top:16px">
         <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>
