@@ -346,7 +346,7 @@ html, body {
 .upgrade-card.cat-infra { border-left: 3px solid #dcdcaa; }
 
 .upgrade-card.locked {
-  opacity: 0.4;
+  opacity: 0.65;
 }
 
 .upgrade-card-top {
@@ -793,6 +793,19 @@ html, body {
   transform: scale(0.95);
 }
 
+.btn:hover:not(:disabled):not(.btn-disabled) {
+  filter: brightness(1.1);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 16px rgba(86, 156, 214, 0.35);
+}
+
+.currency:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+}
+
 .btn-primary {
   background: var(--accent);
   color: var(--bg-primary);
@@ -1070,11 +1083,14 @@ html, body {
 /* ===== Lock Hints ===== */
 .lock-hint {
   font-size: 11px;
-  color: var(--coral);
+  color: var(--compute);
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 4px;
+  background: rgba(220, 220, 170, 0.08);
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
 /* ===== Toast Notifications ===== */
@@ -1248,3 +1264,45 @@ html, body {
 .grade-B { color: #569cd6; }
 .grade-C { color: #6a9955; }
 .grade-F { color: #f44747; }
+
+/* ===== Screen Description ===== */
+.screen-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  background: rgba(86, 156, 214, 0.05);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  line-height: 1.4;
+}
+
+/* ===== Currency Tooltip ===== */
+.currency-tooltip {
+  position: fixed;
+  z-index: 20;
+  padding: 10px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  min-width: 180px;
+  animation: tooltipFadeIn 0.15s ease-out;
+}
+.currency-tooltip .tooltip-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.currency-tooltip.compute .tooltip-title { color: var(--compute); }
+.currency-tooltip.papers .tooltip-title { color: var(--papers); }
+.currency-tooltip.tokens .tooltip-title { color: var(--tokens); }
+.currency-tooltip .tooltip-body {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+@keyframes tooltipFadeIn {
+  0% { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
