@@ -56,6 +56,7 @@ function autoCompileTick(dt) {
 
 function tapEditor(event) {
   if (typeof SFX !== 'undefined' && SFX.tap) SFX.tap();
+  if (typeof trackTapBehavior === 'function') trackTapBehavior();
   const tapPower = (1 + getUpgradeEffect('infra', 'batchSize')) * gameState.prestigeMultiplier;
   gameState.loc += tapPower;
   gameState.totalLoc += tapPower;
@@ -92,6 +93,7 @@ function compileData() {
     if (SFX.compileKey) SFX.compileKey();
     if (SFX.sell) SFX.sell();
   }
+  if (typeof trackCompileBehavior === 'function') trackCompileBehavior();
   const ragLevel = gameState.upgrades.skill.rag;
   const compileRate = 1 + (ragLevel * 0.15);
   const eventMult = typeof getEventMultiplier === 'function' ? getEventMultiplier('compile') : 1;

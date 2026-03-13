@@ -25,6 +25,12 @@ let activeEvent = null;
 let activeBuffs = [];
 let eventFixTaps = 0;
 
+// Behavior tracking
+let consecutiveTaps = 0;
+let lastTapTime = 0;
+let consecutiveCompiles = 0;
+let lastCompileTime = 0;
+
 function eventTick(dt) {
   if (activeEvent) return; // Don't spawn while event is active
 
@@ -156,4 +162,45 @@ function renderEventBanner() {
   } else {
     banner.style.display = 'none';
   }
+}
+
+// --- Behavior-triggered events ---
+function trackTapBehavior() {
+  const now = Date.now();
+  if (now - lastTapTime > 3000) consecutiveTaps = 0;
+  lastTapTime = now;
+  consecutiveTaps++;
+  if (consecutiveTaps === 20) {
+    triggerBehaviorEvent('Flow State!', 'keyboard', 'loc', 3, 20);
+    consecutiveTaps = 0;
+  }
+}
+
+function trackCompileBehavior() {
+  const now = Date.now();
+  if (now - lastCompileTime > 60000) consecutiveCompiles = 0;
+  lastCompileTime = now;
+  consecutiveCompiles++;
+  if (consecutiveCompiles === 5) {
+    triggerBehaviorEvent('Hot Deploy!', 'rocket_launch', 'compile', 2, 30);
+    consecutiveCompiles = 0;
+  }
+}
+
+function triggerEureka() {
+  if (gameState.eventStats.eurekaTriggered) return;
+  gameState.eventStats.eurekaTriggered = true;
+  triggerBehaviorEvent('Eureka!', 'lightbulb', 'loc', 5, 15);
+}
+
+function triggerBehaviorEvent(name, icon, target, multiplier, durationSec) {
+  activeBuffs.push({
+    id: 'behavior_' + Date.now(),
+    target,
+    multiplier,
+    endTime: Date.now() + durationSec * 1000,
+  });
+  if (typeof showToast === 'function') showToast(`${name} ${multiplier}x ${target} for ${durationSec}s`, 'success');
+  if (typeof SFX !== 'undefined' && SFX.levelUp) SFX.levelUp();
+  renderEventBanner();
 }

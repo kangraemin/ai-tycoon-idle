@@ -145,6 +145,7 @@ function doResearchPull() {
 
     const def = MODEL_DEFS[result.modelId];
     if (!def) return;
+    if (typeof triggerEureka === 'function') triggerEureka();
 
     const isHighRarity = result.rarity === 'epic' || result.rarity === 'legendary';
     resultEl.innerHTML = `
