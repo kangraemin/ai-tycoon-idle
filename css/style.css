@@ -1254,7 +1254,7 @@ html, body {
 /* ===== Toast Notifications ===== */
 #toast-container {
   position: fixed;
-  top: calc(16px + env(safe-area-inset-top, 0px));
+  top: calc(56px + env(safe-area-inset-top, 0px));
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
