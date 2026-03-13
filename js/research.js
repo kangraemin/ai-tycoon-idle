@@ -119,40 +119,56 @@ function doResearchPull() {
   const resultEl = document.getElementById('research-result');
   if (!resultEl) return;
 
-  if (result.hallucination) {
+  // Phase 1: Spinner (1.5s)
+  resultEl.innerHTML = `
+    <div class="research-spinner">
+      <span class="material-symbols-outlined gacha-spin">science</span>
+      <div style="color:var(--text-secondary);font-size:12px;margin-top:8px">Analyzing...</div>
+    </div>
+  `;
+
+  setTimeout(() => {
+    if (result.hallucination) {
+      resultEl.innerHTML = `
+        <div class="research-reveal">
+          <span class="material-symbols-outlined" style="font-size:64px;color:var(--coral)">error</span>
+          <div class="research-name" style="color:var(--coral)">Hallucination!</div>
+          <div style="color:var(--text-secondary);font-size:12px;margin-top:4px">The model hallucinated... Papers refunded.</div>
+        </div>
+        <div class="research-pull-area" style="margin-top:16px">
+          <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>
+          <span class="research-pull-hint">${RESEARCH_COST} papers per pull</span>
+        </div>
+      `;
+      return;
+    }
+
+    const def = MODEL_DEFS[result.modelId];
+    if (!def) return;
+
+    const isHighRarity = result.rarity === 'epic' || result.rarity === 'legendary';
     resultEl.innerHTML = `
-      <div class="research-reveal">
-        <span class="material-symbols-outlined" style="font-size:64px;color:var(--coral)">error</span>
-        <div class="research-name" style="color:var(--coral)">Hallucination!</div>
-        <div style="color:var(--text-secondary);font-size:12px;margin-top:4px">The model hallucinated... Papers refunded.</div>
+      <div class="research-reveal ${result.rarity} ${isHighRarity ? 'gacha-flash' : 'gacha-fade'}">
+        <div class="model-visual" style="--model-color:${def.color}"></div>
+        <div class="research-name">${def.name}</div>
+        <div class="rarity-badge ${result.rarity}">${result.rarity}</div>
+        ${result.slotFull ? '<div style="color:var(--coral);font-size:12px;margin-top:4px">GPU slots full! Expand first.</div>' : ''}
       </div>
       <div class="research-pull-area" style="margin-top:16px">
         <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>
         <span class="research-pull-hint">${RESEARCH_COST} papers per pull</span>
       </div>
     `;
-    return;
-  }
 
-  const def = MODEL_DEFS[result.modelId];
-  if (!def) return;
+    if (isHighRarity) {
+      document.body.classList.add('screen-shake');
+      setTimeout(() => document.body.classList.remove('screen-shake'), 500);
+    }
 
-  resultEl.innerHTML = `
-    <div class="research-reveal ${result.rarity}">
-      <div class="model-visual" style="--model-color:${def.color}"></div>
-      <div class="research-name">${def.name}</div>
-      <div class="rarity-badge ${result.rarity}">${result.rarity}</div>
-      ${result.slotFull ? '<div style="color:var(--coral);font-size:12px;margin-top:4px">GPU slots full! Expand first.</div>' : ''}
-    </div>
-    <div class="research-pull-area" style="margin-top:16px">
-      <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>
-      <span class="research-pull-hint">${RESEARCH_COST} papers per pull</span>
-    </div>
-  `;
-
-  if (typeof SFX !== 'undefined' && SFX.gachaReveal) SFX.gachaReveal(result.rarity);
-  if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
-  if (typeof renderModelsScreen === 'function') renderModelsScreen();
+    if (typeof SFX !== 'undefined' && SFX.gachaReveal) SFX.gachaReveal(result.rarity);
+    if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+    if (typeof renderModelsScreen === 'function') renderModelsScreen();
+  }, 1500);
 }
 
 // Alias for backward compatibility (main.js calls renderResearchScreen via renderGachaScreen check)

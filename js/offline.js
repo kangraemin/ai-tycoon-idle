@@ -35,18 +35,14 @@ function applyOfflineEarnings() {
 
   gameState.loc += earnings.loc;
   gameState.totalLoc += earnings.loc;
+  if (earnings.compute > 0) gameState.compute += earnings.compute;
 
-  if (earnings.compute > 0) {
-    gameState.compute += earnings.compute;
-    showModal(
-      'Welcome Back!',
-      `Auto-compiled ${formatNumber(earnings.loc)} LoC into ${formatNumber(earnings.compute)} compute while away (${formatTime(earnings.elapsed)})`,
-      [{ text: 'Collect', primary: true }]
-    );
+  if (typeof showOfflineModal === 'function') {
+    showOfflineModal(earnings);
   } else {
     showModal(
       'Welcome Back!',
-      `You wrote ${formatNumber(earnings.loc)} LoC while away (${formatTime(earnings.elapsed)})`,
+      `You earned ${formatNumber(earnings.loc)} LoC while away (${formatTime(earnings.elapsed)})`,
       [{ text: 'Collect', primary: true }]
     );
   }

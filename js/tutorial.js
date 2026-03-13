@@ -1,4 +1,4 @@
-// tutorial.js - First-play onboarding (AI Tycoon, 6 steps)
+// tutorial.js - First-play onboarding (AI Tycoon, 8 steps)
 
 const TUTORIAL_STEPS = [
   {
@@ -41,10 +41,26 @@ const TUTORIAL_STEPS = [
     trigger: 'buy',
   },
   {
+    id: 'go-research',
+    type: 'spotlight',
+    selector: '[data-screen="research"]',
+    message: 'Use Papers to discover new AI models!',
+    position: 'above',
+    trigger: 'navigate',
+  },
+  {
+    id: 'do-research',
+    type: 'spotlight',
+    selector: '.research-pull-btn',
+    message: 'Pull to discover a model!',
+    position: 'below',
+    trigger: 'buy',
+  },
+  {
     id: 'complete',
     type: 'modal',
     title: "You're Ready!",
-    message: 'Explore Research, Fusion, Challenges, and Career. Build your AI empire!',
+    message: 'Explore Fusion, Challenges, and Career. Build your AI empire!',
     btnText: 'Start Playing!',
   },
 ];

@@ -64,14 +64,21 @@ function checkAchievements() {
   updateLiveStats();
   const stats = gameState.stats;
 
+  const MILESTONE_IDS = ['tap_10000', 'models_10', 'career_7', 'fusion_all', 'compute_1m'];
+
   for (const ach of ACHIEVEMENT_DEFS) {
     if (gameState.achievements[ach.id]) continue;
     try {
       if (ach.check(stats)) {
         gameState.achievements[ach.id] = Date.now();
         gameState.papers += ach.papers;
-        if (typeof SFX !== 'undefined' && SFX.achievement) SFX.achievement();
-        if (typeof showToast === 'function') showToast(ach.name + ' — +' + ach.papers + ' papers!', 'success');
+        if (MILESTONE_IDS.includes(ach.id)) {
+          if (typeof SFX !== 'undefined' && SFX.celebrate) SFX.celebrate();
+          if (typeof showCelebration === 'function') showCelebration(ach.name, ach.desc + ' — +' + ach.papers + ' Papers!');
+        } else {
+          if (typeof SFX !== 'undefined' && SFX.achievement) SFX.achievement();
+          if (typeof showToast === 'function') showToast(ach.name + ' — +' + ach.papers + ' papers!', 'success');
+        }
         if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
       }
     } catch (e) { /* ignore check errors */ }

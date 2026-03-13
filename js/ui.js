@@ -4,6 +4,11 @@ let currentScreen = 'editor';
 
 function switchScreen(screen) {
   if (currentScreen === screen) return;
+  const btn = document.querySelector(`[data-screen="${screen}"]`);
+  if (btn && btn.classList.contains('nav-locked')) {
+    if (typeof showToast === 'function') showToast('Complete earlier goals to unlock!', 'info');
+    return;
+  }
   if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
   if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'navigate' && screen === 'upgrade') advanceTutorial();
 
@@ -177,6 +182,64 @@ function dismissCurrencyTooltip() {
   if (existing) existing.remove();
 }
 
+function showOfflineModal(earnings) {
+  const overlay = document.getElementById('modal-overlay');
+  const titleEl = document.getElementById('modal-title');
+  const msgEl = document.getElementById('modal-message');
+  const btnEl = document.getElementById('modal-buttons');
+  titleEl.textContent = 'Welcome Back!';
+  msgEl.innerHTML = `
+    <div style="text-align:center;padding:8px 0">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">While you were away (${formatTime(earnings.elapsed)})</div>
+      <div style="font-size:24px;font-weight:700;color:var(--loc)" id="offline-loc">0</div>
+      <div style="font-size:11px;color:var(--text-secondary)">Lines of Code</div>
+      ${earnings.compute > 0 ? `
+        <div style="font-size:20px;font-weight:700;color:var(--compute);margin-top:8px" id="offline-compute">0</div>
+        <div style="font-size:11px;color:var(--text-secondary)">Compute</div>
+      ` : ''}
+    </div>
+  `;
+  btnEl.innerHTML = '';
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'btn btn-primary';
+  closeBtn.textContent = 'Collect';
+  closeBtn.onclick = () => overlay.classList.remove('active');
+  btnEl.appendChild(closeBtn);
+  overlay.classList.add('active');
+
+  // Count-up animation
+  const duration = 1500;
+  const start = performance.now();
+  function animate(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const locEl = document.getElementById('offline-loc');
+    if (locEl) locEl.textContent = formatNumber(Math.floor(earnings.loc * eased));
+    const compEl = document.getElementById('offline-compute');
+    if (compEl) compEl.textContent = formatNumber(Math.floor(earnings.compute * eased));
+    if (progress < 1) requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+}
+
+function showCelebration(title, subtitle) {
+  const el = document.createElement('div');
+  el.className = 'celebration-overlay';
+  el.innerHTML = `
+    <div class="celebration-content">
+      <span class="material-symbols-outlined" style="font-size:64px;color:var(--accent)">celebration</span>
+      <div class="celebration-title">${title}</div>
+      <div class="celebration-subtitle">${subtitle}</div>
+    </div>
+  `;
+  document.body.appendChild(el);
+  if (typeof SFX !== 'undefined' && SFX.celebrate) SFX.celebrate();
+  setTimeout(() => {
+    el.classList.add('celebration-exit');
+    el.addEventListener('animationend', () => el.remove());
+  }, 2500);
+}
+
 function initUI() {
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
@@ -193,4 +256,24 @@ function initUI() {
   });
 
   currentScreen = 'editor';
+}
+
+let lastTabUnlockCheck = 0;
+function checkTabUnlock() {
+  const now = Date.now();
+  if (now - lastTabUnlockCheck < 2000) return;
+  lastTabUnlockCheck = now;
+
+  document.querySelectorAll('.nav-btn[data-unlock]').forEach(btn => {
+    const cond = btn.dataset.unlock;
+    let unlocked = false;
+    if (cond === 'papers' && gameState.papers >= 10) unlocked = true;
+    if (cond === 'fusion' && getOwnedModels().length >= 2) unlocked = true;
+    if (cond === 'career' && gameState.reputation >= 5000) unlocked = true;
+
+    if (unlocked && btn.classList.contains('nav-locked')) {
+      btn.classList.remove('nav-locked');
+      if (typeof showToast === 'function') showToast(`${btn.querySelector('.nav-label').textContent} unlocked!`, 'success');
+    }
+  });
 }

@@ -150,6 +150,16 @@ const SFX = (() => {
       ], 100);
     },
 
+    celebrate() {
+      playNotes([
+        { freq: 523, dur: 0.15, type: 'triangle', vol: 0.2 },
+        { freq: 659, dur: 0.15, type: 'triangle', vol: 0.2 },
+        { freq: 784, dur: 0.15, type: 'triangle', vol: 0.2 },
+        { freq: 1047, dur: 0.15, type: 'sine', vol: 0.25 },
+        { freq: 1319, dur: 0.3, type: 'sine', vol: 0.3 },
+      ], 120);
+    },
+
     // Challenge start
     challengeStart() {
       playNotes([

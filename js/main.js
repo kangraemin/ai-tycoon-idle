@@ -195,12 +195,20 @@ function gameLoop() {
   if (typeof updateHintBanner === 'function') updateHintBanner();
   if (typeof renderEventBanner === 'function') renderEventBanner();
   if (typeof checkAchievements === 'function') checkAchievements();
+  if (typeof checkTabUnlock === 'function') checkTabUnlock();
 }
 
 function startGame() {
   const loaded = loadGame();
 
   initUI();
+
+  // Unlock tabs for returning players
+  if (loaded && typeof checkTabUnlock === 'function') {
+    lastTabUnlockCheck = 0; // force check
+    checkTabUnlock();
+  }
+
   renderEditorScreen();
   renderModelsScreen();
   renderUpgradeScreen();
@@ -213,7 +221,7 @@ function startGame() {
     applyOfflineEarnings();
   }
 
-  if (gameState.tutorialStep < 6) {
+  if (gameState.tutorialStep < (typeof TUTORIAL_STEPS !== 'undefined' ? TUTORIAL_STEPS.length : 6)) {
     startTutorial();
   }
 
