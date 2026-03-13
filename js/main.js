@@ -431,6 +431,19 @@ function renderModelsScreen() {
     el.onclick = () => switchScreen('research');
     grid.appendChild(el);
   }
+
+  // GPU Slot Expand button
+  const gpuCost = getGpuSlotCost();
+  const expandEl = document.createElement('div');
+  expandEl.className = 'model-slot gpu-expand';
+  expandEl.innerHTML = `
+    <div class="empty-slot expand">
+      <span class="material-symbols-outlined">add_circle</span>
+    </div>
+    <div class="empty-slot-label">${formatNumber(gpuCost)} <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle">memory</span></div>
+  `;
+  expandEl.onclick = () => switchScreen('upgrade');
+  grid.appendChild(expandEl);
 }
 
 function showModelDetail(modelId) {
