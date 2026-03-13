@@ -437,12 +437,22 @@ function renderModelsScreen() {
   const expandEl = document.createElement('div');
   expandEl.className = 'model-slot gpu-expand';
   expandEl.innerHTML = `
-    <div class="empty-slot expand">
+    <div class="gpu-expand-icon">
       <span class="material-symbols-outlined">add_circle</span>
     </div>
-    <div class="empty-slot-label">${formatNumber(gpuCost)} <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle">memory</span></div>
+    <div class="gpu-expand-label">Expand GPU</div>
+    <div class="gpu-expand-cost">${formatNumber(gpuCost)} Compute</div>
   `;
-  expandEl.onclick = () => switchScreen('upgrade');
+  expandEl.onclick = () => {
+    if (buyGpuSlot()) {
+      if (typeof SFX !== 'undefined' && SFX.buy) SFX.buy();
+      renderModelsScreen();
+      updateCurrencyDisplay();
+    } else {
+      if (typeof SFX !== 'undefined' && SFX.error) SFX.error();
+      showToast(`Need ${formatNumber(gpuCost)} Compute!`, 'error');
+    }
+  };
   grid.appendChild(expandEl);
 }
 

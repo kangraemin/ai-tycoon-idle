@@ -146,20 +146,28 @@
   color: #6b6b6b;
 }
 
-.model-slot.gpu-expand { cursor: pointer; }
-.model-slot.gpu-expand .empty-slot.expand {
-  border: 2px dashed var(--accent);
-  color: var(--accent);
-  background: rgba(99,102,241, 0.08);
+.model-slot.gpu-expand {
+  cursor: pointer;
+  justify-content: center;
+  border: 2px dashed var(--accent, #6366f1);
+  background: rgba(99,102,241, 0.06);
 }
-.model-slot.gpu-expand .empty-slot.expand .material-symbols-outlined {
-  color: var(--accent);
-  font-size: 22px;
+.gpu-expand-icon .material-symbols-outlined {
+  font-size: 28px;
+  color: var(--accent, #6366f1);
 }
-.model-slot.gpu-expand .empty-slot-label {
-  color: var(--accent);
+.gpu-expand-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent, #6366f1);
+  margin-top: 4px;
 }
-.model-slot.gpu-expand:active .empty-slot.expand {
+.gpu-expand-cost {
+  font-size: 9px;
+  color: var(--text-muted, #888);
+  margin-top: 2px;
+}
+.model-slot.gpu-expand:active {
   transform: scale(0.95);
 }
 
