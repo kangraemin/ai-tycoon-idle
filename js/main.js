@@ -316,15 +316,19 @@ function renderModelsScreen() {
   const owned = getOwnedModels();
   updateGpuSlotCount();
 
-  owned.forEach((model, idx) => {
+  const modelKeys = Object.keys(MODEL_DEFS);
+  owned.forEach((model) => {
     const def = MODEL_DEFS[model.id];
-    const style = MODEL_ICON_STYLES[idx % MODEL_ICON_STYLES.length];
+    const modelIndex = modelKeys.indexOf(model.id);
+    const style = MODEL_ICON_STYLES[modelIndex] || MODEL_ICON_STYLES[0];
     const el = document.createElement('div');
     el.className = 'model-slot';
     el.innerHTML = `
       <div class="model-level-badge">Lv.${model.level}</div>
       ${model.count > 1 ? `<div class="model-count-badge">x${model.count}</div>` : ''}
-      <div class="model-visual" style="--model-color:${def.color}"></div>
+      <div class="model-visual rarity-${def.rarity}" style="--model-color:${def.color}">
+        <span class="material-symbols-outlined">${style.icon}</span>
+      </div>
       <div class="model-name">${def.name}</div>
       <div class="model-lps">${formatNumber(getModelLps(model))}/s</div>
     `;

@@ -149,7 +149,9 @@ function doResearchPull() {
     const isHighRarity = result.rarity === 'epic' || result.rarity === 'legendary';
     resultEl.innerHTML = `
       <div class="research-reveal ${result.rarity} ${isHighRarity ? 'gacha-flash' : 'gacha-fade'}">
-        <div class="model-visual" style="--model-color:${def.color}"></div>
+        <div class="model-visual rarity-${result.rarity}" style="--model-color:${def.color}">
+          <span class="material-symbols-outlined">${(MODEL_ICON_STYLES[Object.keys(MODEL_DEFS).indexOf(result.modelId)] || MODEL_ICON_STYLES[0]).icon}</span>
+        </div>
         <div class="research-name">${def.name}</div>
         <div class="rarity-badge ${result.rarity}">${result.rarity}</div>
         ${result.slotFull ? '<div style="color:var(--coral);font-size:12px;margin-top:4px">GPU slots full! Expand first.</div>' : ''}

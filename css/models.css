@@ -26,13 +26,24 @@
   animation: none;
 }
 
-/* Model icon (terminal-style) */
-.model-visual::before {
-  content: '>';
-  font-size: 20px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.8);
-  animation: cursorBlink 1.5s step-end infinite;
+/* Model icon — Material symbol */
+.model-visual .material-symbols-outlined {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.9);
+}
+/* Rarity glow */
+.model-visual.rarity-uncommon {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 8px rgba(76,175,80,0.3);
+}
+.model-visual.rarity-rare {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 12px rgba(33,150,243,0.4);
+}
+.model-visual.rarity-epic {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 16px rgba(156,39,176,0.5);
+}
+.model-visual.rarity-legendary {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 20px rgba(255,152,0,0.6);
+  animation: modelPulse 3s infinite ease-in-out, legendaryGlow 1s ease-in-out infinite alternate;
 }
 
 @keyframes cursorBlink {
