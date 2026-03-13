@@ -1205,7 +1205,6 @@ html, body {
   gap: 8px;
   padding: 8px 14px;
   margin: 4px 12px;
-  z-index: 5;
   background: var(--bg-card);
   border-radius: 10px;
   border: 1px solid var(--border-light);
