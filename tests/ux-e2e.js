@@ -1,4 +1,4 @@
-// ux-e2e.js - UX/UI E2E test suite (110 test cases, Phase 1-2: TC 01-56)
+// ux-e2e.js - UX/UI E2E test suite (110 test cases, Phase 1-3: TC 01-84)
 
 const output = document.getElementById('test-output');
 const summaryEl = document.getElementById('summary');
@@ -649,6 +649,400 @@ assert('Disabled buttons exist', totalDisabled56 > 0);
 assert('All disabled buttons have visual distinction (btn-disabled class or disabled attr)',
   disabledWithoutStyle56 === 0,
   disabledWithoutStyle56 + ' disabled buttons lack visual distinction');
+
+// ========================
+// Journey E: "업그레이드 이름이 이상함" (TC 57-66)
+// ========================
+
+// TC-57: Upgrade names are human-readable (not camelCase)
+group('TC-57: 업그레이드 이름이 사람이 읽을 수 있는 텍스트인가');
+resetState();
+renderUpgradeScreen();
+const upgradeNames57 = document.querySelectorAll('.upgrade-name');
+let hasReadableName57 = true;
+let camelCaseFound57 = '';
+upgradeNames57.forEach(el => {
+  const text = el.textContent.trim().split('\n')[0].trim();
+  if (/^[a-z]+[A-Z]/.test(text)) {
+    hasReadableName57 = false;
+    camelCaseFound57 = text;
+  }
+});
+assert('No camelCase names displayed', hasReadableName57,
+  'Found camelCase in upgrade names: "' + camelCaseFound57 + '"');
+
+// TC-58: "toolUse" displays as "Tool Use"
+group('TC-58: "toolUse"가 "Tool Use"로 표시되는가');
+const allUpgradeNames58 = document.querySelectorAll('.upgrade-name');
+let foundToolUse58 = false;
+let toolUseRaw58 = false;
+allUpgradeNames58.forEach(el => {
+  const text = el.textContent.trim();
+  if (text.includes('Tool Use')) foundToolUse58 = true;
+  if (text.includes('toolUse')) toolUseRaw58 = true;
+});
+assert('Displays "Tool Use" (readable)', foundToolUse58, 'Expected "Tool Use" in upgrade names');
+assert('Does not display raw "toolUse"', !toolUseRaw58, 'Raw camelCase "toolUse" found');
+
+// TC-59: "multiAgent" displays as "Multi-Agent"
+group('TC-59: "multiAgent"가 "Multi-Agent"로 표시되는가');
+let foundMultiAgent59 = false;
+let multiAgentRaw59 = false;
+allUpgradeNames58.forEach(el => {
+  const text = el.textContent.trim();
+  if (text.includes('Multi-Agent') || text.includes('Multi Agent')) foundMultiAgent59 = true;
+  if (text.includes('multiAgent')) multiAgentRaw59 = true;
+});
+assert('Displays "Multi-Agent" (readable)', foundMultiAgent59, 'Expected "Multi-Agent" in upgrade names');
+assert('Does not display raw "multiAgent"', !multiAgentRaw59, 'Raw camelCase "multiAgent" found');
+
+// TC-60: "fineTuning" displays as "Fine-tuning"
+group('TC-60: "fineTuning"이 "Fine-tuning"으로 표시되는가');
+let foundFineTuning60 = false;
+let fineTuningRaw60 = false;
+allUpgradeNames58.forEach(el => {
+  const text = el.textContent.trim();
+  if (text.includes('Fine-tuning') || text.includes('Fine Tuning')) foundFineTuning60 = true;
+  if (text.includes('fineTuning')) fineTuningRaw60 = true;
+});
+assert('Displays "Fine-tuning" (readable)', foundFineTuning60, 'Expected "Fine-tuning" in upgrade names');
+assert('Does not display raw "fineTuning"', !fineTuningRaw60, 'Raw camelCase "fineTuning" found');
+
+// TC-61: "autoPipeline" displays as "Auto Pipeline"
+group('TC-61: "autoPipeline"이 "Auto Pipeline"으로 표시되는가');
+let foundAutoPipeline61 = false;
+let autoPipelineRaw61 = false;
+allUpgradeNames58.forEach(el => {
+  const text = el.textContent.trim();
+  if (text.includes('Auto Pipeline') || text.includes('Auto pipeline')) foundAutoPipeline61 = true;
+  if (text.includes('autoPipeline')) autoPipelineRaw61 = true;
+});
+assert('Displays "Auto Pipeline" (readable)', foundAutoPipeline61, 'Expected "Auto Pipeline" in upgrade names');
+assert('Does not display raw "autoPipeline"', !autoPipelineRaw61, 'Raw camelCase "autoPipeline" found');
+
+// TC-62: Upgrade descriptions are not all generic "Enhances X capabilities"
+group('TC-62: 업그레이드 설명이 모두 "Enhances X capabilities"가 아닌가');
+const descs62 = document.querySelectorAll('.upgrade-desc');
+let genericCount62 = 0;
+let totalDescs62 = 0;
+descs62.forEach(el => {
+  const text = el.textContent.trim();
+  // Skip GPU Expansion which has a specific description
+  if (text.includes('Run more AI models')) return;
+  totalDescs62++;
+  if (/Enhances .+ capabilities/.test(text)) genericCount62++;
+});
+assert('Not all descriptions are generic', genericCount62 < totalDescs62 || totalDescs62 === 0,
+  genericCount62 + ' of ' + totalDescs62 + ' descriptions are generic "Enhances X capabilities"');
+
+// TC-63: At least some descriptions mention specific functionality
+group('TC-63: 일부 설명이 구체적 기능을 언급하는가');
+let specificDescCount63 = 0;
+descs62.forEach(el => {
+  const text = el.textContent.toLowerCase();
+  if (text.includes('tool') || text.includes('context') || text.includes('reasoning') ||
+      text.includes('parallel') || text.includes('training') || text.includes('retrieval') ||
+      text.includes('alignment') || text.includes('batch') || text.includes('compression') ||
+      text.includes('ci/cd') || text.includes('routing') || text.includes('coordinate')) {
+    specificDescCount63++;
+  }
+});
+assert('At least one description mentions specific functionality', specificDescCount63 > 0,
+  'No descriptions mention specific AI/ML functionality');
+
+// TC-64: Level shown as "Lv. N"
+group('TC-64: 레벨이 "Lv. N" 형식으로 표시되는가');
+const levelBadges64 = document.querySelectorAll('.upgrade-level-badge');
+assert('Level badges exist', levelBadges64.length > 0);
+let allLvFormat64 = true;
+levelBadges64.forEach(el => {
+  if (!/Lv\.\s*\d+/.test(el.textContent)) allLvFormat64 = false;
+});
+assert('All level badges show "Lv. N" format', allLvFormat64,
+  'Expected "Lv. N" format in level badges');
+
+// TC-65: Upgrade cost shown as number
+group('TC-65: 업그레이드 비용이 숫자로 표시되는가');
+const upgradeBtns65 = document.querySelectorAll('.upgrade-card .btn');
+assert('Upgrade buttons exist', upgradeBtns65.length > 0);
+let allHaveCost65 = true;
+upgradeBtns65.forEach(btn => {
+  const text = btn.textContent.trim();
+  if (!/[\d,.]+[KMBTa-z]*/.test(text) && !/\d/.test(text)) allHaveCost65 = false;
+});
+assert('All upgrade buttons show cost numbers', allHaveCost65,
+  'Expected numeric cost on upgrade buttons');
+
+// TC-66: Category color classes (cat-agent, cat-teamAgent, cat-skill, cat-infra)
+group('TC-66: 카테고리별 색상 클래스가 적용되는가');
+const catAgent66 = document.querySelectorAll('.upgrade-card.cat-agent');
+const catTeam66 = document.querySelectorAll('.upgrade-card.cat-teamAgent');
+const catSkill66 = document.querySelectorAll('.upgrade-card.cat-skill');
+const catInfra66 = document.querySelectorAll('.upgrade-card.cat-infra');
+assert('cat-agent cards exist', catAgent66.length > 0, 'No .cat-agent cards found');
+assert('cat-teamAgent cards exist', catTeam66.length > 0, 'No .cat-teamAgent cards found');
+assert('cat-skill cards exist', catSkill66.length > 0, 'No .cat-skill cards found');
+assert('cat-infra cards exist', catInfra66.length > 0, 'No .cat-infra cards found');
+
+// ========================
+// Journey F: "버튼 눌렀을 때 반응이 없음" (TC 67-78)
+// ========================
+
+// TC-67: Editor body has onclick handler
+group('TC-67: 에디터 영역에 onclick 핸들러가 있는가');
+resetState();
+renderEditorScreen();
+const editorBody67 = document.querySelector('.editor-body');
+assert('Editor body element exists', editorBody67 !== null);
+const editorHasClick67 = editorBody67 && (editorBody67.onclick !== null || editorBody67.hasAttribute('onclick'));
+assert('Editor body has click handler', editorHasClick67, 'Expected onclick="tapEditor(event)" on .editor-body');
+
+// TC-68: tapEditor adds tap-active class
+group('TC-68: tapEditor 호출 시 tap-active 클래스가 추가되는가');
+const editorBody68 = document.querySelector('.editor-body');
+if (editorBody68) {
+  const fakeEvent = { currentTarget: editorBody68, clientX: 100, clientY: 100 };
+  tapEditor(fakeEvent);
+  const hasTapActive68 = editorBody68.classList.contains('tap-active');
+  assert('tap-active class added on tap', hasTapActive68, 'Expected .tap-active class on editor body after tap');
+  editorBody68.classList.remove('tap-active');
+} else {
+  assert('Editor body exists for tap test', false, 'No .editor-body found');
+}
+
+// TC-69: Compile click changes compute value
+group('TC-69: Compile 클릭 시 compute 값이 변하는가');
+resetState();
+gameState.loc = 100;
+const computeBefore69 = gameState.compute;
+compileData();
+assert('Compute increased after compile', gameState.compute > computeBefore69,
+  'Expected compute to increase from ' + computeBefore69 + ', got ' + gameState.compute);
+
+// TC-70: Upgrade purchase shows toast/feedback
+group('TC-70: 업그레이드 구매 시 토스트/피드백이 표시되는가');
+resetState();
+gameState.compute = 999999;
+renderUpgradeScreen();
+const toastContainer70 = document.getElementById('toast-container');
+const toastsBefore70 = toastContainer70 ? toastContainer70.children.length : 0;
+// Try to buy with insufficient compute to trigger error toast
+const tempCompute70 = gameState.compute;
+gameState.compute = 0;
+doBuyUpgrade('agent', 'toolUse', { currentTarget: document.createElement('button') });
+const toastsAfter70 = toastContainer70 ? toastContainer70.children.length : 0;
+assert('Toast shown on purchase attempt', toastsAfter70 > toastsBefore70,
+  'Expected toast notification after purchase attempt');
+gameState.compute = tempCompute70;
+
+// TC-71: Research pull has result display
+group('TC-71: Research pull 후 결과가 표시되는가');
+resetState();
+gameState.papers = 100;
+gameState.gpuSlots = 10;
+renderResearchScreen();
+doResearchPull();
+const researchReveal71 = document.querySelector('.research-reveal');
+assert('Research reveal element appears after pull', researchReveal71 !== null,
+  'Expected .research-reveal element after doResearchPull()');
+
+// TC-72: Fusion success has feedback (toast)
+group('TC-72: Fusion 성공 시 피드백(토스트)이 표시되는가');
+resetState();
+gameState.models = [
+  { name: 'TestA', tier: 1, locPerSec: 1 },
+  { name: 'TestB', tier: 1, locPerSec: 1 },
+];
+gameState.gpuSlots = 10;
+const toastContainer72 = document.getElementById('toast-container');
+const toastsBefore72 = toastContainer72 ? toastContainer72.children.length : 0;
+// Fusion requires specific recipe models; try doFusionUI or direct call
+if (typeof FUSION_RECIPES !== 'undefined' && FUSION_RECIPES.length > 0) {
+  const recipe72 = FUSION_RECIPES[0];
+  // Set up models matching recipe
+  if (recipe72.ingredients) {
+    gameState.models = recipe72.ingredients.map(name => ({
+      name, tier: 1, locPerSec: 1
+    }));
+  }
+  doFusion(recipe72);
+}
+const toastsAfter72 = toastContainer72 ? toastContainer72.children.length : 0;
+assert('Toast shown on fusion attempt', toastsAfter72 > toastsBefore72 || typeof FUSION_RECIPES === 'undefined',
+  'Expected toast notification after fusion');
+
+// TC-73: Career advance shows confirmation modal
+group('TC-73: Career advance 시 확인 모달이 표시되는가');
+resetState();
+gameState.reputation = 999999;
+gameState.totalLoc = 999999;
+renderCareerScreen();
+const modalOverlay73 = document.getElementById('modal-overlay');
+if (modalOverlay73) modalOverlay73.classList.remove('active');
+confirmCareerAdvance();
+const modalActive73 = modalOverlay73 && modalOverlay73.classList.contains('active');
+assert('Confirmation modal appears on career advance', modalActive73,
+  'Expected modal-overlay to have "active" class');
+
+// TC-74: Career advance modal warns about reset
+group('TC-74: Career advance 모달이 리셋 경고를 포함하는가');
+const modalMessage74 = document.getElementById('modal-message');
+const modalText74 = modalMessage74 ? modalMessage74.textContent.toLowerCase() : '';
+assert('Modal message mentions reset or loss',
+  modalText74.includes('reset') || modalText74.includes('lose') || modalText74.includes('lost'),
+  'Expected warning about progress reset, got: "' + modalText74 + '"');
+// Clean up modal
+if (modalOverlay73) modalOverlay73.classList.remove('active');
+
+// TC-75: Buttons have interactive styling (.btn elements exist)
+group('TC-75: 버튼에 인터랙티브 스타일링이 적용되는가');
+const allBtns75 = document.querySelectorAll('.btn');
+assert('Btn elements exist', allBtns75.length > 0);
+// Check that CSS rules for .btn:hover exist in stylesheets
+let hasHoverRule75 = false;
+for (const sheet of document.styleSheets) {
+  try {
+    for (const rule of sheet.cssRules) {
+      if (rule.selectorText && rule.selectorText.includes('.btn') && rule.selectorText.includes(':hover')) {
+        hasHoverRule75 = true;
+        break;
+      }
+    }
+  } catch (e) { /* cross-origin stylesheet */ }
+  if (hasHoverRule75) break;
+}
+assert('CSS :hover rule exists for .btn', hasHoverRule75,
+  'Expected :hover CSS rule for .btn elements');
+
+// TC-76: Buttons have :active CSS
+group('TC-76: 버튼에 :active CSS가 적용되는가');
+let hasActiveRule76 = false;
+for (const sheet of document.styleSheets) {
+  try {
+    for (const rule of sheet.cssRules) {
+      if (rule.selectorText && rule.selectorText.includes('.btn') && rule.selectorText.includes(':active')) {
+        hasActiveRule76 = true;
+        break;
+      }
+    }
+  } catch (e) { /* cross-origin stylesheet */ }
+  if (hasActiveRule76) break;
+}
+assert('CSS :active rule exists for .btn', hasActiveRule76,
+  'Expected :active CSS rule for .btn elements');
+
+// TC-77: Active nav-btn has visual emphasis
+group('TC-77: 활성 nav-btn에 시각적 강조가 있는가');
+const activeNavBtn77 = document.querySelector('.nav-btn.active');
+assert('Active nav-btn exists', activeNavBtn77 !== null, 'Expected a .nav-btn.active element');
+if (activeNavBtn77) {
+  const inactiveNavBtn77 = document.querySelector('.nav-btn:not(.active)');
+  if (inactiveNavBtn77) {
+    const activeStyle77 = window.getComputedStyle(activeNavBtn77);
+    const inactiveStyle77 = window.getComputedStyle(inactiveNavBtn77);
+    const isDifferent77 = activeStyle77.color !== inactiveStyle77.color ||
+      activeStyle77.backgroundColor !== inactiveStyle77.backgroundColor ||
+      activeStyle77.fontWeight !== inactiveStyle77.fontWeight ||
+      activeStyle77.opacity !== inactiveStyle77.opacity ||
+      activeStyle77.borderBottom !== inactiveStyle77.borderBottom;
+    assert('Active nav-btn styled differently from inactive', isDifferent77,
+      'Expected visual difference between active and inactive nav buttons');
+  } else {
+    assert('Inactive nav-btn exists for comparison', false, 'Only active nav-btn found');
+  }
+}
+
+// TC-78: Settings button opens modal
+group('TC-78: Settings 버튼 클릭 시 모달이 열리는가');
+const modalOverlay78 = document.getElementById('modal-overlay');
+if (modalOverlay78) modalOverlay78.classList.remove('active');
+const settingsBtn78 = document.querySelector('.settings-btn');
+assert('Settings button exists', settingsBtn78 !== null);
+if (settingsBtn78) {
+  settingsBtn78.click();
+  const modalActive78 = modalOverlay78 && modalOverlay78.classList.contains('active');
+  assert('Modal opens on settings click', modalActive78,
+    'Expected modal-overlay to have "active" class after settings click');
+  // Clean up
+  if (modalOverlay78) modalOverlay78.classList.remove('active');
+}
+
+// ========================
+// Journey G: "오프라인 복귀 시 뭐가 됐는지 모르겠음" (TC 79-84)
+// ========================
+
+// TC-79: 10+ sec offline triggers modal
+group('TC-79: 10초 이상 오프라인 후 모달이 표시되는가');
+resetState();
+gameState.models = [{ name: 'chatbot', tier: 1, locPerSec: 5 }];
+gameState.lastSaveTime = Date.now() - 20000; // 20 seconds ago
+const modalOverlay79 = document.getElementById('modal-overlay');
+if (modalOverlay79) modalOverlay79.classList.remove('active');
+applyOfflineEarnings();
+const modalActive79 = modalOverlay79 && modalOverlay79.classList.contains('active');
+assert('Offline earnings modal displayed', modalActive79,
+  'Expected modal-overlay to have "active" class after 20s offline');
+
+// TC-80: Offline modal shows LoC amount earned
+group('TC-80: 오프라인 모달에 획득한 LoC 수량이 표시되는가');
+const modalMessage80 = document.getElementById('modal-message');
+const modalText80 = modalMessage80 ? modalMessage80.textContent : '';
+assert('Modal message contains a number (LoC earned)', /\d/.test(modalText80),
+  'Expected numeric LoC amount in modal, got: "' + modalText80 + '"');
+
+// TC-81: Offline modal shows elapsed time
+group('TC-81: 오프라인 모달에 경과 시간이 표시되는가');
+assert('Modal message contains time information',
+  modalText80.toLowerCase().includes('sec') || modalText80.toLowerCase().includes('min') ||
+  modalText80.toLowerCase().includes('hour') || modalText80.toLowerCase().includes('away') ||
+  /\d+s/.test(modalText80),
+  'Expected elapsed time in modal, got: "' + modalText80 + '"');
+
+// TC-82: Without auto-compile → no compute mention
+group('TC-82: autoPipeline 없으면 compute 언급이 없는가');
+resetState();
+gameState.models = [{ name: 'chatbot', tier: 1, locPerSec: 5 }];
+gameState.upgrades.infra.autoPipeline = 0;
+gameState.lastSaveTime = Date.now() - 20000;
+if (modalOverlay79) modalOverlay79.classList.remove('active');
+applyOfflineEarnings();
+const modalMessage82 = document.getElementById('modal-message');
+const modalText82 = modalMessage82 ? modalMessage82.textContent.toLowerCase() : '';
+assert('Without autoPipeline, modal mentions LoC (wrote)',
+  modalText82.includes('loc') || modalText82.includes('wrote') || /\d/.test(modalText82),
+  'Expected LoC mention without auto-compile');
+assert('Without autoPipeline, modal does not mention compute',
+  !modalText82.includes('compute'),
+  'Should not mention compute without auto-compile, got: "' + modalText82 + '"');
+
+// TC-83: With auto-compile → shows compute
+group('TC-83: autoPipeline이 있으면 compute가 표시되는가');
+resetState();
+gameState.models = [{ name: 'chatbot', tier: 1, locPerSec: 5 }];
+gameState.upgrades.infra.autoPipeline = 1;
+gameState.lastSaveTime = Date.now() - 20000;
+if (modalOverlay79) modalOverlay79.classList.remove('active');
+applyOfflineEarnings();
+const modalMessage83 = document.getElementById('modal-message');
+const modalText83 = modalMessage83 ? modalMessage83.textContent.toLowerCase() : '';
+assert('With autoPipeline, modal mentions compute',
+  modalText83.includes('compute') || modalText83.includes('compiled') || modalText83.includes('auto'),
+  'Expected compute/compiled mention with auto-compile, got: "' + modalText83 + '"');
+
+// TC-84: Offline modal has "Collect" button
+group('TC-84: 오프라인 모달에 "Collect" 버튼이 있는가');
+const modalButtons84 = document.getElementById('modal-buttons');
+let hasCollect84 = false;
+if (modalButtons84) {
+  const buttons84 = modalButtons84.querySelectorAll('button');
+  buttons84.forEach(btn => {
+    if (btn.textContent.trim().toLowerCase().includes('collect')) hasCollect84 = true;
+  });
+}
+assert('Modal has "Collect" button', hasCollect84,
+  'Expected a button with "Collect" text in modal-buttons');
+// Clean up modal
+if (modalOverlay79) modalOverlay79.classList.remove('active');
 
 // ========================
 // Summary
