@@ -271,8 +271,8 @@ function gameLoop() {
   if (typeof checkTabUnlock === 'function') checkTabUnlock();
 }
 
-function startGame() {
-  const loaded = loadGame();
+async function startGame() {
+  const loaded = await loadGame();
 
   initUI();
 
