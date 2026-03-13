@@ -96,6 +96,7 @@ function renderFusionScreen() {
   const ownedModels = getOwnedModels();
 
   let html = '<div class="section-header"><span class="material-symbols-outlined">merge</span><h2>Model Fusion</h2></div>';
+  html += '<div class="screen-desc">Combine two models to create a stronger one, or fuse duplicates to level up.</div>';
 
   // Fusion slots
   html += '<div style="display:flex;gap:12px;align-items:center;justify-content:center;margin:16px 0">';

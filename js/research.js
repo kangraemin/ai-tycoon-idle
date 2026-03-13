@@ -72,12 +72,17 @@ function renderResearchScreen() {
   const container = document.getElementById('research-content');
   if (!container) return;
 
+  const maxSlots = typeof getEffectiveGpuSlots === 'function' ? getEffectiveGpuSlots() : gameState.gpuSlots;
+  const ownedCount = getOwnedModels().length;
+
   container.innerHTML = `
+    <div class="screen-desc">Spend Papers to discover new AI models. Each pull costs ${RESEARCH_COST} Papers.</div>
     <div class="research-machine">
       <div class="research-display" id="research-result">
         <div class="research-bubble-window">
           <span class="material-symbols-outlined" style="font-size:48px;color:var(--papers)">science</span>
         </div>
+        ${ownedCount >= maxSlots ? '<div class="lock-hint" style="margin:8px 0"><span class="material-symbols-outlined" style="font-size:14px">lock</span> GPU slots full — expand in Upgrades</div>' : ''}
         <div class="research-pull-area">
           <button class="research-pull-btn ${gameState.papers < RESEARCH_COST ? 'btn-disabled' : ''}"
                   onclick="doResearchPull()" ${gameState.papers < RESEARCH_COST ? 'disabled' : ''}>

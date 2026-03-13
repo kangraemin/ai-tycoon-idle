@@ -99,7 +99,8 @@ function renderCareerScreen() {
   const next = getNextCareer();
   const currentName = getCareerDisplayName(gameState.careerStage);
 
-  let html = '<div class="career-info">';
+  let html = '<div class="screen-desc">Advance your career for a permanent multiplier. Resets LoC, Compute, Models & Upgrades. Papers, Tokens and Rep are kept.</div>';
+  html += '<div class="career-info">';
   html += '<div class="career-hero">';
   html += '<div class="career-star-wrap"><span class="material-symbols-outlined">' + current.icon + '</span></div>';
   html += '<div class="career-level">' + currentName + '</div>';
