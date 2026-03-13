@@ -1568,3 +1568,35 @@ html, body {
 .fusion-success-flash {
   animation: fusionFlash 0.6s ease-out;
 }
+
+/* ===== Small Screen Adjustments ===== */
+@media (max-width: 374px) {
+  #model-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .screen {
+    padding: 8px;
+  }
+  .currency {
+    padding: 2px 4px;
+    font-size: 10px;
+  }
+  .currency-icon {
+    font-size: 12px;
+  }
+  .loc-rate-inline {
+    display: none;
+  }
+  .toast {
+    padding: 8px 14px;
+    font-size: 12px;
+    max-width: 280px;
+  }
+}
+
+@media (max-height: 600px) {
+  .editor-body {
+    max-height: 200px;
+  }
+}
