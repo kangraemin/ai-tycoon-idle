@@ -15,14 +15,12 @@ function calculateOfflineEarnings() {
   const lps = getLocPerSecond();
   const offlineLoc = lps * cappedElapsed * OFFLINE_EFFICIENCY;
 
-  let offlineCompute = 0;
-  if (gameState.upgrades.infra.autoPipeline > 0) {
-    const ragLevel = gameState.upgrades.skill.rag;
-    const compileRate = 1 + (ragLevel * 0.15);
-    const autoPipelineLevel = gameState.upgrades.infra.autoPipeline;
-    const convertRatio = autoPipelineLevel * 0.05;
-    offlineCompute = offlineLoc * compileRate * convertRatio;
-  }
+  const ragLevel = gameState.upgrades.skill.rag;
+  const compileRate = 1 + (ragLevel * 0.15);
+  const autoPipelineLevel = gameState.upgrades.infra.autoPipeline;
+  const baseConvertRatio = 0.20;
+  const convertRatio = baseConvertRatio + (autoPipelineLevel * 0.05);
+  const offlineCompute = offlineLoc * compileRate * convertRatio;
 
   return {
     elapsed: cappedElapsed,

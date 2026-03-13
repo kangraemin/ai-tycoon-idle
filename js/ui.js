@@ -145,7 +145,7 @@ function showToast(message, type) {
 const CURRENCY_INFO = {
   compute: { name: 'Compute', earn: 'Earned by compiling your code', spend: 'Spend on upgrades and GPU expansion' },
   papers:  { name: 'Papers',  earn: 'Earned from career advances and achievements', spend: 'Spend on Research to discover new AI models' },
-  tokens:  { name: 'Tokens',  earn: 'Recharges 1 every 10 min (max 10)', spend: 'Spend on coding challenges for rewards' },
+  tokens:  { name: 'Tokens',  earn: 'Recharges 1 every 5 min (max 10) + 3 free challenges/day', spend: 'Spend on coding challenges for rewards' },
 };
 
 function showCurrencyTooltip(el, type) {

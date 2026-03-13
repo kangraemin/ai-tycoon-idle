@@ -1,16 +1,16 @@
 // career.js - Career progression system (8 stages)
 
 const CAREER_STAGES = [
-  { name: 'NullPointer',     multiplier: 1.0, repReq: 0,         icon: 'bug_report' },
-  { name: 'BugFarm',         multiplier: 1.2, repReq: 50000,     icon: 'pest_control' },
-  { name: 'StackUnderflow',  multiplier: 1.5, repReq: 500000,    icon: 'layers' },
-  { name: 'Cloudish',        multiplier: 1.8, repReq: 5000000,   icon: 'cloud' },
-  { name: 'ChatJBT',         multiplier: 2.2, repReq: 50000000,  icon: 'chat' },
-  { name: 'FAANG',           multiplier: 3.0, repReq: 500000000, icon: 'corporate_fare',
+  { name: 'NullPointer',     multiplier: 1.0,  repReq: 0,           icon: 'bug_report' },
+  { name: 'BugFarm',         multiplier: 2.0,  repReq: 10000,       icon: 'pest_control' },
+  { name: 'StackUnderflow',  multiplier: 3.5,  repReq: 100000,      icon: 'layers' },
+  { name: 'Cloudish',        multiplier: 6.0,  repReq: 1000000,     icon: 'cloud' },
+  { name: 'ChatJBT',         multiplier: 10.0, repReq: 10000000,    icon: 'chat' },
+  { name: 'FAANG',           multiplier: 15.0, repReq: 100000000,   icon: 'corporate_fare',
     variants: ['Goggles', 'Mapple', 'Megaa', 'Amazoom', 'Netflex'] },
-  { name: 'AI Lab',          multiplier: 4.0, repReq: 5000000000, icon: 'science',
+  { name: 'AI Lab',          multiplier: 25.0, repReq: 1000000000,  icon: 'science',
     variants: ['ClosedAI', 'ShallowMind', 'Anthropomorphic'] },
-  { name: 'Founder',         multiplier: 5.0, repReq: 50000000000, icon: 'rocket_launch' },
+  { name: 'Founder',         multiplier: 50.0, repReq: 10000000000, icon: 'rocket_launch' },
 ];
 
 function getCurrentCareer() {
@@ -82,7 +82,7 @@ function doCareerAdvance() {
   // Keep these
   // papers, tokens, reputation, discoveredFusions, achievements — preserved
   // Bonus papers
-  gameState.papers += 5 * gameState.careerHistory.length;
+  gameState.papers += 10 * gameState.careerHistory.length;
 
   // Apply new stage
   gameState.careerStage = nextStage;
@@ -133,7 +133,7 @@ function renderCareerScreen() {
     html += '<div class="career-btn-area">';
     if (!canDo) html += '<div class="lock-hint" style="margin-bottom:12px">Need ' + (typeof formatNumber === 'function' ? formatNumber(next.repReq - gameState.reputation) : (next.repReq - gameState.reputation)) + ' more reputation</div>';
     html += '<button class="btn ' + (canDo ? 'btn-primary' : 'btn-disabled') + '" onclick="confirmCareerAdvance()" ' + (canDo ? '' : 'disabled') + '>' + (canDo ? 'Advance Career' : 'Not Ready Yet') + '</button>';
-    html += '<div class="career-desc">Advancing resets LoC, Compute, Models, and Upgrades. Papers, Tokens, Rep, and Fusions are kept. Bonus: +' + (5 * (gameState.careerHistory.length + 1)) + ' papers.</div>';
+    html += '<div class="career-desc">Advancing resets LoC, Compute, Models, and Upgrades. Papers, Tokens, Rep, and Fusions are kept. Bonus: +' + (10 * (gameState.careerHistory.length + 1)) + ' papers.</div>';
     html += '</div>';
   } else {
     html += '<div class="career-btn-area"><div class="career-desc" style="color:var(--accent);font-weight:700">You\'ve reached the top!</div></div>';

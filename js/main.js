@@ -157,7 +157,7 @@ function escapeHtml(text) {
 function tokenTick() {
   const now = Date.now();
   const elapsed = now - gameState.lastTokenRecharge;
-  const rechargeInterval = 10 * 60 * 1000; // 10 minutes
+  const rechargeInterval = 5 * 60 * 1000; // 5 minutes
   if (elapsed >= rechargeInterval && gameState.tokens < 10) {
     const charges = Math.floor(elapsed / rechargeInterval);
     gameState.tokens = Math.min(10, gameState.tokens + charges);
@@ -281,10 +281,13 @@ function renderEditorScreen() {
   html += '<div class="editor-challenge-area" style="padding:8px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">';
   const challengeTypes = typeof CHALLENGE_TYPES !== 'undefined' ? Object.keys(CHALLENGE_TYPES) : [];
   const canChallenge = typeof canStartChallenge === 'function' && canStartChallenge();
+  const freeLeft = typeof hasFreeChallenge === 'function' && hasFreeChallenge()
+    ? (DAILY_FREE_CHALLENGES - (gameState.freeChallengesUsed || 0)) : 0;
+  const costLabel = freeLeft > 0 ? `Free (${freeLeft} left)` : '1 Token';
   if (challengeTypes.length > 0) {
     const randomType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
     html += `<button class="btn ${canChallenge ? 'btn-primary' : 'btn-disabled'}" onclick="startChallenge('${randomType}')" ${canChallenge ? '' : 'disabled'} style="font-size:12px;padding:6px 16px">`;
-    html += `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> Challenge (1 Token)`;
+    html += `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> Challenge (${costLabel})`;
     html += '</button>';
   }
   html += '</div>';

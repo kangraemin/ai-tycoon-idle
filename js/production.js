@@ -28,12 +28,11 @@ function produceTick(dt) {
 
 function autoCompileTick(dt) {
   const autoPipelineLevel = gameState.upgrades.infra.autoPipeline;
-  if (autoPipelineLevel <= 0) return;
 
   // stopAutoProd event check (e.g. hallucination)
   if (typeof isStopAutoProd === 'function' && isStopAutoProd()) return;
 
-  const baseInterval = 11 - autoPipelineLevel;
+  const baseInterval = autoPipelineLevel > 0 ? 11 - autoPipelineLevel : 10;
   const orchBonus = 1 - getUpgradeEffect('teamAgent', 'orchestrator');
   const interval = Math.max(1, baseInterval * orchBonus);
 
@@ -44,7 +43,8 @@ function autoCompileTick(dt) {
       const ragLevel = gameState.upgrades.skill.rag;
       const compileRate = 1 + (ragLevel * 0.15);
       const eventMult = typeof getEventMultiplier === 'function' ? getEventMultiplier('compile') : 1;
-      const convertRatio = autoPipelineLevel * 0.05;
+      const baseConvertRatio = 0.20;
+      const convertRatio = baseConvertRatio + (autoPipelineLevel * 0.05);
       const locToConvert = gameState.loc * convertRatio;
       const computeEarned = locToConvert * compileRate * eventMult;
       gameState.compute += computeEarned;
@@ -98,6 +98,11 @@ function compileData() {
   if (gameState.stats) {
     gameState.stats.totalCompiles++;
     gameState.stats.totalCompute += computeEarned;
+  }
+  // Paper reward every 10 compiles
+  if (gameState.stats && gameState.stats.totalCompiles % 10 === 0) {
+    gameState.papers += 1;
+    if (typeof showToast === 'function') showToast('+1 Paper (compile bonus)', 'success');
   }
   gameState.loc = 0;
   if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'sell') advanceTutorial();

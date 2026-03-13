@@ -41,6 +41,8 @@ function createDefaultState() {
     careerHistory: [],
     prestigeMultiplier: 1,
     discoveredFusions: [],
+    freeChallengesUsed: 0,
+    lastFreeChallengeReset: Date.now(),
     challengeStats: { played: 0, bestGrade: null },
     eventStats: { total: 0, responded: 0 },
     lastEventTime: Date.now(),
@@ -85,7 +87,8 @@ function loadGame() {
       for (const key of ['loc', 'compute', 'papers', 'totalLoc',
                           'tokens', 'reputation', 'gpuSlots', 'careerStage',
                           'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime',
-                          'lastTokenRecharge', 'lastEventTime', 'tutorialStep']) {
+                          'lastTokenRecharge', 'lastEventTime', 'tutorialStep',
+                          'freeChallengesUsed', 'lastFreeChallengeReset']) {
         if (parsed[key] !== undefined) defaults[key] = parsed[key];
       }
 

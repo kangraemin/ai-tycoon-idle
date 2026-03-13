@@ -57,14 +57,30 @@ const CHALLENGE_PROBLEMS = {
 let activeChallenge = null;
 let challengeTimerId = null;
 
+const DAILY_FREE_CHALLENGES = 3;
+
+function hasFreeChallenge() {
+  const now = new Date();
+  const last = new Date(gameState.lastFreeChallengeReset || 0);
+  if (now.toDateString() !== last.toDateString()) {
+    gameState.freeChallengesUsed = 0;
+    gameState.lastFreeChallengeReset = now.getTime();
+  }
+  return gameState.freeChallengesUsed < DAILY_FREE_CHALLENGES;
+}
+
 function canStartChallenge() {
-  return gameState.tokens > 0 && !activeChallenge;
+  return (gameState.tokens > 0 || hasFreeChallenge()) && !activeChallenge;
 }
 
 function startChallenge(type) {
   if (!canStartChallenge()) return;
 
-  gameState.tokens--;
+  if (hasFreeChallenge()) {
+    gameState.freeChallengesUsed++;
+  } else {
+    gameState.tokens--;
+  }
   const typeDef = CHALLENGE_TYPES[type];
   const problems = CHALLENGE_PROBLEMS[type];
   const problem = problems[Math.floor(Math.random() * problems.length)];
@@ -234,12 +250,14 @@ function submitChallenge(forcedAnswer) {
   const locReward = Math.floor(100 * gradeInfo.multiplier * rlhfBonus);
   const computeReward = Math.floor(50 * gradeInfo.multiplier * rlhfBonus);
   const repReward = Math.floor(100 * gradeInfo.multiplier);
+  const paperReward = gradeInfo.grade === 'S' ? 3 : gradeInfo.grade === 'A' ? 1 : 0;
 
   // Apply rewards
   gameState.loc += locReward;
   gameState.totalLoc += locReward;
   gameState.compute += computeReward;
   gameState.reputation += repReward;
+  if (paperReward > 0) gameState.papers += paperReward;
 
   // Update stats
   gameState.challengeStats.played++;
@@ -262,6 +280,7 @@ function submitChallenge(forcedAnswer) {
         <div style="color:var(--loc);font-size:13px">+${locReward} LoC</div>
         <div style="color:var(--compute);font-size:13px">+${computeReward} Compute</div>
         <div style="color:var(--reputation);font-size:13px">+${repReward} Rep</div>
+        ${paperReward > 0 ? `<div style="color:var(--papers);font-size:13px">+${paperReward} Papers</div>` : ''}
         <button class="btn btn-primary" style="width:100%;margin-top:16px" onclick="closeChallengeOverlay()">Close</button>
       </div>
     `;
