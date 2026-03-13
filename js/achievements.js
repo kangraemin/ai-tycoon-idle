@@ -105,3 +105,26 @@ function renderAchievementList() {
   html += '</div>';
   return html;
 }
+
+function renderAchievementScreen() {
+  const grid = document.getElementById('achievement-grid');
+  if (!grid) return;
+  const prog = document.getElementById('achievement-progress');
+  if (prog) prog.textContent = `${getAchievementProgress().unlocked}/${getAchievementProgress().total}`;
+
+  let html = '';
+  for (const ach of ACHIEVEMENT_DEFS) {
+    const done = gameState.achievements && gameState.achievements[ach.id];
+    html += `<div class="achievement-card ${done ? 'unlocked' : 'locked'}">
+      <div class="achievement-icon">
+        <span class="material-symbols-outlined">${ach.icon}</span>
+      </div>
+      <div class="achievement-info">
+        <div class="achievement-name">${ach.name}${done ? ' ✓' : ''}</div>
+        <div class="achievement-desc">${ach.desc}</div>
+      </div>
+      <div class="achievement-reward">+${ach.papers}</div>
+    </div>`;
+  }
+  grid.innerHTML = html;
+}

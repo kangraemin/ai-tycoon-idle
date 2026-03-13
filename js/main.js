@@ -288,6 +288,7 @@ function startGame() {
   renderResearchScreen();
   renderFusionScreen();
   renderCareerScreen();
+  if (typeof renderAchievementScreen === 'function') renderAchievementScreen();
   updateCurrencyDisplay();
 
   if (loaded) {
