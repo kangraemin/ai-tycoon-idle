@@ -66,8 +66,8 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  padding: 8px 10px;
+  padding-top: calc(8px + env(safe-area-inset-top, 0px));
   position: sticky;
   top: 0;
   z-index: 10;
@@ -78,24 +78,29 @@ html, body {
 
 .currency-group {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 4px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  min-width: 0;
+  flex: 1;
 }
 
 .currency {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
   background: var(--bg-card);
-  padding: 4px 10px;
+  padding: 3px 6px;
   border-radius: 9999px;
   border: 1px solid var(--border-light);
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .currency-icon {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .currency.compute {
@@ -122,7 +127,7 @@ html, body {
 .currency.loc .currency-value { color: var(--loc); font-weight: 700; }
 .loc-rate-inline { font-size:9px; color:var(--accent-green); font-family:var(--font-code); opacity:0.8; }
 .top-bar-actions { display:flex; align-items:center; gap:6px; }
-.compile-btn-mini { padding:6px 14px; font-size:11px; font-weight:700; background:var(--accent); color:var(--bg-primary); border:none; border-radius:9999px; cursor:pointer; transition:transform 0.1s; box-shadow:0 2px 8px rgba(86,156,214,0.2); }
+.compile-btn-mini { padding:4px 10px; font-size:10px; font-weight:700; background:var(--accent); color:var(--bg-primary); border:none; border-radius:9999px; cursor:pointer; transition:transform 0.1s; box-shadow:0 2px 8px rgba(86,156,214,0.2); }
 .compile-btn-mini:active { transform:scale(0.95); }
 .compile-btn-mini.btn-disabled { background:var(--bg-elevated); color:var(--text-muted); cursor:not-allowed; }
 
