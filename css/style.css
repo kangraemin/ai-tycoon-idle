@@ -930,13 +930,16 @@ html, body {
 
 .modal-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
 }
 
 .modal-buttons .btn {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: calc(50% - 4px);
   padding: 10px;
+  font-size: 12px;
 }
 
 /* ===== Scrollbar ===== */
