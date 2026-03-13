@@ -61,10 +61,18 @@ const SFX = (() => {
   }
 
   return {
-    // Keyboard keystroke sound — short noise burst + click tone
+    _tapCount: 0,
+    // Keyboard keystroke sound — varied pitch + periodic thunk
     tap() {
+      this._tapCount++;
+      const baseFreqs = [1200, 1350, 1100];
+      const freq = baseFreqs[this._tapCount % 3] + (Math.random() * 200 - 100);
       playNoise(0.04, 0.1);
-      playTone(1200 + Math.random() * 400, 0.03, 'square', 0.04);
+      playTone(freq, 0.03, 'square', 0.04);
+      if (this._tapCount % 8 === 0) {
+        playTone(180, 0.06, 'sine', 0.08);
+        playNoise(0.06, 0.12);
+      }
     },
 
     // Compile success — ascending digital chime
@@ -75,6 +83,13 @@ const SFX = (() => {
         { freq: 1320, dur: 0.08, type: 'triangle', vol: 0.12 },
         { freq: 1760, dur: 0.12, type: 'sine', vol: 0.15 },
       ], 40);
+    },
+
+    // Compile key press — quick keystroke feedback
+    compileKey() {
+      playTone(600, 0.05, 'triangle', 0.06);
+      playNoise(0.03, 0.06);
+      playTone(800, 0.04, 'sine', 0.05, 400);
     },
 
     buy() {

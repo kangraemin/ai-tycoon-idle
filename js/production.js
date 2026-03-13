@@ -88,7 +88,10 @@ function tapEditor(event) {
 
 function compileData() {
   if (gameState.loc <= 0) return;
-  if (typeof SFX !== 'undefined' && SFX.sell) SFX.sell();
+  if (typeof SFX !== 'undefined') {
+    if (SFX.compileKey) SFX.compileKey();
+    if (SFX.sell) SFX.sell();
+  }
   const ragLevel = gameState.upgrades.skill.rag;
   const compileRate = 1 + (ragLevel * 0.15);
   const eventMult = typeof getEventMultiplier === 'function' ? getEventMultiplier('compile') : 1;
