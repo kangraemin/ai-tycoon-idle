@@ -835,6 +835,8 @@ html, body {
   flex-shrink: 0;
   padding: 8px 4px;
   padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  position: relative;
+  z-index: 10;
 }
 
 .nav-btn {
