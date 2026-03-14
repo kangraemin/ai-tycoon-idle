@@ -470,8 +470,9 @@ html, body {
 
 .research-display {
   width: 100%;
-  aspect-ratio: 4 / 5;
   max-width: 400px;
+  max-height: calc(100dvh - 260px);
+  min-height: 280px;
   margin: 0 auto 16px;
   background: linear-gradient(180deg, #252526 0%, #1e1e1e 100%);
   border-radius: 12px;
