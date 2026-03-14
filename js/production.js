@@ -26,32 +26,8 @@ function produceTick(dt) {
   gameState.totalLoc += produced;
 }
 
-function autoCompileTick(dt) {
-  const autoPipelineLevel = gameState.upgrades.infra.autoPipeline;
-
-  // stopAutoProd event check (e.g. hallucination)
-  if (typeof isStopAutoProd === 'function' && isStopAutoProd()) return;
-
-  const baseInterval = autoPipelineLevel > 0 ? 11 - autoPipelineLevel : 10;
-  const orchBonus = 1 - getUpgradeEffect('teamAgent', 'orchestrator');
-  const interval = Math.max(1, baseInterval * orchBonus);
-
-  autoCompileTimer += dt;
-  if (autoCompileTimer >= interval) {
-    autoCompileTimer -= interval;
-    if (gameState.loc > 0) {
-      const ragLevel = gameState.upgrades.skill.rag;
-      const compileRate = 1 + (ragLevel * 0.15);
-      const eventMult = typeof getEventMultiplier === 'function' ? getEventMultiplier('compile') : 1;
-      const baseConvertRatio = 0.20;
-      const convertRatio = baseConvertRatio + (autoPipelineLevel * 0.05);
-      const locToConvert = gameState.loc * convertRatio;
-      const computeEarned = locToConvert * compileRate * eventMult;
-      gameState.compute += computeEarned;
-      gameState.loc -= locToConvert;
-      if (gameState.stats) gameState.stats.totalCompute += computeEarned;
-    }
-  }
+function autoCompileTick() {
+  // Removed: auto-compile was confusing users (LoC silently decreasing)
 }
 
 function tapEditor(event) {
