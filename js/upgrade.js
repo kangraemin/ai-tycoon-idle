@@ -20,7 +20,7 @@ const UPGRADE_DEFS = {
     batchSize:    { name: 'Batch Size',    baseCost: 50,   description: '+1 LoC per tap' },
     distTraining: { name: 'Distributed',   baseCost: 100,  description: '+10% LoC/s per level' },
     quantization: { name: 'Quantization',  baseCost: 200,  description: '-5% upgrade costs per level' },
-    autoPipeline: { name: 'Auto Pipeline', baseCost: 500,  description: '+5% auto-compile ratio per level' },
+    autoPipeline: { name: 'Auto Pipeline', baseCost: 500,  description: '+15% manual Compile bonus per level' },
   },
 };
 

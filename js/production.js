@@ -79,8 +79,9 @@ function compileData() {
   if (typeof trackCompileBehavior === 'function') trackCompileBehavior();
   const ragLevel = gameState.upgrades.skill.rag;
   const compileRate = 1 + (ragLevel * 0.15);
+  const autoPipelineBonus = 1 + (gameState.upgrades.infra.autoPipeline * 0.15);
   const eventMult = typeof getEventMultiplier === 'function' ? getEventMultiplier('compile') : 1;
-  const computeEarned = gameState.loc * compileRate * eventMult;
+  const computeEarned = gameState.loc * compileRate * autoPipelineBonus * eventMult;
   gameState.compute += computeEarned;
   gameState.reputation += 10;
   if (gameState.stats) {
