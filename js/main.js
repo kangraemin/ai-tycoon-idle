@@ -238,8 +238,9 @@ function tokenTick() {
   }
 
   if (elapsed >= rechargeInterval) {
-    gameState.tokens = Math.min(10, gameState.tokens + 1);
-    gameState.lastTokenRecharge = now;
+    const recharges = Math.floor(elapsed / rechargeInterval);
+    gameState.tokens = Math.min(10, gameState.tokens + recharges);
+    gameState.lastTokenRecharge = now - (elapsed % rechargeInterval);
   }
 
   // 충전 타이머 표시
