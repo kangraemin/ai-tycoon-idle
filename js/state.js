@@ -60,6 +60,7 @@ function createDefaultState() {
     achievements: {},
     tutorialStep: 0,
     settings: { sfx: true, music: true, notifications: true },
+    saveVersion: 1,
 
     lastSaveTime: Date.now(),
     totalPlayTime: 0,
@@ -106,7 +107,8 @@ async function loadGame() {
                           'tokens', 'reputation', 'gpuSlots', 'careerStage',
                           'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime',
                           'lastTokenRecharge', 'lastEventTime', 'tutorialStep',
-                          'freeChallengesUsed', 'lastFreeChallengeReset', 'editorTab']) {
+                          'freeChallengesUsed', 'lastFreeChallengeReset', 'editorTab',
+                          'saveVersion']) {
         if (parsed[key] !== undefined) defaults[key] = parsed[key];
       }
 
@@ -132,6 +134,11 @@ async function loadGame() {
         for (const key of Object.keys(defaults.settings)) {
           if (parsed.settings[key] !== undefined) defaults.settings[key] = parsed.settings[key];
         }
+      }
+
+      // Migration: 이전 기본값 music:false → true 전환 (saveVersion 없는 구버전 세이브)
+      if (!parsed.saveVersion) {
+        defaults.settings.music = true;
       }
 
       // Safe merge: stats

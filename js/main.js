@@ -509,14 +509,9 @@ function renderEditorScreen() {
 
   let html = '<div class="code-editor">';
   html += '<div class="editor-tab-bar">';
-  const isTrainUnlocked = gameState.careerStage >= 1;
   const isAgentActive = gameState.editorTab !== 'train';
   html += '<div class="editor-tab ' + (isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'agent\')"><span class="editor-tab-icon">PY</span> agent.py</div>';
-  if (isTrainUnlocked) {
-    html += '<div class="editor-tab ' + (!isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'train\')"><span class="editor-tab-icon">JS</span> train.js</div>';
-  } else {
-    html += '<div class="editor-tab" style="opacity:0.35;cursor:default;pointer-events:none"><span class="editor-tab-icon">JS</span> train.js</div>';
-  }
+  html += '<div class="editor-tab ' + (!isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'train\')"><span class="editor-tab-icon">JS</span> train.js</div>';
   html += '</div>';
   html += '<div class="editor-body" onclick="tapEditor(event)">';
   html += '<div class="line-numbers">';
@@ -576,7 +571,6 @@ function renderEditorScreen() {
 
 function switchEditorTab(tab) {
   if (gameState.editorTab === tab) return;
-  if (tab === 'train' && gameState.careerStage < 1) return;
   gameState.editorTab = tab;
   currentCodeLine = 0;
   currentCharIndex = 0;
