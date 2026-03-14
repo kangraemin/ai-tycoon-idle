@@ -308,4 +308,5 @@ function closeChallengeOverlay() {
   activeChallenge = null;
   const bodyEl = document.getElementById('challenge-body');
   if (bodyEl) bodyEl.style.display = 'block';
+  if (typeof renderEditorScreen === 'function') renderEditorScreen();
 }

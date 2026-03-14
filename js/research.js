@@ -89,7 +89,7 @@ function renderResearchScreen() {
             Research!
           </button>
           <span class="research-pull-hint">${RESEARCH_COST} Papers per discovery</span>
-          ${gameState.papers < RESEARCH_COST ? '<div class="lock-hint" style="margin-top:8px">Need ${RESEARCH_COST - gameState.papers} more Papers</div>' : ''}
+          ${gameState.papers < RESEARCH_COST ? `<div class="lock-hint" style="margin-top:8px">Need ${RESEARCH_COST - gameState.papers} more Papers</div>` : ''}
         </div>
       </div>
       <div class="research-rates">
