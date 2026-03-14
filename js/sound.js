@@ -237,13 +237,12 @@ const BGM = (() => {
 
   function play() {
     if (!isEnabled()) return;
-    _started = true;
-    if (current) { current.play().catch(() => {}); return; }
+    if (current) { current.play().then(() => { _started = true; }).catch(() => { _started = false; }); return; }
     current = new Audio(tracks[currentIndex]);
     current.loop = false;
     current.volume = volume;
     current.addEventListener('ended', () => { next(); });
-    current.play().catch(() => {});
+    current.play().then(() => { _started = true; }).catch(() => { _started = false; });
   }
 
   function pause() {
@@ -277,5 +276,15 @@ const BGM = (() => {
     else stop();
   }
 
-  return { play, pause, stop, next, setVolume, toggle, isEnabled, get started() { return _started; } };
+  function initOnInteraction() {
+    const start = () => {
+      if (isEnabled() && !_started) play();
+      document.removeEventListener('click', start);
+      document.removeEventListener('touchstart', start);
+    };
+    document.addEventListener('click', start);
+    document.addEventListener('touchstart', start);
+  }
+
+  return { play, pause, stop, next, setVolume, toggle, isEnabled, initOnInteraction, get started() { return _started; } };
 })();

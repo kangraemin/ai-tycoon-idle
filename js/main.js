@@ -493,6 +493,8 @@ async function startGame() {
   lastTickTime = performance.now();
   gameLoopId = setInterval(gameLoop, 100);
   autoSaveId = setInterval(saveGame, AUTO_SAVE_INTERVAL);
+
+  if (typeof BGM !== 'undefined') BGM.initOnInteraction();
 }
 
 function updateGpuSlotCount() {
