@@ -230,11 +230,25 @@ function escapeHtml(text) {
 function tokenTick() {
   const now = Date.now();
   const elapsed = now - gameState.lastTokenRecharge;
-  const rechargeInterval = 5 * 60 * 1000; // 5 minutes
-  if (elapsed >= rechargeInterval && gameState.tokens < 10) {
-    const charges = Math.floor(elapsed / rechargeInterval);
-    gameState.tokens = Math.min(10, gameState.tokens + charges);
+  const rechargeInterval = 5 * 60 * 1000;
+
+  if (gameState.tokens >= 10) {
     gameState.lastTokenRecharge = now;
+    return;
+  }
+
+  if (elapsed >= rechargeInterval) {
+    gameState.tokens = Math.min(10, gameState.tokens + 1);
+    gameState.lastTokenRecharge = now;
+  }
+
+  // 충전 타이머 표시
+  const tokensEl = document.getElementById('tokens-display');
+  if (tokensEl) {
+    const remaining = Math.max(0, rechargeInterval - elapsed);
+    const min = Math.floor(remaining / 60000);
+    const sec = Math.floor((remaining % 60000) / 1000);
+    tokensEl.textContent = gameState.tokens + ' (' + min + ':' + (sec < 10 ? '0' : '') + sec + ')';
   }
 }
 

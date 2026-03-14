@@ -70,7 +70,9 @@ function switchModelsSubTab(subTab) {
 function updateCurrencyDisplay() {
   document.getElementById('compute-display').textContent = formatNumber(gameState.compute);
   document.getElementById('papers-display').textContent = formatNumber(gameState.papers);
-  document.getElementById('tokens-display').textContent = formatNumber(gameState.tokens);
+  if (gameState.tokens >= 10) {
+    document.getElementById('tokens-display').textContent = formatNumber(gameState.tokens);
+  }
   document.getElementById('loc-display').textContent = formatNumber(gameState.loc);
   document.getElementById('lps-display').textContent = formatNumber(getLocPerSecond()) + '/s';
 
