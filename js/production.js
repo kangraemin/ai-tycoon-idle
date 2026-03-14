@@ -82,26 +82,35 @@ function compileData() {
   const compileRate = 1 + (ragLevel * 0.15);
   const autoPipelineBonus = 1 + (gameState.upgrades.infra.autoPipeline * 0.15);
   const eventMult = typeof getEventMultiplier === 'function' ? getEventMultiplier('compile') : 1;
-  const computeEarned = gameState.loc * compileRate * autoPipelineBonus * eventMult;
-  gameState.compute += computeEarned;
+  const output = gameState.loc * compileRate * autoPipelineBonus * eventMult;
+
+  if (gameState.editorTab === 'train') {
+    // train.js → Papers (output/100, 최소 1)
+    const papersEarned = Math.max(1, Math.floor(output / 100));
+    gameState.papers += papersEarned;
+    if (typeof showToast === 'function') showToast('+' + papersEarned + ' Papers', 'success');
+  } else {
+    // agent.py → Compute (기존)
+    gameState.compute += output;
+    if (gameState.stats) gameState.stats.totalCompute += output;
+    // Paper reward every 10 compiles
+    if (gameState.stats && gameState.stats.totalCompiles % 10 === 0) {
+      gameState.papers += 1;
+      if (typeof showToast === 'function') showToast('+1 Paper (compile bonus)', 'success');
+    }
+  }
   gameState.reputation += 10;
-  if (gameState.stats) {
-    gameState.stats.totalCompiles++;
-    gameState.stats.totalCompute += computeEarned;
-  }
-  // Paper reward every 10 compiles
-  if (gameState.stats && gameState.stats.totalCompiles % 10 === 0) {
-    gameState.papers += 1;
-    if (typeof showToast === 'function') showToast('+1 Paper (compile bonus)', 'success');
-  }
+  if (gameState.stats) gameState.stats.totalCompiles++;
   gameState.loc = 0;
   if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'sell') advanceTutorial();
   if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
 
-  const computeEl = document.getElementById('compute-display');
-  if (computeEl) {
-    computeEl.classList.remove('compile-pulse');
-    void computeEl.offsetWidth;
-    computeEl.classList.add('compile-pulse');
+  // compile-pulse: 탭에 따라 다른 엘리먼트에 적용
+  const pulseId = gameState.editorTab === 'train' ? 'papers-display' : 'compute-display';
+  const pulseEl = document.getElementById(pulseId);
+  if (pulseEl) {
+    pulseEl.classList.remove('compile-pulse');
+    void pulseEl.offsetWidth;
+    pulseEl.classList.add('compile-pulse');
   }
 }
