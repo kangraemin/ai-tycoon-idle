@@ -143,7 +143,7 @@ function showModalHtml(title, htmlContent, buttons) {
 function showSettings() {
   const sfxState = gameState.settings?.sfx !== false;
   const musicState = gameState.settings?.music === true;
-  showModal('Settings', 'Shortcuts: Space = Type, Enter = Compile', [
+  showModal('Settings', 'Shortcut: Enter = Compile', [
     { text: `SFX: ${sfxState ? 'ON' : 'OFF'}`, onClick: () => {
       if (!gameState.settings) gameState.settings = {};
       gameState.settings.sfx = !sfxState;

@@ -304,10 +304,7 @@ async function startGame() {
     if (document.getElementById('modal-overlay')?.classList.contains('active')) return;
     if (document.getElementById('challenge-overlay')?.style.display !== 'none') return;
 
-    if (e.code === 'Space') {
-      e.preventDefault();
-      tapEditor(null);
-    } else if (e.code === 'Enter') {
+    if (e.code === 'Enter') {
       e.preventDefault();
       compileData();
     }
