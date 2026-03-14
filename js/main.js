@@ -168,6 +168,7 @@ let currentCodeLine = 0;
 let currentCharIndex = 0;
 let autoTypeAccum = 0;
 let currentChallengeType = null;
+let _lastEditorLine = -1;
 
 // Advance typing by N characters in the editor
 function advanceTyping(chars) {
@@ -224,39 +225,43 @@ function updateEditorDOM() {
   const codeLines = codeContent.querySelectorAll('.code-line');
   const lineNums = lineNumbers.querySelectorAll('.line-number');
 
-  codeLines.forEach((el, i) => {
-    const line = CODE_LINES[i];
-    const isActive = i === currentCodeLine;
-    const isPast = i < currentCodeLine;
+  const prevLine = _lastEditorLine;
 
-    // Update active states
-    el.classList.toggle('active-line', isActive);
-    el.classList.toggle('typing', isActive);
-    if (lineNums[i]) lineNums[i].classList.toggle('active', isActive);
+  codeLines.forEach((el, i) => {
+    const isActive = i === currentCodeLine;
+
+    if (i === currentCodeLine || i === prevLine) {
+      el.classList.toggle('active-line', isActive);
+      el.classList.toggle('typing', isActive);
+      if (lineNums[i]) lineNums[i].classList.toggle('active', isActive);
+    }
 
     if (isActive) {
-      // Show partial text with cursor
+      const line = CODE_LINES[i];
       const visibleText = line.text.substring(0, currentCharIndex);
       el.innerHTML = `<span class="code-${line.type}">${escapeHtml(visibleText)}</span><span class="editor-cursor"></span>`;
-    } else if (isPast) {
-      // Completed lines show full text
+    } else if (i === prevLine && prevLine !== currentCodeLine) {
+      const line = CODE_LINES[i];
       el.innerHTML = `<span class="code-${line.type}">${escapeHtml(line.text)}</span>`;
     }
-    // Future lines stay as-is (dimmed/empty from render)
   });
+
+  _lastEditorLine = currentCodeLine;
 
   // Update status bar line number
   const statusRight = document.querySelector('.editor-status-right .editor-status-item');
   if (statusRight) statusRight.textContent = `Ln ${currentCodeLine + 1}`;
 
-  // Auto-scroll to keep current line visible
-  const editorBody = document.querySelector('.editor-body');
-  const activeLine = codeContent.querySelector('.code-line.active-line');
-  if (editorBody && activeLine) {
-    const bodyRect = editorBody.getBoundingClientRect();
-    const lineRect = activeLine.getBoundingClientRect();
-    if (lineRect.bottom > bodyRect.bottom || lineRect.top < bodyRect.top) {
-      activeLine.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  // Auto-scroll only on line change
+  if (prevLine !== currentCodeLine) {
+    const editorBody = document.querySelector('.editor-body');
+    const activeLine = codeContent.querySelector('.code-line.active-line');
+    if (editorBody && activeLine) {
+      const bodyRect = editorBody.getBoundingClientRect();
+      const lineRect = activeLine.getBoundingClientRect();
+      if (lineRect.bottom > bodyRect.bottom || lineRect.top < bodyRect.top) {
+        activeLine.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
     }
   }
 }

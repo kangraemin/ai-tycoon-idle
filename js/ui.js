@@ -95,13 +95,23 @@ function updateCurrencyDisplay() {
   }
 }
 
+const MAX_FLOATING = 5;
+
 function showFloatingText(x, y, text) {
+  const container = document.getElementById('screen-editor');
+  if (!container) return;
+
+  const existing = container.querySelectorAll('.floating-text');
+  if (existing.length >= MAX_FLOATING) {
+    existing[0].remove();
+  }
+
   const el = document.createElement('div');
   el.className = 'floating-text';
   el.textContent = text;
   el.style.left = x + 'px';
   el.style.top = y + 'px';
-  document.getElementById('screen-editor').appendChild(el);
+  container.appendChild(el);
   setTimeout(() => el.remove(), 1000);
 }
 

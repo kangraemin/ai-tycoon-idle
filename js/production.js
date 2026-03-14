@@ -45,9 +45,10 @@ function tapEditor(event) {
     const editorEl = event ? event.currentTarget : document.getElementById('screen-editor');
     if (editorEl) {
       editorEl.classList.remove('tap-active');
-      void editorEl.offsetWidth;
-      editorEl.classList.add('tap-active');
-      setTimeout(() => editorEl.classList.remove('tap-active'), 150);
+      requestAnimationFrame(() => {
+        editorEl.classList.add('tap-active');
+        setTimeout(() => editorEl.classList.remove('tap-active'), 150);
+      });
 
       if (typeof showFloatingText === 'function') {
         let fx, fy;
