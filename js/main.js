@@ -112,6 +112,54 @@ const CODE_SNIPPET_SETS = {
     { text: '        ast.parse(code)', type: 'function' },
     { text: '        return code', type: 'variable' },
   ],
+  Translation: [
+    { text: 'from transformers import MarianMTModel, MarianTokenizer', type: 'keyword' },
+    { text: 'import sentencepiece', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class Translator:', type: 'type' },
+    { text: '    def __init__(self, src="en", tgt="ko"):', type: 'function' },
+    { text: '        model_name = f"Helsinki-NLP/opus-mt-{src}-{tgt}"', type: 'string' },
+    { text: '        self.tokenizer = MarianTokenizer.from_pretrained(model_name)', type: 'variable' },
+    { text: '        self.model = MarianMTModel.from_pretrained(model_name)', type: 'variable' },
+    { text: '', type: 'default' },
+    { text: '    def translate(self, texts):', type: 'function' },
+    { text: '        tokens = self.tokenizer(texts, return_tensors="pt", padding=True)', type: 'function' },
+    { text: '        output = self.model.generate(**tokens)', type: 'function' },
+    { text: '        # Decode translated tokens', type: 'comment' },
+    { text: '        return self.tokenizer.batch_decode(output, skip_special_tokens=True)', type: 'function' },
+  ],
+  Audio: [
+    { text: 'import whisper', type: 'keyword' },
+    { text: 'import numpy as np', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class SpeechRecognizer:', type: 'type' },
+    { text: '    def __init__(self, model_size="base"):', type: 'function' },
+    { text: '        self.model = whisper.load_model(model_size)', type: 'string' },
+    { text: '        self.sample_rate = 16000', type: 'variable' },
+    { text: '', type: 'default' },
+    { text: '    def transcribe(self, audio_path):', type: 'function' },
+    { text: '        result = self.model.transcribe(audio_path)', type: 'function' },
+    { text: '        segments = result["segments"]', type: 'variable' },
+    { text: '        # Extract text with timestamps', type: 'comment' },
+    { text: '        return [(s["start"], s["text"]) for s in segments]', type: 'variable' },
+  ],
+  Reasoning: [
+    { text: 'from langchain import PromptTemplate, LLMChain', type: 'keyword' },
+    { text: 'from langchain.llms import OpenAI', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class ReasoningEngine:', type: 'type' },
+    { text: '    def __init__(self, temperature=0.2):', type: 'function' },
+    { text: '        self.llm = OpenAI(temperature=temperature)', type: 'string' },
+    { text: '        self.steps = []', type: 'variable' },
+    { text: '', type: 'default' },
+    { text: '    def chain_of_thought(self, question):', type: 'function' },
+    { text: '        prompt = PromptTemplate.from_template(', type: 'function' },
+    { text: '            "Think step by step: {question}"', type: 'string' },
+    { text: '        )', type: 'default' },
+    { text: '        chain = LLMChain(llm=self.llm, prompt=prompt)', type: 'variable' },
+    { text: '        # Run reasoning chain', type: 'comment' },
+    { text: '        return chain.run(question=question)', type: 'function' },
+  ],
 };
 
 let gameLoopId = null;
@@ -137,12 +185,13 @@ function advanceTyping(chars) {
 
     // If we wrapped around, swap snippet & reset display
     if (currentCodeLine === 0) {
-      const owned = typeof getOwnedModels === 'function' ? getOwnedModels() : [];
-      const themes = owned.map(m => MODEL_DEFS[m.id]?.codeTheme).filter(Boolean);
       const available = Object.keys(CODE_SNIPPET_SETS);
-      const candidates = themes.filter(t => available.includes(t));
-      const pick = candidates.length > 0
-        ? candidates[Math.floor(Math.random() * candidates.length)]
+      const currentTheme = available.find(t =>
+        CODE_SNIPPET_SETS[t][0]?.text === CODE_LINES[0]?.text
+      );
+      const others = available.filter(t => t !== currentTheme);
+      const pick = others.length > 0
+        ? others[Math.floor(Math.random() * others.length)]
         : available[Math.floor(Math.random() * available.length)];
       const newLines = CODE_SNIPPET_SETS[pick];
       if (newLines) {
