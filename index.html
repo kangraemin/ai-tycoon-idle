@@ -86,7 +86,21 @@
 
       <!-- Career Screen -->
       <div class="screen" id="screen-career">
-        <div id="career-content"></div>
+        <div class="editor-header">
+          <h3 class="editor-title"><span class="material-symbols-outlined">work</span> Career</h3>
+        </div>
+        <div class="models-sub-tabs" id="career-sub-tabs">
+          <button class="sub-tab active" data-subtab="career-main" onclick="switchCareerSubTab('career-main')">
+            <span class="material-symbols-outlined">work</span> Career
+          </button>
+          <button class="sub-tab" data-subtab="career-awards" onclick="switchCareerSubTab('career-awards')">
+            <span class="material-symbols-outlined">emoji_events</span> Awards
+          </button>
+        </div>
+        <div class="models-sub-content">
+          <div class="sub-panel active" id="sub-career-main"><div id="career-content"></div></div>
+          <div class="sub-panel" id="sub-career-awards"><div id="career-awards-content"></div></div>
+        </div>
       </div>
     </div>
 
@@ -122,17 +136,11 @@
         </div>
         <span class="nav-label">Upgrade</span>
       </button>
-      <button class="nav-btn nav-locked" data-screen="career" data-unlock="career">
+      <button class="nav-btn" data-screen="career">
         <div class="nav-icon-wrap">
           <span class="material-symbols-outlined">work</span>
         </div>
         <span class="nav-label">Career</span>
-      </button>
-      <button class="nav-btn" data-screen="achievements">
-        <div class="nav-icon-wrap">
-          <span class="material-symbols-outlined">emoji_events</span>
-        </div>
-        <span class="nav-label">Awards</span>
       </button>
     </nav>
 
