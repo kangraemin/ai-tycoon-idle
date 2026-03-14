@@ -37,6 +37,7 @@ function createDefaultState() {
 
     // Systems
     gpuSlots: 1,
+    editorTab: 'agent',
     careerStage: 0,
     careerHistory: [],
     prestigeMultiplier: 1,
@@ -105,7 +106,7 @@ async function loadGame() {
                           'tokens', 'reputation', 'gpuSlots', 'careerStage',
                           'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime',
                           'lastTokenRecharge', 'lastEventTime', 'tutorialStep',
-                          'freeChallengesUsed', 'lastFreeChallengeReset']) {
+                          'freeChallengesUsed', 'lastFreeChallengeReset', 'editorTab']) {
         if (parsed[key] !== undefined) defaults[key] = parsed[key];
       }
 
