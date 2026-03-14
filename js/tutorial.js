@@ -52,7 +52,7 @@ const TUTORIAL_STEPS = [
     id: 'do-research',
     type: 'spotlight',
     selector: '.research-pull-btn',
-    message: 'Pull to discover a model!',
+    message: 'Tap to discover a model!',
     position: 'below',
     trigger: 'buy',
   },

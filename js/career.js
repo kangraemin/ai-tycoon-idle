@@ -99,7 +99,7 @@ function renderCareerScreen() {
   const next = getNextCareer();
   const currentName = getCareerDisplayName(gameState.careerStage);
 
-  let html = '<div class="screen-desc">Advance your career for a permanent multiplier. Resets LoC, Compute, Models & Upgrades. Papers, Tokens and Rep are kept.</div>';
+  let html = '<div class="screen-desc">Advance your career for a permanent multiplier.<br>Resets: Code, Compute, Models, Upgrades.<br>Keeps: Papers, Tokens, Rep.</div>';
   html += '<div class="career-info">';
   html += '<div class="career-hero">';
   html += '<div class="career-star-wrap"><span class="material-symbols-outlined">' + current.icon + '</span></div>';
@@ -133,7 +133,7 @@ function renderCareerScreen() {
     html += '<div class="career-btn-area">';
     if (!canDo) html += '<div class="lock-hint" style="margin-bottom:12px">Need ' + (typeof formatNumber === 'function' ? formatNumber(next.repReq - gameState.reputation) : (next.repReq - gameState.reputation)) + ' more reputation</div>';
     html += '<button class="btn ' + (canDo ? 'btn-primary' : 'btn-disabled') + '" onclick="confirmCareerAdvance()" ' + (canDo ? '' : 'disabled') + '>' + (canDo ? 'Advance Career' : 'Not Ready Yet') + '</button>';
-    html += '<div class="career-desc">Advancing resets LoC, Compute, Models, and Upgrades. Papers, Tokens, Rep, and Fusions are kept. Bonus: +' + (10 * (gameState.careerHistory.length + 1)) + ' papers.</div>';
+    html += '<div class="career-desc">Resets Code, Compute, Models, and Upgrades. Keeps Papers, Tokens, Rep, and Fusions. Bonus: +' + (10 * (gameState.careerHistory.length + 1)) + ' Papers.</div>';
     html += '</div>';
   } else {
     html += '<div class="career-btn-area"><div class="career-desc" style="color:var(--accent);font-weight:700">You\'ve reached the top!</div></div>';
@@ -160,7 +160,7 @@ function renderCareerScreen() {
 
 function confirmCareerAdvance() {
   if (typeof showModal === 'function') {
-    showModal('Advance Career', 'Reset progress for a permanent multiplier boost?', [
+    showModal('Advance Career', 'Reset progress for a permanent boost to all earnings?', [
       { text: 'Cancel' },
       { text: 'Advance!', primary: true, onClick: () => {
         if (typeof SFX !== 'undefined' && SFX.prestige) SFX.prestige();

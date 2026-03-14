@@ -76,20 +76,20 @@ function renderResearchScreen() {
   const ownedCount = getOwnedModels().length;
 
   container.innerHTML = `
-    <div class="screen-desc">Spend Papers to discover new AI models. Each pull costs ${RESEARCH_COST} Papers.</div>
+    <div class="screen-desc">Use Papers to discover new AI models. Each discovery costs ${RESEARCH_COST} Papers.</div>
     <div class="research-machine">
       <div class="research-display" id="research-result">
         <div class="research-bubble-window">
           <span class="material-symbols-outlined" style="font-size:48px;color:var(--papers)">science</span>
         </div>
-        ${ownedCount >= maxSlots ? `<div class="lock-hint" style="margin:8px 0;cursor:pointer;text-decoration:underline" onclick="switchScreen('upgrade')"><span class="material-symbols-outlined" style="font-size:14px">lock</span> GPU full — <strong>Go to Upgrades</strong> (${formatNumber(getGpuSlotCost())} compute)</div>` : ''}
+        ${ownedCount >= maxSlots ? `<div class="lock-hint" style="margin:8px 0;cursor:pointer;text-decoration:underline" onclick="switchScreen('upgrade')"><span class="material-symbols-outlined" style="font-size:14px">lock</span> GPU full — <strong>Go to Upgrades</strong> (${formatNumber(getGpuSlotCost())} Compute)</div>` : ''}
         <div class="research-pull-area">
           <button class="research-pull-btn ${gameState.papers < RESEARCH_COST ? 'btn-disabled' : ''}"
                   onclick="doResearchPull()" ${gameState.papers < RESEARCH_COST ? 'disabled' : ''}>
             Research!
           </button>
-          <span class="research-pull-hint">${RESEARCH_COST} papers per pull</span>
-          ${gameState.papers < RESEARCH_COST ? '<div class="lock-hint" style="margin-top:8px">Need more papers</div>' : ''}
+          <span class="research-pull-hint">${RESEARCH_COST} Papers per discovery</span>
+          ${gameState.papers < RESEARCH_COST ? '<div class="lock-hint" style="margin-top:8px">Need ${RESEARCH_COST - gameState.papers} more Papers</div>' : ''}
         </div>
       </div>
       <div class="research-rates">
@@ -112,7 +112,7 @@ function doResearchPull() {
   const result = pullResearch();
   if (!result) {
     if (typeof SFX !== 'undefined' && SFX.error) SFX.error();
-    if (typeof showToast === 'function') showToast('Not enough papers!', 'error');
+    if (typeof showToast === 'function') showToast('Not enough Papers!', 'error');
     return;
   }
 
@@ -140,11 +140,11 @@ function doResearchPull() {
         <div class="research-reveal">
           <span class="material-symbols-outlined" style="font-size:64px;color:var(--coral)">error</span>
           <div class="research-name" style="color:var(--coral)">Hallucination!</div>
-          <div style="color:var(--text-secondary);font-size:12px;margin-top:4px">The model hallucinated... Papers refunded.</div>
+          <div style="color:var(--text-secondary);font-size:12px;margin-top:4px">The AI produced nonsense... Papers refunded.</div>
         </div>
         <div class="research-pull-area" style="margin-top:16px">
           <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>
-          <span class="research-pull-hint">${RESEARCH_COST} papers per pull</span>
+          <span class="research-pull-hint">${RESEARCH_COST} Papers per discovery</span>
         </div>
       `;
       return;
@@ -161,12 +161,12 @@ function doResearchPull() {
           <span class="material-symbols-outlined">${(MODEL_ICON_STYLES[Object.keys(MODEL_DEFS).indexOf(result.modelId)] || MODEL_ICON_STYLES[0]).icon}</span>
         </div>
         <div class="research-name">${def.name}</div>
-        <div class="rarity-badge ${result.rarity}">${result.rarity}</div>
+        <div class="rarity-badge ${result.rarity}">${result.rarity[0].toUpperCase() + result.rarity.slice(1)}</div>
 
       </div>
       <div class="research-pull-area" style="margin-top:16px">
         <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>
-        <span class="research-pull-hint">${RESEARCH_COST} papers per pull</span>
+        <span class="research-pull-hint">${RESEARCH_COST} Papers per discovery</span>
       </div>
     `;
 

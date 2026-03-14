@@ -12,9 +12,9 @@ function switchScreen(screen) {
   const btn = document.querySelector(`[data-screen="${screen}"]`);
   if (btn && btn.classList.contains('nav-locked')) {
     const unlockCond = btn.dataset.unlock;
-    let msg = 'Complete earlier goals to unlock!';
+    let msg = 'Keep playing to unlock this!';
     if (unlockCond === 'career') {
-      msg = 'Career unlocks at 5,000 Rep (current: ' + formatNumber(gameState.reputation) + ')';
+      msg = 'Earn 5,000 Rep to unlock Career (you have ' + formatNumber(gameState.reputation) + ')';
     }
     if (typeof showToast === 'function') showToast(msg, 'info');
     return;
@@ -61,11 +61,11 @@ function switchModelsSubTab(subTab) {
   const btn = document.querySelector(`[data-subtab="${subTab}"]`);
   if (btn && btn.classList.contains('sub-tab-locked')) {
     const unlockCond = btn.dataset.subUnlock;
-    let msg = 'Complete earlier goals to unlock!';
+    let msg = 'Keep playing to unlock this!';
     if (unlockCond === 'papers') {
-      msg = 'Research unlocks at 10 Papers (current: ' + formatNumber(gameState.papers) + ')';
+      msg = 'Collect 10 Papers to unlock Research (you have ' + formatNumber(gameState.papers) + ')';
     } else if (unlockCond === 'fusion') {
-      msg = 'Fusion unlocks when you own 2+ models (current: ' + getOwnedModels().length + ')';
+      msg = 'Own 2+ models to unlock Fusion (you have ' + getOwnedModels().length + ')';
     }
     showToast(msg, 'info');
     return;
@@ -266,7 +266,7 @@ function showOfflineModal(earnings) {
     <div style="text-align:center;padding:8px 0">
       <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">While you were away (${formatTime(earnings.elapsed)})</div>
       <div style="font-size:24px;font-weight:700;color:var(--loc)" id="offline-loc">0</div>
-      <div style="font-size:11px;color:var(--text-secondary)">Lines of Code</div>
+      <div style="font-size:11px;color:var(--text-secondary)">Code Written</div>
       ${earnings.compute > 0 ? `
         <div style="font-size:20px;font-weight:700;color:var(--compute);margin-top:8px" id="offline-compute">0</div>
         <div style="font-size:11px;color:var(--text-secondary)">Compute</div>

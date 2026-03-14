@@ -60,7 +60,7 @@ function tapEditor(event) {
           fx = Math.random() * (editorEl.clientWidth * 0.6) + editorEl.clientWidth * 0.2;
           fy = Math.random() * (editorEl.clientHeight * 0.4) + editorEl.clientHeight * 0.2;
         }
-        showFloatingText(fx, fy, '+' + formatNumber(tapPower) + ' LoC');
+        showFloatingText(fx, fy, '+' + formatNumber(tapPower) + ' Code');
       }
     }
   }

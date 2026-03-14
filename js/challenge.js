@@ -285,7 +285,7 @@ function submitChallenge(forcedAnswer) {
       <div class="challenge-grade">
         <div class="challenge-grade-letter grade-${gradeInfo.grade}">${gradeInfo.grade}</div>
         <div style="color:var(--text-secondary);font-size:14px;margin:8px 0">Score: ${score}/100</div>
-        <div style="color:var(--loc);font-size:13px">+${locReward} LoC</div>
+        <div style="color:var(--loc);font-size:13px">+${locReward} Code</div>
         <div style="color:var(--compute);font-size:13px">+${computeReward} Compute</div>
         <div style="color:var(--reputation);font-size:13px">+${repReward} Rep</div>
         ${paperReward > 0 ? `<div style="color:var(--papers);font-size:13px">+${paperReward} Papers</div>` : ''}

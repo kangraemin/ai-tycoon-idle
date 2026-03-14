@@ -184,7 +184,7 @@ function updateFusionPreview() {
         </button>
       `;
     } else {
-      preview.innerHTML = '<div style="color:var(--coral);font-size:12px">Need 2+ copies</div>';
+      preview.innerHTML = '<div style="color:var(--coral);font-size:12px">Need at least 2 copies</div>';
     }
     return;
   }
@@ -200,7 +200,7 @@ function updateFusionPreview() {
         <span class="material-symbols-outlined">${previewIcon}</span>
       </div>
       <div style="color:var(--accent);font-weight:700;margin-bottom:8px">→ ${resultDef.name}</div>
-      <div class="rarity-badge ${resultDef.rarity}" style="margin-bottom:8px">${resultDef.rarity}</div>
+      <div class="rarity-badge ${resultDef.rarity}" style="margin-bottom:8px">${resultDef.rarity[0].toUpperCase() + resultDef.rarity.slice(1)}</div>
       <button class="btn ${canDo ? 'btn-primary' : 'btn-disabled'}" onclick="doFusionUI()" ${canDo ? '' : 'disabled'}>
         Fuse (${typeof formatNumber === 'function' ? formatNumber(cost) : cost} Compute)
       </button>

@@ -42,7 +42,7 @@ function applyOfflineEarnings() {
   } else {
     showModal(
       'Welcome Back!',
-      `You earned ${formatNumber(earnings.loc)} LoC while away (${formatTime(earnings.elapsed)})`,
+      `You wrote ${formatNumber(earnings.loc)} Code while away (${formatTime(earnings.elapsed)})`,
       [{ text: 'Collect', primary: true }]
     );
   }

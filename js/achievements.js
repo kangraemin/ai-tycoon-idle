@@ -17,8 +17,8 @@ const ACHIEVEMENT_DEFS = [
   { id: 'models_10',   name: 'Full Stack AI',       desc: 'Own all 10 models',               icon: 'smart_toy',     papers: 20, check: s => s.modelsOwned >= 10 },
 
   // Research
-  { id: 'research_5',  name: 'Lab Rat',             desc: 'Do 5 research pulls',             icon: 'science',       papers: 5,  check: s => s.gachaPulls >= 5 },
-  { id: 'research_20', name: 'Research Director',   desc: 'Do 20 research pulls',            icon: 'science',       papers: 10, check: s => s.gachaPulls >= 20 },
+  { id: 'research_5',  name: 'Lab Rat',             desc: 'Discover models 5 times',             icon: 'science',       papers: 5,  check: s => s.gachaPulls >= 5 },
+  { id: 'research_20', name: 'Research Director',   desc: 'Discover models 20 times',            icon: 'science',       papers: 10, check: s => s.gachaPulls >= 20 },
 
   // Compute
   { id: 'compute_1k',  name: 'GPU Warm',            desc: 'Earn 1,000 total compute',        icon: 'memory',        papers: 5,  check: s => s.totalCompute >= 1000 },
@@ -38,8 +38,8 @@ const ACHIEVEMENT_DEFS = [
   { id: 'fusion_all',  name: 'Fusion Master',       desc: 'Discover all fusion recipes',     icon: 'merge',         papers: 20, check: () => gameState.discoveredFusions.length >= 7 },
 
   // Events
-  { id: 'event_5',     name: 'Incident Responder',  desc: 'Respond to 5 events',             icon: 'notifications', papers: 5,  check: () => gameState.eventStats.responded >= 5 },
-  { id: 'event_20',    name: 'On-Call Hero',         desc: 'Respond to 20 events',            icon: 'notifications', papers: 15, check: () => gameState.eventStats.responded >= 20 },
+  { id: 'event_5',     name: 'Incident Responder',  desc: 'Fix 5 incidents',             icon: 'notifications', papers: 5,  check: () => gameState.eventStats.responded >= 5 },
+  { id: 'event_20',    name: 'On-Call Hero',         desc: 'Fix 20 incidents',            icon: 'notifications', papers: 15, check: () => gameState.eventStats.responded >= 20 },
 ];
 
 function getStats() {
@@ -77,7 +77,7 @@ function checkAchievements() {
           if (typeof showCelebration === 'function') showCelebration(ach.name, ach.desc + ' — +' + ach.papers + ' Papers!');
         } else {
           if (typeof SFX !== 'undefined' && SFX.achievement) SFX.achievement();
-          if (typeof showToast === 'function') showToast(ach.name + ' — +' + ach.papers + ' papers!', 'success');
+          if (typeof showToast === 'function') showToast(ach.name + ' — +' + ach.papers + ' Papers!', 'success');
         }
         if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
       }

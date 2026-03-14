@@ -622,7 +622,7 @@ function renderModelsScreen() {
       <div class="empty-slot">
         <span class="material-symbols-outlined">add</span>
       </div>
-      <div class="empty-slot-label">Empty</div>
+      <div class="empty-slot-label">Open Slot</div>
     `;
     el.onclick = () => switchModelsSubTab('research');
     grid.appendChild(el);
@@ -666,7 +666,7 @@ function showModelDetail(modelId) {
         <div class="model-visual rarity-${def.rarity}" style="--model-color:${def.color};width:64px;height:64px">
           <span class="material-symbols-outlined" style="font-size:32px">${style.icon}</span>
         </div>
-        <div class="rarity-badge ${def.rarity}">${def.rarity}</div>
+        <div class="rarity-badge ${def.rarity}">${def.rarity[0].toUpperCase() + def.rarity.slice(1)}</div>
       </div>
       <div class="model-detail-stats">
         <div class="model-detail-row">
@@ -679,14 +679,15 @@ function showModelDetail(modelId) {
         </div>
         <div class="model-detail-row">
           <span class="model-detail-label">Output</span>
-          <span class="model-detail-value accent">${lps} LoC/s</span>
+          <span class="model-detail-value accent">${lps} Code/s</span>
         </div>
         <div class="model-detail-row">
-          <span class="model-detail-label">Domain</span>
+          <span class="model-detail-label">Specialty</span>
           <span class="model-detail-value">${def.codeTheme}</span>
         </div>
       </div>
       <div class="model-detail-snippet">
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px">Sample API</div>
         <code>${def.codeSnippet}</code>
       </div>
     </div>
