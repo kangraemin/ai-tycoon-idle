@@ -60,7 +60,14 @@ let currentModelsSubTab = 'models-grid';
 function switchModelsSubTab(subTab) {
   const btn = document.querySelector(`[data-subtab="${subTab}"]`);
   if (btn && btn.classList.contains('sub-tab-locked')) {
-    showToast('Complete earlier goals to unlock!', 'info');
+    const unlockCond = btn.dataset.subUnlock;
+    let msg = 'Complete earlier goals to unlock!';
+    if (unlockCond === 'papers') {
+      msg = 'Research unlocks at 10 Papers (current: ' + formatNumber(gameState.papers) + ')';
+    } else if (unlockCond === 'fusion') {
+      msg = 'Fusion unlocks when you own 2+ models (current: ' + getOwnedModels().length + ')';
+    }
+    showToast(msg, 'info');
     return;
   }
   if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
