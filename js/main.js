@@ -162,6 +162,115 @@ const CODE_SNIPPET_SETS = {
   ],
 };
 
+// JavaScript code snippets for train.js tab
+const JS_CODE_LINES = [
+  { text: 'import { DataLoader } from "./data/loader.js";', type: 'keyword' },
+  { text: 'import { Tokenizer } from "./nlp/tokenizer.js";', type: 'keyword' },
+  { text: '', type: 'default' },
+  { text: 'class TrainingPipeline {', type: 'type' },
+  { text: '  constructor(config) {', type: 'function' },
+  { text: '    this.batchSize = config.batchSize ?? 32;', type: 'variable' },
+  { text: '    this.learningRate = config.lr ?? 0.001;', type: 'variable' },
+  { text: '    this.epochs = config.epochs ?? 10;', type: 'variable' },
+  { text: '  }', type: 'default' },
+  { text: '', type: 'default' },
+  { text: '  async loadDataset(path) {', type: 'function' },
+  { text: '    const loader = new DataLoader(path);', type: 'variable' },
+  { text: '    const raw = await loader.fetch();', type: 'variable' },
+  { text: '    // Tokenize and split into batches', type: 'comment' },
+  { text: '    return Tokenizer.batchEncode(raw, this.batchSize);', type: 'function' },
+  { text: '  }', type: 'default' },
+  { text: '', type: 'default' },
+  { text: '  async train(dataset) {', type: 'function' },
+  { text: '    for (let epoch = 0; epoch < this.epochs; epoch++) {', type: 'keyword' },
+  { text: '      const loss = await this.runEpoch(dataset);', type: 'function' },
+  { text: '      console.log(`Epoch ${epoch}: loss=${loss.toFixed(4)}`);', type: 'string' },
+  { text: '    }', type: 'default' },
+  { text: '  }', type: 'default' },
+];
+
+const JS_CODE_SNIPPET_SETS = {
+  DataLoader: [
+    { text: 'const fs = require("node:fs/promises");', type: 'keyword' },
+    { text: 'const { Transform } = require("node:stream");', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class DataLoader {', type: 'type' },
+    { text: '  constructor(source, options = {}) {', type: 'function' },
+    { text: '    this.source = source;', type: 'variable' },
+    { text: '    this.chunkSize = options.chunkSize ?? 1024;', type: 'variable' },
+    { text: '  }', type: 'default' },
+    { text: '', type: 'default' },
+    { text: '  async *stream() {', type: 'function' },
+    { text: '    const handle = await fs.open(this.source, "r");', type: 'variable' },
+    { text: '    // Yield chunks for memory efficiency', type: 'comment' },
+    { text: '    for await (const chunk of handle.readableWebStream()) {', type: 'keyword' },
+    { text: '      yield this.transform(chunk);', type: 'function' },
+    { text: '    }', type: 'default' },
+  ],
+  Trainer: [
+    { text: 'import { Adam } from "./optimizers/adam.js";', type: 'keyword' },
+    { text: 'import { Scheduler } from "./lr/scheduler.js";', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class Trainer {', type: 'type' },
+    { text: '  constructor(model, config) {', type: 'function' },
+    { text: '    this.model = model;', type: 'variable' },
+    { text: '    this.optimizer = new Adam(model.parameters(), config.lr);', type: 'variable' },
+    { text: '    this.scheduler = new Scheduler("cosine", config.warmupSteps);', type: 'variable' },
+    { text: '  }', type: 'default' },
+    { text: '', type: 'default' },
+    { text: '  async step(batch) {', type: 'function' },
+    { text: '    const logits = this.model.forward(batch.input);', type: 'variable' },
+    { text: '    const loss = crossEntropy(logits, batch.labels);', type: 'function' },
+    { text: '    // Backprop and update weights', type: 'comment' },
+    { text: '    loss.backward();', type: 'function' },
+    { text: '    this.optimizer.step();', type: 'function' },
+  ],
+  Optimizer: [
+    { text: 'const { Tensor } = require("./core/tensor.js");', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class AdamW {', type: 'type' },
+    { text: '  constructor(params, lr = 3e-4, weightDecay = 0.01) {', type: 'function' },
+    { text: '    this.params = params;', type: 'variable' },
+    { text: '    this.lr = lr;', type: 'variable' },
+    { text: '    this.beta1 = 0.9;', type: 'variable' },
+    { text: '    this.beta2 = 0.999;', type: 'variable' },
+    { text: '    this.weightDecay = weightDecay;', type: 'variable' },
+    { text: '  }', type: 'default' },
+    { text: '', type: 'default' },
+    { text: '  step() {', type: 'function' },
+    { text: '    for (const p of this.params) {', type: 'keyword' },
+    { text: '      // Apply weight decay before gradient update', type: 'comment' },
+    { text: '      p.data.mul_(1 - this.lr * this.weightDecay);', type: 'function' },
+    { text: '      p.data.add_(p.grad, -this.lr);', type: 'function' },
+    { text: '    }', type: 'default' },
+  ],
+  Evaluator: [
+    { text: 'import { metrics } from "./eval/metrics.js";', type: 'keyword' },
+    { text: 'import { Benchmark } from "./eval/benchmark.js";', type: 'keyword' },
+    { text: '', type: 'default' },
+    { text: 'class ModelEvaluator {', type: 'type' },
+    { text: '  constructor(model, testSet) {', type: 'function' },
+    { text: '    this.model = model;', type: 'variable' },
+    { text: '    this.testSet = testSet;', type: 'variable' },
+    { text: '    this.results = [];', type: 'variable' },
+    { text: '  }', type: 'default' },
+    { text: '', type: 'default' },
+    { text: '  async evaluate() {', type: 'function' },
+    { text: '    const preds = await this.model.predict(this.testSet);', type: 'variable' },
+    { text: '    const accuracy = metrics.accuracy(preds, this.testSet.labels);', type: 'function' },
+    { text: '    // Log results with timestamp', type: 'comment' },
+    { text: '    this.results.push({ accuracy, timestamp: Date.now() });', type: 'variable' },
+    { text: '    return accuracy;', type: 'function' },
+  ],
+};
+
+function getActiveCodeLines() {
+  return gameState.editorTab === 'train' ? JS_CODE_LINES : CODE_LINES;
+}
+function getActiveSnippetSets() {
+  return gameState.editorTab === 'train' ? JS_CODE_SNIPPET_SETS : CODE_SNIPPET_SETS;
+}
+
 let gameLoopId = null;
 let autoSaveId = null;
 let currentCodeLine = 0;
