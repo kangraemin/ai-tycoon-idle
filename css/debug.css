@@ -1,0 +1,142 @@
+/* debug.css - Developer debug panel styles */
+
+#debug-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 280px;
+  max-height: 100vh;
+  overflow-y: auto;
+  background: rgba(15, 15, 20, 0.96);
+  border-left: 1px solid rgba(255, 200, 50, 0.3);
+  z-index: 9999;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  color: #e0e0e0;
+  backdrop-filter: blur(8px);
+}
+
+.debug-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255, 200, 50, 0.1);
+  border-bottom: 1px solid rgba(255, 200, 50, 0.2);
+  font-weight: 700;
+  color: #ffc832;
+  font-size: 12px;
+}
+
+.debug-close {
+  background: none;
+  border: none;
+  color: #ffc832;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.debug-body {
+  padding: 8px;
+}
+
+.debug-section {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.debug-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.debug-section-title {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.debug-state-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 8px;
+  font-size: 11px;
+}
+
+.debug-state-grid span:nth-child(odd) {
+  color: #888;
+}
+
+.debug-val {
+  text-align: right;
+  color: #7dd3fc;
+  font-weight: 600;
+}
+
+.debug-btn-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.debug-btn-row button {
+  flex: 1;
+  min-width: 60px;
+  padding: 4px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: #ccc;
+  font-size: 10px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.debug-btn-row button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.debug-btn-row button:active {
+  transform: scale(0.95);
+}
+
+.debug-btn-row button.active {
+  background: rgba(100, 200, 255, 0.2);
+  border-color: rgba(100, 200, 255, 0.4);
+  color: #7dd3fc;
+}
+
+.debug-btn-row button.debug-danger {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+.debug-btn-row button.debug-danger:hover {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: rgba(248, 113, 113, 0.5);
+}
+
+/* Scrollbar */
+#debug-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+#debug-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#debug-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 200, 50, 0.2);
+  border-radius: 2px;
+}

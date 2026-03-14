@@ -497,7 +497,14 @@ async function startGame() {
 
   window.addEventListener('beforeunload', () => Analytics.sessionEnd());
 
-  if (typeof BGM !== 'undefined') BGM.initOnInteraction();
+  // Apply saved volume settings
+  if (typeof SFX !== 'undefined' && SFX._setVolume && gameState.settings?.sfxVolume !== undefined) {
+    SFX._setVolume(gameState.settings.sfxVolume);
+  }
+  if (typeof BGM !== 'undefined') {
+    if (gameState.settings?.musicVolume !== undefined) BGM.setVolume(gameState.settings.musicVolume);
+    BGM.initOnInteraction();
+  }
 }
 
 function updateGpuSlotCount() {

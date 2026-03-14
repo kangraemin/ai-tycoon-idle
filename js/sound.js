@@ -12,6 +12,10 @@ const SFX = (() => {
     return typeof gameState !== 'undefined' && gameState.settings && gameState.settings.sfx !== false;
   }
 
+  let masterVolume = 1.0;
+
+  function _setVolume(v) { masterVolume = Math.max(0, Math.min(1, v)); }
+
   function playTone(freq, duration, type, volume, ramp) {
     if (!isEnabled()) return;
     const c = getCtx();
@@ -20,7 +24,7 @@ const SFX = (() => {
     osc.type = type || 'sine';
     osc.frequency.setValueAtTime(freq, c.currentTime);
     if (ramp) osc.frequency.linearRampToValueAtTime(ramp, c.currentTime + duration);
-    gain.gain.setValueAtTime(volume || 0.15, c.currentTime);
+    gain.gain.setValueAtTime((volume || 0.15) * masterVolume, c.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + duration);
     osc.connect(gain);
     gain.connect(c.destination);
@@ -220,6 +224,8 @@ const SFX = (() => {
         { freq: 1047, dur: 0.4, type: 'sine', vol: 0.25 },
       ], 120);
     },
+
+    _setVolume,
   };
 })();
 

@@ -59,7 +59,7 @@ function createDefaultState() {
 
     achievements: {},
     tutorialStep: 0,
-    settings: { sfx: true, music: true, notifications: true },
+    settings: { sfx: true, music: true, notifications: true, sfxVolume: 0.3, musicVolume: 0.3 },
     saveVersion: 1,
 
     lastSaveTime: Date.now(),
