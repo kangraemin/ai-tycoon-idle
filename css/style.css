@@ -299,6 +299,18 @@ html, body {
 }
 
 /* ===== Models Screen ===== */
+#screen-models.active {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.models-sub-content {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
 #model-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

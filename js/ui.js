@@ -11,7 +11,12 @@ function switchScreen(screen) {
   if (currentScreen === screen) return;
   const btn = document.querySelector(`[data-screen="${screen}"]`);
   if (btn && btn.classList.contains('nav-locked')) {
-    if (typeof showToast === 'function') showToast('Complete earlier goals to unlock!', 'info');
+    const unlockCond = btn.dataset.unlock;
+    let msg = 'Complete earlier goals to unlock!';
+    if (unlockCond === 'career') {
+      msg = 'Career unlocks at 5,000 Rep (current: ' + formatNumber(gameState.reputation) + ')';
+    }
+    if (typeof showToast === 'function') showToast(msg, 'info');
     return;
   }
   if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
