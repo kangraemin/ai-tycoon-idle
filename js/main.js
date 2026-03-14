@@ -281,45 +281,47 @@ let _lastEditorLine = -1;
 
 // Advance typing by N characters in the editor
 function advanceTyping(chars) {
-  const line = CODE_LINES[currentCodeLine];
+  const lines = getActiveCodeLines();
+  const line = lines[currentCodeLine];
   if (!line) return;
 
   const fullText = line.text;
   currentCharIndex += chars;
 
   // Move to next line(s) if current line is complete
-  while (currentCharIndex >= CODE_LINES[currentCodeLine].text.length) {
-    const overflow = currentCharIndex - CODE_LINES[currentCodeLine].text.length;
-    currentCodeLine = (currentCodeLine + 1) % CODE_LINES.length;
+  while (currentCharIndex >= lines[currentCodeLine].text.length) {
+    const overflow = currentCharIndex - lines[currentCodeLine].text.length;
+    currentCodeLine = (currentCodeLine + 1) % lines.length;
     currentCharIndex = 0;
 
     // If we wrapped around, swap snippet & reset display
     if (currentCodeLine === 0) {
-      const available = Object.keys(CODE_SNIPPET_SETS);
+      const snippetSets = getActiveSnippetSets();
+      const available = Object.keys(snippetSets);
       const currentTheme = available.find(t =>
-        CODE_SNIPPET_SETS[t][0]?.text === CODE_LINES[0]?.text
+        snippetSets[t][0]?.text === lines[0]?.text
       );
       const others = available.filter(t => t !== currentTheme);
       const pick = others.length > 0
         ? others[Math.floor(Math.random() * others.length)]
         : available[Math.floor(Math.random() * available.length)];
-      const newLines = CODE_SNIPPET_SETS[pick];
+      const newLines = snippetSets[pick];
       if (newLines) {
-        CODE_LINES.length = 0;
-        newLines.forEach(l => CODE_LINES.push(l));
+        lines.length = 0;
+        newLines.forEach(l => lines.push(l));
       }
       renderEditorScreen();
       return;
     }
 
     // Skip empty lines automatically
-    if (CODE_LINES[currentCodeLine].text.length === 0) {
+    if (lines[currentCodeLine].text.length === 0) {
       updateEditorLine(currentCodeLine - 1, true);
       currentCharIndex = 0;
       continue;
     }
 
-    currentCharIndex = Math.min(overflow, CODE_LINES[currentCodeLine].text.length);
+    currentCharIndex = Math.min(overflow, lines[currentCodeLine].text.length);
   }
 
   updateEditorDOM();
@@ -346,11 +348,11 @@ function updateEditorDOM() {
     }
 
     if (isActive) {
-      const line = CODE_LINES[i];
+      const line = getActiveCodeLines()[i];
       const visibleText = line.text.substring(0, currentCharIndex);
       el.innerHTML = `<span class="code-${line.type}">${escapeHtml(visibleText)}</span><span class="editor-cursor"></span>`;
     } else if (i === prevLine && prevLine !== currentCodeLine) {
-      const line = CODE_LINES[i];
+      const line = getActiveCodeLines()[i];
       el.innerHTML = `<span class="code-${line.type}">${escapeHtml(line.text)}</span>`;
     }
   });
@@ -380,7 +382,7 @@ function updateEditorLine(lineIndex, completed) {
   if (!codeContent) return;
   const codeLines = codeContent.querySelectorAll('.code-line');
   if (codeLines[lineIndex]) {
-    const line = CODE_LINES[lineIndex];
+    const line = getActiveCodeLines()[lineIndex];
     codeLines[lineIndex].innerHTML = `<span class="code-${line.type}">${escapeHtml(line.text)}</span>`;
     codeLines[lineIndex].classList.remove('active-line', 'typing');
   }
@@ -507,17 +509,24 @@ function renderEditorScreen() {
 
   let html = '<div class="code-editor">';
   html += '<div class="editor-tab-bar">';
-  html += '<div class="editor-tab active"><span class="editor-tab-icon">PY</span> agent.py</div>';
-  html += '<div class="editor-tab" style="opacity:0.35;cursor:default;pointer-events:none"><span class="editor-tab-icon">JS</span> train.js</div>';
+  const isTrainUnlocked = gameState.careerStage >= 1;
+  const isAgentActive = gameState.editorTab !== 'train';
+  html += '<div class="editor-tab ' + (isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'agent\')"><span class="editor-tab-icon">PY</span> agent.py</div>';
+  if (isTrainUnlocked) {
+    html += '<div class="editor-tab ' + (!isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'train\')"><span class="editor-tab-icon">JS</span> train.js</div>';
+  } else {
+    html += '<div class="editor-tab" style="opacity:0.35;cursor:default;pointer-events:none"><span class="editor-tab-icon">JS</span> train.js</div>';
+  }
   html += '</div>';
   html += '<div class="editor-body" onclick="tapEditor(event)">';
   html += '<div class="line-numbers">';
-  CODE_LINES.forEach((_, i) => {
+  const activeLines = getActiveCodeLines();
+  activeLines.forEach((_, i) => {
     html += `<div class="line-number ${i === currentCodeLine ? 'active' : ''}">${i + 1}</div>`;
   });
   html += '</div>';
   html += '<div class="code-content">';
-  CODE_LINES.forEach((line, i) => {
+  activeLines.forEach((line, i) => {
     const isActive = i === currentCodeLine;
     const isPast = i < currentCodeLine;
     const activeClass = isActive ? ' active-line typing' : '';
@@ -556,13 +565,29 @@ function renderEditorScreen() {
   }
   html += '</div>';
   html += '<div class="editor-status-bar">';
-  html += '<div class="editor-status-left"><span class="editor-status-item">Python</span></div>';
+  html += '<div class="editor-status-left"><span class="editor-status-item">' + (gameState.editorTab === 'train' ? 'JavaScript' : 'Python') + '</span></div>';
   html += `<div class="editor-status-right"><span class="editor-status-item">Ln ${currentCodeLine + 1}</span></div>`;
   html += '</div>';
   html += '</div>';
 
   container.innerHTML = html;
   if (typeof applyCareerTheme === 'function') applyCareerTheme();
+}
+
+function switchEditorTab(tab) {
+  if (gameState.editorTab === tab) return;
+  if (tab === 'train' && gameState.careerStage < 1) return;
+  gameState.editorTab = tab;
+  currentCodeLine = 0;
+  currentCharIndex = 0;
+  _lastEditorLine = -1;
+  const lines = getActiveCodeLines();
+  const sets = getActiveSnippetSets();
+  const keys = Object.keys(sets);
+  const pick = keys[Math.floor(Math.random() * keys.length)];
+  lines.length = 0;
+  sets[pick].forEach(l => lines.push(l));
+  renderEditorScreen();
 }
 
 function renderModelsScreen() {
