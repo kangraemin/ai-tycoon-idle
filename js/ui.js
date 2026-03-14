@@ -16,6 +16,7 @@ function switchScreen(screen) {
     if (unlockCond === 'career') {
       msg = 'Earn 5,000 Rep to unlock Career (you have ' + formatNumber(gameState.reputation) + ')';
     }
+    Analytics.lockedTabClick('career', gameState.reputation);
     if (typeof showToast === 'function') showToast(msg, 'info');
     return;
   }
@@ -25,6 +26,7 @@ function switchScreen(screen) {
   const oldScreen = document.getElementById('screen-' + currentScreen);
   const newScreen = document.getElementById('screen-' + screen);
   currentScreen = screen;
+  Analytics.screenView(screen);
 
   if (oldScreen) {
     oldScreen.classList.add('screen-exit');
@@ -67,11 +69,13 @@ function switchModelsSubTab(subTab) {
     } else if (unlockCond === 'fusion') {
       msg = 'Own 2+ models to unlock Fusion (you have ' + getOwnedModels().length + ')';
     }
+    Analytics.lockedTabClick(subTab, 0);
     showToast(msg, 'info');
     return;
   }
   if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
   currentModelsSubTab = subTab;
+  Analytics.screenView('models/' + subTab);
   document.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
   if (btn) btn.classList.add('active');
   document.querySelectorAll('.sub-panel').forEach(el => el.classList.remove('active'));

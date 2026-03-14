@@ -473,6 +473,7 @@ async function startGame() {
   if (loaded) {
     applyOfflineEarnings();
   }
+  Analytics.sessionStart(loaded);
 
   if (gameState.tutorialStep < (typeof TUTORIAL_STEPS !== 'undefined' ? TUTORIAL_STEPS.length : 6)) {
     startTutorial();
@@ -493,6 +494,8 @@ async function startGame() {
   lastTickTime = performance.now();
   gameLoopId = setInterval(gameLoop, 100);
   autoSaveId = setInterval(saveGame, AUTO_SAVE_INTERVAL);
+
+  window.addEventListener('beforeunload', () => Analytics.sessionEnd());
 
   if (typeof BGM !== 'undefined') BGM.initOnInteraction();
 }

@@ -123,6 +123,8 @@ function doResearchPull() {
     return;
   }
 
+  Analytics.researchPull(result.rarity, result.hallucination, RESEARCH_COST);
+
   const resultEl = document.getElementById('research-result');
   if (!resultEl) return;
 

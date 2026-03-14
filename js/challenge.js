@@ -101,6 +101,9 @@ function startChallenge(type) {
     answered: false,
   };
 
+  const isFree = gameState.freeChallengesUsed <= DAILY_FREE_CHALLENGES && hasFreeChallenge();
+  Analytics.challengeStart(type, !isFree, gameState.tokens);
+
   renderChallengeOverlay(type, problem, typeDef.time);
   startChallengeTimer(typeDef.time);
 }
@@ -269,6 +272,7 @@ function submitChallenge(forcedAnswer) {
 
   // Update stats
   gameState.challengeStats.played++;
+  Analytics.challengeComplete(activeChallenge.type, gradeInfo.grade, score);
   if (!gameState.challengeStats.bestGrade ||
       GRADE_THRESHOLDS.findIndex(g => g.grade === gradeInfo.grade) <
       GRADE_THRESHOLDS.findIndex(g => g.grade === gameState.challengeStats.bestGrade)) {
