@@ -146,6 +146,7 @@ function skipTutorial() {
     prevTarget.style.zIndex = '';
     delete prevTarget.dataset.tutorialTarget;
   }
+  Analytics.tutorialStep(gameState.tutorialStep, 'skip');
   gameState.tutorialStep = TUTORIAL_STEPS.length;
   if (typeof saveGame === 'function') saveGame();
   endTutorial();
@@ -153,6 +154,7 @@ function skipTutorial() {
 
 function endTutorial() {
   tutorialActive = false;
+  Analytics.tutorialStep(gameState.tutorialStep, 'complete');
   const overlay = document.getElementById('tutorial-overlay');
   if (overlay) overlay.classList.remove('active');
 }

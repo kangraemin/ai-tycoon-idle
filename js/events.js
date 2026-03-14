@@ -106,6 +106,7 @@ function tapFixEvent() {
   if (eventFixTaps >= def.fixTaps) {
     // Event resolved — bonus
     gameState.eventStats.responded++;
+    Analytics.eventResolved(activeEvent.id, activeEvent.def.type, def.fixTaps);
     activeBuffs.push({
       id: activeEvent.id + '_bonus',
       target: 'loc',

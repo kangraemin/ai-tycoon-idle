@@ -72,6 +72,7 @@ function checkAchievements() {
       if (ach.check(stats)) {
         gameState.achievements[ach.id] = Date.now();
         gameState.papers += ach.papers;
+        Analytics.achievementUnlock(ach.id, ach.name, ach.papers);
         if (MILESTONE_IDS.includes(ach.id)) {
           if (typeof SFX !== 'undefined' && SFX.celebrate) SFX.celebrate();
           if (typeof showCelebration === 'function') showCelebration(ach.name, ach.desc + ' — +' + ach.papers + ' Papers!');

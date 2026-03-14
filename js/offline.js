@@ -36,6 +36,7 @@ function applyOfflineEarnings() {
   gameState.loc += earnings.loc;
   gameState.totalLoc += earnings.loc;
   if (earnings.compute > 0) gameState.compute += earnings.compute;
+  Analytics.offlineCollect(Math.round(earnings.elapsed / 60), Math.round(earnings.loc));
 
   if (typeof showOfflineModal === 'function') {
     showOfflineModal(earnings);
