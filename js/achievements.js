@@ -106,6 +106,16 @@ function renderAchievementList() {
   return html;
 }
 
+function renderCareerAwardsPanel() {
+  const container = document.getElementById('career-awards-content');
+  if (!container) return;
+  const { unlocked, total } = getAchievementProgress();
+  let html = '<div class="screen-desc">Track your AI journey milestones. Earn Papers for each achievement.</div>';
+  html += '<div style="text-align:center;margin-bottom:12px;font-weight:700;color:var(--accent)">' + unlocked + '/' + total + ' Unlocked</div>';
+  html += renderAchievementList();
+  container.innerHTML = html;
+}
+
 function renderAchievementScreen() {
   const grid = document.getElementById('achievement-grid');
   if (!grid) return;

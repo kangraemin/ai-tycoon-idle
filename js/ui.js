@@ -6,7 +6,7 @@ function switchScreen(screen) {
   // 제거된 탭 → Models 서브탭으로 리다이렉트
   if (screen === 'research') { switchScreen('models'); switchModelsSubTab('research'); return; }
   if (screen === 'fusion') { switchScreen('models'); switchModelsSubTab('fusion'); return; }
-  if (screen === 'achievements') { showAchievementsModal(); return; }
+  if (screen === 'achievements') { switchScreen('career'); switchCareerSubTab('career-awards'); return; }
 
   if (currentScreen === screen) return;
   const btn = document.querySelector(`[data-screen="${screen}"]`);
@@ -70,6 +70,21 @@ function switchModelsSubTab(subTab) {
   document.querySelectorAll('.sub-panel').forEach(el => el.classList.remove('active'));
   const panel = document.getElementById('sub-' + subTab);
   if (panel) panel.classList.add('active');
+}
+
+let currentCareerSubTab = 'career-main';
+function switchCareerSubTab(subTab) {
+  if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
+  currentCareerSubTab = subTab;
+  document.querySelectorAll('#career-sub-tabs .sub-tab').forEach(el => el.classList.remove('active'));
+  const btn = document.querySelector('#career-sub-tabs [data-subtab="' + subTab + '"]');
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.models-sub-content .sub-panel').forEach(el => {
+    if (el.id.startsWith('sub-career')) el.classList.remove('active');
+  });
+  const panel = document.getElementById('sub-' + subTab);
+  if (panel) panel.classList.add('active');
+  if (subTab === 'career-awards' && typeof renderCareerAwardsPanel === 'function') renderCareerAwardsPanel();
 }
 
 function updateCurrencyDisplay() {
@@ -172,7 +187,7 @@ function showSettings() {
       saveGame();
       showSettings();
     }},
-    { text: 'Achievements', onClick: () => showAchievementsModal() },
+    { text: 'Achievements', onClick: () => { switchScreen('career'); switchCareerSubTab('career-awards'); } },
     { text: 'Reset Data', onClick: () => {
       showModal('Reset Data', 'Are you sure? All progress will be lost!', [
         { text: 'Cancel' },

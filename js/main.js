@@ -781,11 +781,8 @@ function renderUpgradeScreen() {
 // renderFusionScreen is now defined in fusion.js
 
 function renderCareerScreen() {
-  const container = document.getElementById('career-content');
-  if (!container) return;
-  if (typeof renderPrestigeScreen === 'function') {
-    renderPrestigeScreen();
-  }
+  if (typeof renderPrestigeScreen === 'function') renderPrestigeScreen();
+  if (typeof renderCareerAwardsPanel === 'function') renderCareerAwardsPanel();
 }
 
 function flashPurchase(btnEl, success) {
