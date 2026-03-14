@@ -61,6 +61,7 @@ function buyUpgrade(category, id) {
   if (gameState.compute < cost) return false;
   gameState.compute -= cost;
   gameState.upgrades[category][id]++;
+  Analytics.upgradePurchase(category, id, gameState.upgrades[category][id], cost);
   return true;
 }
 
@@ -73,5 +74,6 @@ function buyGpuSlot() {
   if (gameState.compute < cost) return false;
   gameState.compute -= cost;
   gameState.gpuSlots++;
+  Analytics.gpuExpansion(gameState.gpuSlots, cost);
   return true;
 }

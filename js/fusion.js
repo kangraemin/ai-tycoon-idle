@@ -215,7 +215,9 @@ function doFusionUI() {
   const recipe = findRecipe(fusionSlotA, fusionSlotB);
   if (!recipe) return;
 
+  const cost = getFusionCost(recipe);
   if (doFusion(recipe)) {
+    Analytics.fusionAttempt(recipe.result, cost);
     if (typeof SFX !== 'undefined' && SFX.fusion) SFX.fusion();
     if (typeof showToast === 'function') showToast(`Fused ${getModelDef(recipe.result).name}!`, 'success');
 
@@ -239,6 +241,7 @@ function doFusionUI() {
 function doSameFusionUI() {
   if (!fusionSlotA) return;
   if (doSameFusion(fusionSlotA)) {
+    Analytics.fusionAttempt(fusionSlotA + '_levelup', 0);
     if (typeof SFX !== 'undefined' && SFX.buy) SFX.buy();
     if (typeof showToast === 'function') showToast('Model leveled up!', 'success');
     fusionSlotA = null;

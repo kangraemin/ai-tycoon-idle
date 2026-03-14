@@ -87,6 +87,7 @@ function doCareerAdvance() {
   // Apply new stage
   gameState.careerStage = nextStage;
   gameState.prestigeMultiplier = next.multiplier;
+  Analytics.careerAdvance(nextStage, next.multiplier, gameState.reputation, gameState.careerHistory.length);
 
   return true;
 }
