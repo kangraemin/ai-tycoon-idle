@@ -2,25 +2,25 @@
 
 const UPGRADE_DEFS = {
   agent: {
-    toolUse:    { name: 'Tool Use',    baseCost: 500,  description: '+20% LoC/s per level' },
+    toolUse:    { name: 'Tool Use',    baseCost: 500,  description: '+20% Code output per level' },
     memory:     { name: 'Memory',      baseCost: 800,  description: '+1h max offline time per level' },
     planning:   { name: 'Planning',    baseCost: 1200, description: '+1 challenge hint per level' },
   },
   teamAgent: {
     multiAgent:   { name: 'Multi-Agent',   baseCost: 1000, description: '+1 GPU slot per level' },
-    orchestrator: { name: 'Orchestrator',   baseCost: 1500, description: '-15% auto-compile interval per level' },
+    orchestrator: { name: 'Orchestrator',   baseCost: 1500, description: 'Auto-Compile runs 15% faster per level' },
     delegation:   { name: 'Delegation',     baseCost: 2000, description: '-10% fusion cost per level' },
   },
   skill: {
-    rag:        { name: 'RAG',         baseCost: 300,  description: '+15% compile rate per level' },
+    rag:        { name: 'RAG',         baseCost: 300,  description: '+15% Compute per compile per level' },
     fineTuning: { name: 'Fine-tuning', baseCost: 600,  description: '-10% model level-up cost per level' },
     rlhf:       { name: 'RLHF',       baseCost: 1000, description: '+20% challenge rewards per level' },
   },
   infra: {
-    batchSize:    { name: 'Batch Size',    baseCost: 50,   description: '+1 LoC per tap' },
-    distTraining: { name: 'Distributed',   baseCost: 100,  description: '+10% LoC/s per level' },
+    batchSize:    { name: 'Batch Size',    baseCost: 50,   description: '+1 Code per tap' },
+    distTraining: { name: 'Distributed',   baseCost: 100,  description: '+10% Code output per level' },
     quantization: { name: 'Quantization',  baseCost: 200,  description: '-5% upgrade costs per level' },
-    autoPipeline: { name: 'Auto Pipeline', baseCost: 500,  description: '+15% manual Compile bonus per level' },
+    autoPipeline: { name: 'Auto Pipeline', baseCost: 500,  description: '+15% Compile bonus per level' },
   },
 };
 

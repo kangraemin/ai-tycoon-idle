@@ -1,21 +1,23 @@
 // events.js - Random event system (positive + negative)
 
+const TARGET_LABELS = { loc: 'Code', compile: 'Compile' };
+
 const EVENT_DEFS = {
   // Positive events
-  viral:       { type: 'positive', name: 'Viral Post!',      desc: 'Your model went viral! 5x LoC for 30s',     duration: 30, effect: { target: 'loc', multiplier: 5 } },
+  viral:       { type: 'positive', name: 'Viral Post!',      desc: 'Your model went viral! 5x Code for 30s',     duration: 30, effect: { target: 'loc', multiplier: 5 } },
   hackerNews:  { type: 'positive', name: 'Hacker News!',     desc: 'Front page! +5000 Compute',                 duration: 0,  effect: { instant: 'compute', amount: 5000 } },
-  enterprise:  { type: 'positive', name: 'Enterprise Deal!', desc: '2x compile rate for 60s',                    duration: 60, effect: { target: 'compile', multiplier: 2 } },
+  enterprise:  { type: 'positive', name: 'Enterprise Deal!', desc: '2x Compute per compile for 60s',                    duration: 60, effect: { target: 'compile', multiplier: 2 } },
   intern:      { type: 'positive', name: 'New Intern!',      desc: 'A talented intern joins — random model +1',  duration: 0,  effect: { instant: 'model' } },
   gpuDonation: { type: 'positive', name: 'GPU Donation!',    desc: '+10000 Compute donated!',                    duration: 0,  effect: { instant: 'compute', amount: 10000 } },
-  benchmark:   { type: 'positive', name: 'Benchmark Win!',   desc: '3x LoC for 45s',                            duration: 45, effect: { target: 'loc', multiplier: 3 } },
+  benchmark:   { type: 'positive', name: 'Benchmark Win!',   desc: '3x Code for 45s',                            duration: 45, effect: { target: 'loc', multiplier: 3 } },
 
   // Negative events
   criticalBug:   { type: 'negative', name: 'Critical Bug!',     desc: 'Production halted! Tap 30 times to fix',     duration: 0,   fixTaps: 30, effect: { halt: true } },
   serverCrash:   { type: 'negative', name: 'Server Crash!',     desc: 'Servers down! Tap 20 times to restore',      duration: 0,   fixTaps: 20, effect: { halt: true } },
-  hallucination: { type: 'negative', name: 'Hallucination!',    desc: 'Model hallucinating! Auto-compile stopped. Tap 15 times', duration: 0, fixTaps: 15, effect: { stopAutoProd: true } },
-  regulation:    { type: 'negative', name: 'New Regulation',    desc: 'Compliance review — 0.5x LoC for 60s',       duration: 60,  fixTaps: 0,  effect: { target: 'loc', multiplier: 0.5 } },
+  hallucination: { type: 'negative', name: 'Hallucination!',    desc: 'Model glitching! Auto-Compile paused. Tap 15x to fix', duration: 0, fixTaps: 15, effect: { stopAutoProd: true } },
+  regulation:    { type: 'negative', name: 'New Regulation',    desc: 'Compliance review — Half Code for 60s',       duration: 60,  fixTaps: 0,  effect: { target: 'loc', multiplier: 0.5 } },
   overheating:   { type: 'negative', name: 'GPU Overheating!',  desc: 'Cool down! Tap 15 times to fix',             duration: 0,   fixTaps: 15, effect: { halt: true } },
-  negativePR:    { type: 'negative', name: 'Negative PR',       desc: 'Bad press — 0.5x LoC for 45s',              duration: 45,  fixTaps: 0,  effect: { target: 'loc', multiplier: 0.5 } },
+  negativePR:    { type: 'negative', name: 'Negative PR',       desc: 'Bad press — Half Code for 45s',              duration: 45,  fixTaps: 0,  effect: { target: 'loc', multiplier: 0.5 } },
 };
 
 const EVENT_SPAWN_MIN = 120;  // 2 minutes
@@ -110,7 +112,7 @@ function tapFixEvent() {
       multiplier: 2,
       endTime: Date.now() + 30000,
     });
-    if (typeof showToast === 'function') showToast('Event resolved! 2x LoC for 30s', 'success');
+    if (typeof showToast === 'function') showToast('Fixed! 2x Code for 30s', 'success');
     activeEvent = null;
     lastRenderedEventId = null;
     renderEventBanner();
@@ -195,7 +197,7 @@ function renderEventBanner() {
     banner.className = 'event-banner ' + (buff.multiplier >= 1 ? 'positive' : 'negative');
     banner.innerHTML = `
       <span class="material-symbols-outlined">${buff.multiplier >= 1 ? 'trending_up' : 'trending_down'}</span>
-      <span style="flex:1;font-size:12px"><strong>${def.name || 'Buff'}</strong> ${buff.multiplier}x ${buff.target} (<span class="buff-timer">${remaining}s</span>)</span>
+      <span style="flex:1;font-size:12px"><strong>${def.name || 'Buff'}</strong> ${buff.multiplier}x ${TARGET_LABELS[buff.target] || buff.target} (<span class="buff-timer">${remaining}s</span>)</span>
     `;
   } else {
     lastRenderedEventId = null;
@@ -240,7 +242,7 @@ function triggerBehaviorEvent(name, icon, target, multiplier, durationSec) {
     multiplier,
     endTime: Date.now() + durationSec * 1000,
   });
-  if (typeof showToast === 'function') showToast(`${name} ${multiplier}x ${target} for ${durationSec}s`, 'success');
+  if (typeof showToast === 'function') showToast(`${name} ${multiplier}x ${TARGET_LABELS[target] || target} for ${durationSec}s`, 'success');
   if (typeof SFX !== 'undefined' && SFX.levelUp) SFX.levelUp();
   renderEventBanner();
 }
