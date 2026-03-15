@@ -713,8 +713,7 @@ function showModelDetail(modelId) {
         </div>
       </div>
       <div class="model-detail-snippet">
-        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px">Sample API</div>
-        <code>${def.codeSnippet}</code>
+        <div style="font-size:12px;color:var(--text-secondary);line-height:1.4">${def.description}</div>
       </div>
     </div>
   `;
