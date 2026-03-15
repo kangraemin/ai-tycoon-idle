@@ -445,6 +445,7 @@ function gameLoop() {
     lastTickTime = now;
   }
   updateCurrencyDisplay();
+  updateChallengeCooldownDisplay();
   if (typeof updateHintBanner === 'function') updateHintBanner();
   if (typeof renderEventBanner === 'function') renderEventBanner();
   if (typeof checkAchievements === 'function') checkAchievements();
@@ -513,6 +514,21 @@ function updateGpuSlotCount() {
   if (el) el.textContent = `${owned.length}/${gameState.gpuSlots} GPU`;
   const modelEl = document.getElementById('model-slot-count');
   if (modelEl) modelEl.textContent = `${owned.length}/${gameState.gpuSlots} GPU`;
+}
+
+function updateChallengeCooldownDisplay() {
+  if (typeof getChallengeCooldown !== 'function') return;
+  const cooldown = getChallengeCooldown();
+  const btn = document.querySelector('.editor-toolbar .btn');
+  if (!btn) return;
+  if (cooldown > 0) {
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ' + Math.ceil(cooldown / 1000) + 's';
+    btn.classList.add('btn-disabled');
+    btn.classList.remove('btn-primary');
+    btn.disabled = true;
+  } else if (btn.classList.contains('btn-disabled') && btn.textContent.includes('s')) {
+    renderEditorScreen();
+  }
 }
 
 function renderEditorScreen() {

@@ -338,10 +338,9 @@ function showCurrencyTooltip(el, type) {
   tooltip.style.top = (rect.bottom + 6) + 'px';
   tooltip.style.left = Math.max(8, Math.min(rect.left, window.innerWidth - 200)) + 'px';
 
-  setTimeout(dismissCurrencyTooltip, 3000);
   setTimeout(() => {
     document.addEventListener('click', dismissCurrencyTooltip, { once: true, capture: true });
-  }, 200);
+  }, 10);
 }
 
 function dismissCurrencyTooltip() {
