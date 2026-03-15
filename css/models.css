@@ -91,6 +91,11 @@
   justify-content: center;
   background: rgba(45, 45, 45, 0.5);
   border: 2px dashed rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+.model-slot.empty:active {
+  transform: scale(0.95);
 }
 
 /* Level Badge */

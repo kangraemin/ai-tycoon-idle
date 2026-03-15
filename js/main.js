@@ -730,6 +730,7 @@ function showModelDetail(modelId) {
       onClick: canLevelUp ? () => {
         doSameFusion(modelId);
         saveGame();
+        showToast(`Level Up! ${def.name} → Lv.${model.level + 1}`, 'success');
         renderModelsScreen();
         showModelDetail(modelId);
       } : null
