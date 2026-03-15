@@ -519,7 +519,7 @@ function updateGpuSlotCount() {
 function updateChallengeCooldownDisplay() {
   if (typeof getChallengeCooldown !== 'function') return;
   const cooldown = getChallengeCooldown();
-  const btn = document.querySelector('.editor-toolbar .btn');
+  const btn = document.querySelector('.editor-challenge-area .btn');
   if (!btn) return;
   if (cooldown > 0) {
     btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ' + Math.ceil(cooldown / 1000) + 's';
