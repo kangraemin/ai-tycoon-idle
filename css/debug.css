@@ -127,6 +127,29 @@
   border-color: rgba(248, 113, 113, 0.5);
 }
 
+.debug-select {
+  flex: 1;
+  min-width: 80px;
+  padding: 4px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: #ccc;
+  font-size: 10px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.debug-select:focus {
+  outline: none;
+  border-color: rgba(100, 200, 255, 0.4);
+}
+
+.debug-select option {
+  background: #1a1a2e;
+  color: #ccc;
+}
+
 /* Scrollbar */
 #debug-panel::-webkit-scrollbar {
   width: 4px;

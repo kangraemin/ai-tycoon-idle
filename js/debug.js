@@ -65,6 +65,22 @@ function renderDebugPanel() {
   const owned = typeof getOwnedModels === 'function' ? getOwnedModels().length : '?';
   const stage = typeof CAREER_STAGES !== 'undefined' ? CAREER_STAGES[gameState.careerStage]?.name : gameState.careerStage;
 
+  // Build event options
+  const eventOptions = typeof EVENT_DEFS !== 'undefined'
+    ? Object.keys(EVENT_DEFS).map(id => `<option value="${id}">${id}</option>`).join('')
+    : '';
+
+  // Build challenge options
+  const challengeOptions = typeof CHALLENGE_TYPES !== 'undefined'
+    ? Object.keys(CHALLENGE_TYPES).map(t => `<option value="${t}">${CHALLENGE_TYPES[t].name}</option>`).join('')
+    : '';
+
+  // Build quick save slot indicators
+  const slotIndicators = [1, 2, 3].map(s => {
+    const exists = !!localStorage.getItem(`aiTycoon_quicksave_${s}`);
+    return exists ? '●' : '○';
+  });
+
   panel.innerHTML = `
     <div class="debug-header">
       <span>🛠 Debug Panel</span>
@@ -83,6 +99,16 @@ function renderDebugPanel() {
           <span>Models</span><span class="debug-val">${owned}/${gameState.gpuSlots}</span>
           <span>Career</span><span class="debug-val">${stage}</span>
           <span>Speed</span><span class="debug-val">${gameSpeedMultiplier}x</span>
+        </div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-section-title">Presets</div>
+        <div class="debug-btn-row">
+          <button onclick="debugLoadPreset('early')">Early</button>
+          <button onclick="debugLoadPreset('mid')">Mid</button>
+          <button onclick="debugLoadPreset('late')">Late</button>
+          <button onclick="debugLoadPreset('endgame')">Endgame</button>
         </div>
       </div>
 
@@ -130,15 +156,60 @@ function renderDebugPanel() {
       </div>
 
       <div class="debug-section">
-        <div class="debug-section-title">Trigger</div>
+        <div class="debug-section-title">Trigger Event</div>
         <div class="debug-btn-row">
-          <button onclick="debugTriggerEvent('positive')">+ Event</button>
-          <button onclick="debugTriggerEvent('negative')">- Event</button>
-          <button onclick="debugTriggerChallenge()">Challenge</button>
+          <select id="debug-event-select" class="debug-select">${eventOptions}</select>
+          <button onclick="debugTriggerSpecificEvent(document.getElementById('debug-event-select').value)">Trigger</button>
         </div>
+        <div class="debug-btn-row">
+          <button onclick="debugTriggerEvent('positive')">+ Random</button>
+          <button onclick="debugTriggerEvent('negative')">- Random</button>
+        </div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-section-title">Trigger Challenge</div>
+        <div class="debug-btn-row">
+          <select id="debug-challenge-select" class="debug-select">${challengeOptions}</select>
+          <button onclick="debugTriggerSpecificChallenge(document.getElementById('debug-challenge-select').value)">Trigger</button>
+        </div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-section-title">Career</div>
         <div class="debug-btn-row">
           <button onclick="debugJumpCareer(1)">Career +1</button>
           <button onclick="debugJumpCareer(7)">Career Max</button>
+        </div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-section-title">Quick Save</div>
+        <div class="debug-btn-row">
+          <button onclick="debugQuickSave(1)">Save 1 ${slotIndicators[0]}</button>
+          <button onclick="debugQuickSave(2)">Save 2 ${slotIndicators[1]}</button>
+          <button onclick="debugQuickSave(3)">Save 3 ${slotIndicators[2]}</button>
+        </div>
+        <div class="debug-btn-row">
+          <button onclick="debugQuickLoad(1)">Load 1</button>
+          <button onclick="debugQuickLoad(2)">Load 2</button>
+          <button onclick="debugQuickLoad(3)">Load 3</button>
+        </div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-section-title">Time Skip</div>
+        <div class="debug-btn-row">
+          <button onclick="debugSkipTokenRecharge()">Max Tokens</button>
+          <button onclick="debugSkipEventCooldown()">Reset Cooldowns</button>
+        </div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-section-title">Reset</div>
+        <div class="debug-btn-row">
+          <button onclick="debugResetTutorial()">Tutorial</button>
+          <button onclick="debugResetAchievements()">Achievements</button>
         </div>
       </div>
 
