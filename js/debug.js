@@ -325,6 +325,85 @@ function debugLoadPreset(name) {
   if (typeof showToast === 'function') showToast(`Preset: ${name}`, 'success');
 }
 
+function debugTriggerSpecificEvent(eventId) {
+  const def = EVENT_DEFS[eventId];
+  if (!def) return;
+  activeEvent = { id: eventId, def, startTime: Date.now() };
+  eventFixTaps = 0;
+  gameState.eventStats.total++;
+  if (def.effect.instant === 'compute') gameState.compute += def.effect.amount;
+  if (def.effect.instant === 'model') {
+    const owned = getOwnedModels();
+    if (owned.length > 0) owned[Math.floor(Math.random() * owned.length)].count++;
+  }
+  if (def.duration > 0) {
+    activeBuffs.push({ id: eventId, target: def.effect.target, multiplier: def.effect.multiplier, endTime: Date.now() + def.duration * 1000 });
+    activeEvent = null;
+    lastRenderedEventId = null;
+  }
+  if (typeof renderEventBanner === 'function') renderEventBanner();
+  if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+  renderDebugPanel();
+  if (typeof showToast === 'function') showToast(`Event: ${eventId}`, 'success');
+}
+
+function debugTriggerSpecificChallenge(type) {
+  if (typeof CHALLENGE_TYPES === 'undefined' || !CHALLENGE_TYPES[type]) return;
+  if (typeof startChallenge === 'function') startChallenge(type);
+}
+
+function debugQuickSave(slot) {
+  try {
+    localStorage.setItem(`aiTycoon_quicksave_${slot}`, JSON.stringify(gameState));
+    if (typeof showToast === 'function') showToast(`Saved to slot ${slot}`, 'success');
+    renderDebugPanel();
+  } catch (e) {
+    if (typeof showToast === 'function') showToast('Save failed: ' + e.message, 'error');
+  }
+}
+
+function debugQuickLoad(slot) {
+  try {
+    const data = localStorage.getItem(`aiTycoon_quicksave_${slot}`);
+    if (!data) {
+      if (typeof showToast === 'function') showToast(`Slot ${slot} is empty`, 'error');
+      return;
+    }
+    const parsed = JSON.parse(data);
+    Object.assign(gameState, parsed);
+    debugRefreshAllUI();
+    if (typeof showToast === 'function') showToast(`Loaded slot ${slot}`, 'success');
+  } catch (e) {
+    if (typeof showToast === 'function') showToast('Load failed: ' + e.message, 'error');
+  }
+}
+
+function debugSkipTokenRecharge() {
+  gameState.tokens = 10;
+  if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+  renderDebugPanel();
+  if (typeof showToast === 'function') showToast('Tokens maxed!', 'success');
+}
+
+function debugSkipEventCooldown() {
+  gameState.lastEventTime = 0;
+  gameState.freeChallengesUsed = 0;
+  renderDebugPanel();
+  if (typeof showToast === 'function') showToast('Cooldowns reset!', 'success');
+}
+
+function debugResetTutorial() {
+  gameState.tutorialStep = 0;
+  if (typeof startTutorial === 'function') startTutorial();
+  if (typeof showToast === 'function') showToast('Tutorial reset!', 'success');
+}
+
+function debugResetAchievements() {
+  gameState.achievements = {};
+  renderDebugPanel();
+  if (typeof showToast === 'function') showToast('Achievements reset!', 'success');
+}
+
 // --- Initialization ---
 
 document.addEventListener('keydown', (e) => {
@@ -345,6 +424,19 @@ if (DEBUG_ENABLED) {
   });
 }
 
+// URL parameter handling: ?debug=1&preset=mid
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('debug') === '1') {
+    enableDebugMode();
+    toggleDebugPanel();
+  }
+  const preset = params.get('preset');
+  if (preset && DEBUG_PRESETS[preset]) {
+    setTimeout(() => debugLoadPreset(preset), 500);
+  }
+});
+
 // Expose to console for quick access
 window.debugGame = {
   enable: enableDebugMode,
@@ -359,5 +451,13 @@ window.debugGame = {
   reset: debugResetSave,
   loadPreset: debugLoadPreset,
   refreshUI: debugRefreshAllUI,
+  triggerEvent: debugTriggerSpecificEvent,
+  triggerChallenge: debugTriggerSpecificChallenge,
+  quickSave: debugQuickSave,
+  quickLoad: debugQuickLoad,
+  skipTokens: debugSkipTokenRecharge,
+  skipCooldowns: debugSkipEventCooldown,
+  resetTutorial: debugResetTutorial,
+  resetAchievements: debugResetAchievements,
   state: () => gameState,
 };
