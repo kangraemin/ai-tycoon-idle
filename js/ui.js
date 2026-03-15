@@ -150,8 +150,9 @@ function showModal(title, message, buttons) {
   btnContainer.innerHTML = '';
   buttons.forEach(btn => {
     const el = document.createElement('button');
-    el.className = 'btn ' + (btn.primary ? 'btn-primary' : 'btn-secondary');
+    el.className = 'btn ' + (btn.disabled ? 'btn-disabled' : btn.primary ? 'btn-primary' : 'btn-secondary');
     el.textContent = btn.text;
+    if (btn.disabled) el.disabled = true;
     el.onclick = () => {
       overlay.classList.remove('active');
       if (btn.onClick) btn.onClick();
@@ -171,8 +172,9 @@ function showModalHtml(title, htmlContent, buttons) {
   btnContainer.innerHTML = '';
   buttons.forEach(btn => {
     const el = document.createElement('button');
-    el.className = 'btn ' + (btn.primary ? 'btn-primary' : 'btn-secondary');
+    el.className = 'btn ' + (btn.disabled ? 'btn-disabled' : btn.primary ? 'btn-primary' : 'btn-secondary');
     el.textContent = btn.text;
+    if (btn.disabled) el.disabled = true;
     el.onclick = () => {
       overlay.classList.remove('active');
       if (btn.onClick) btn.onClick();

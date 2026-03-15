@@ -50,6 +50,7 @@ function pullResearch() {
 
   const modelState = getModelState(result.modelId);
   if (!modelState) return null;
+  result.isNew = modelState.count === 0;
 
   // GPU slot check for new models
   if (modelState.count === 0) {
@@ -64,6 +65,7 @@ function pullResearch() {
   gameState.papers -= RESEARCH_COST;
   if (gameState.stats) gameState.stats.gachaPulls++;
   modelState.count++;
+  result.newCount = modelState.count;
 
   return result;
 }
@@ -164,7 +166,9 @@ function doResearchPull() {
         </div>
         <div class="research-name">${def.name}</div>
         <div class="rarity-badge ${result.rarity}">${result.rarity[0].toUpperCase() + result.rarity.slice(1)}</div>
-
+        <div style="color:var(--text-secondary);font-size:12px;margin-top:6px">
+          ${result.isNew ? 'New model discovered!' : `Duplicate \u2014 now x${result.newCount}`}
+        </div>
       </div>
       <div class="research-pull-area" style="margin-top:16px">
         <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>

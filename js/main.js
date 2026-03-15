@@ -718,9 +718,26 @@ function showModelDetail(modelId) {
     </div>
   `;
 
-  showModalHtml(def.name, html, [
-    { text: 'Close', primary: true }
-  ]);
+  const levelUpCost = getModelLevelUpCost(model);
+  const canLevelUp = model.count >= 2 && gameState.compute >= levelUpCost;
+  const buttons = [];
+
+  if (model.count >= 2) {
+    buttons.push({
+      text: `Level Up (${formatNumber(levelUpCost)})`,
+      primary: canLevelUp,
+      disabled: !canLevelUp,
+      onClick: canLevelUp ? () => {
+        doSameFusion(modelId);
+        saveGame();
+        renderModelsScreen();
+        showModelDetail(modelId);
+      } : null
+    });
+  }
+
+  buttons.push({ text: 'Close', primary: model.count < 2 });
+  showModalHtml(def.name, html, buttons);
 }
 
 function renderUpgradeScreen() {
