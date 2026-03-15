@@ -7,6 +7,29 @@ const DEBUG_ENABLED = (() => {
 let debugPanelVisible = false;
 let gameSpeedMultiplier = 1;
 
+const DEBUG_PRESETS = {
+  early: {
+    primitives: { loc: 500, compute: 200, papers: 10, totalLoc: 500, reputation: 100, tokens: 5, careerStage: 0, prestigeMultiplier: 1, gpuSlots: 1 },
+    models: { chatbot: { count: 1, level: 1 } },
+    upgradeLevel: 0
+  },
+  mid: {
+    primitives: { loc: 50000, compute: 30000, papers: 50, totalLoc: 200000, reputation: 2000000, tokens: 8, careerStage: 3, prestigeMultiplier: 6.0, gpuSlots: 5 },
+    models: { chatbot: {count:2,level:3}, translator: {count:1,level:2}, summarizer: {count:1,level:2}, imageGen: {count:1,level:2}, codeGen: {count:1,level:1} },
+    upgradeLevel: 3
+  },
+  late: {
+    primitives: { loc: 5000000, compute: 2000000, papers: 200, totalLoc: 50000000, reputation: 2000000000, tokens: 10, careerStage: 6, prestigeMultiplier: 25.0, gpuSlots: 8 },
+    models: { chatbot:{count:3,level:5}, translator:{count:2,level:4}, summarizer:{count:2,level:4}, imageGen:{count:2,level:3}, codeGen:{count:2,level:3}, voiceAI:{count:1,level:3}, reasoning:{count:1,level:2}, multimodal:{count:1,level:2} },
+    upgradeLevel: 7
+  },
+  endgame: {
+    primitives: { loc: 100000000, compute: 50000000, papers: 500, totalLoc: 500000000, reputation: 50000000000, tokens: 10, careerStage: 7, prestigeMultiplier: 50.0, gpuSlots: 10 },
+    models: { chatbot:{count:5,level:5}, translator:{count:3,level:5}, summarizer:{count:3,level:5}, imageGen:{count:3,level:5}, codeGen:{count:3,level:5}, voiceAI:{count:2,level:5}, reasoning:{count:2,level:5}, multimodal:{count:2,level:5}, agi:{count:1,level:3}, superAgi:{count:1,level:2} },
+    upgradeLevel: 10
+  }
+};
+
 function toggleDebugPanel() {
   const panel = document.getElementById('debug-panel');
   if (!panel) return;
@@ -274,6 +297,34 @@ function debugResetSave() {
   }
 }
 
+function debugRefreshAllUI() {
+  if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+  if (typeof renderModelsScreen === 'function') renderModelsScreen();
+  if (typeof renderUpgradeScreen === 'function') renderUpgradeScreen();
+  if (typeof renderCareerScreen === 'function') renderCareerScreen();
+  if (typeof renderEventBanner === 'function') renderEventBanner();
+  if (typeof applyCareerTheme === 'function') applyCareerTheme();
+  renderDebugPanel();
+}
+
+function debugLoadPreset(name) {
+  const preset = DEBUG_PRESETS[name];
+  if (!preset) return;
+  gameState = createDefaultState();
+  Object.assign(gameState, preset.primitives);
+  for (const m of gameState.models) {
+    const p = preset.models[m.id];
+    if (p) { m.count = p.count; m.level = p.level; }
+    else { m.count = 0; m.level = 1; }
+  }
+  for (const cat of Object.keys(gameState.upgrades))
+    for (const key of Object.keys(gameState.upgrades[cat]))
+      gameState.upgrades[cat][key] = preset.upgradeLevel;
+  gameState.stats.modelsOwned = gameState.models.filter(m => m.count > 0).length;
+  debugRefreshAllUI();
+  if (typeof showToast === 'function') showToast(`Preset: ${name}`, 'success');
+}
+
 // --- Initialization ---
 
 document.addEventListener('keydown', (e) => {
@@ -306,5 +357,7 @@ window.debugGame = {
   export: debugExportSave,
   import: debugImportSave,
   reset: debugResetSave,
+  loadPreset: debugLoadPreset,
+  refreshUI: debugRefreshAllUI,
   state: () => gameState,
 };
