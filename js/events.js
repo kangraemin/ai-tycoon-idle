@@ -12,12 +12,12 @@ const EVENT_DEFS = {
   benchmark:   { type: 'positive', name: 'Benchmark Win!',   desc: '3x Code for 45s',                            duration: 45, effect: { target: 'loc', multiplier: 3 } },
 
   // Negative events
-  criticalBug:   { type: 'negative', name: 'Critical Bug!',     desc: 'Production halted! Tap 30 times to fix',     duration: 0,   fixTaps: 30, effect: { halt: true } },
-  serverCrash:   { type: 'negative', name: 'Server Crash!',     desc: 'Servers down! Tap 20 times to restore',      duration: 0,   fixTaps: 20, effect: { halt: true } },
-  hallucination: { type: 'negative', name: 'Hallucination!',    desc: 'Model glitching! Auto-Compile paused. Tap 15x to fix', duration: 0, fixTaps: 15, effect: { stopAutoProd: true } },
-  regulation:    { type: 'negative', name: 'New Regulation',    desc: 'Compliance review — Half Code for 60s',       duration: 60,  fixTaps: 0,  effect: { target: 'loc', multiplier: 0.5 } },
-  overheating:   { type: 'negative', name: 'GPU Overheating!',  desc: 'Cool down! Tap 15 times to fix',             duration: 0,   fixTaps: 15, effect: { halt: true } },
-  negativePR:    { type: 'negative', name: 'Negative PR',       desc: 'Bad press — Half Code for 45s',              duration: 45,  fixTaps: 0,  effect: { target: 'loc', multiplier: 0.5 } },
+  criticalBug:   { type: 'negative', name: 'Critical Bug!',     desc: 'Your AI models stopped! Tap Fix to resume + earn 2x bonus!',     duration: 0,   fixTaps: 30, effect: { halt: true } },
+  serverCrash:   { type: 'negative', name: 'Server Crash!',     desc: 'Models offline! Tap Fix to restore + earn 2x bonus!',      duration: 0,   fixTaps: 20, effect: { halt: true } },
+  hallucination: { type: 'negative', name: 'Hallucination!',    desc: 'Auto-Compile paused! Tap Fix to resume + earn 2x bonus!', duration: 0, fixTaps: 15, effect: { stopAutoProd: true } },
+  regulation:    { type: 'negative', name: 'New Regulation',    desc: 'Compliance audit — LoC production halved for 60s',       duration: 60,  fixTaps: 0,  effect: { target: 'loc', multiplier: 0.5 } },
+  overheating:   { type: 'negative', name: 'GPU Overheating!',  desc: 'Models overheated! Tap Fix to cool down + earn 2x bonus!',             duration: 0,   fixTaps: 15, effect: { halt: true } },
+  negativePR:    { type: 'negative', name: 'Negative PR',       desc: 'Bad press — LoC production halved for 45s',              duration: 45,  fixTaps: 0,  effect: { target: 'loc', multiplier: 0.5 } },
 };
 
 const EVENT_SPAWN_MIN = 120;  // 2 minutes
@@ -79,6 +79,10 @@ function spawnEvent() {
     // Auto-resolve timed events
     activeEvent = null;
     lastRenderedEventId = null;
+  }
+
+  if (gameState.eventStats.total === 1 && def.type === 'negative') {
+    if (typeof showToast === 'function') showToast('Red events slow you down — tap Fix to resolve and earn a bonus!', 'info');
   }
 
   renderEventBanner();
