@@ -61,7 +61,7 @@ function doFusion(recipe) {
   gameState.reputation += 500;
 
   // Track discovered fusions
-  const recipeKey = recipe.inputs.sort().join('+') + '=' + recipe.result;
+  const recipeKey = [...recipe.inputs].sort().join('+') + '=' + recipe.result;
   if (!gameState.discoveredFusions.includes(recipeKey)) {
     gameState.discoveredFusions.push(recipeKey);
   }

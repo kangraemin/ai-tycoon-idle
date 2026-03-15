@@ -84,7 +84,8 @@ function getChallengeCooldown() {
 function startChallenge(type) {
   if (!canStartChallenge()) return;
 
-  if (hasFreeChallenge()) {
+  const isFree = hasFreeChallenge();
+  if (isFree) {
     gameState.freeChallengesUsed++;
   } else {
     gameState.tokens--;
@@ -101,7 +102,6 @@ function startChallenge(type) {
     answered: false,
   };
 
-  const isFree = gameState.freeChallengesUsed <= DAILY_FREE_CHALLENGES && hasFreeChallenge();
   Analytics.challengeStart(type, !isFree, gameState.tokens);
 
   renderChallengeOverlay(type, problem, typeDef.time);
@@ -109,6 +109,7 @@ function startChallenge(type) {
 }
 
 function startChallengeTimer(seconds) {
+  if (challengeTimerId) clearInterval(challengeTimerId);
   let remaining = seconds;
   const timerEl = document.getElementById('challenge-timer');
 
@@ -302,6 +303,7 @@ function submitChallenge(forcedAnswer) {
 }
 
 function closeChallengeOverlay() {
+  if (challengeTimerId) { clearInterval(challengeTimerId); challengeTimerId = null; }
   const overlay = document.getElementById('challenge-overlay');
   if (overlay) overlay.style.display = 'none';
   lastChallengeCompleteTime = Date.now();

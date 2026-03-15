@@ -256,12 +256,12 @@ const BGM = (() => {
   }
 
   function stop() {
-    if (current) { current.pause(); current.currentTime = 0; current = null; }
+    if (current) { current.onended = null; current.pause(); current.currentTime = 0; current = null; }
     _started = false;
   }
 
   function next() {
-    if (current) { current.pause(); current = null; }
+    if (current) { current.onended = null; current.pause(); current = null; }
     currentIndex = (currentIndex + 1) % tracks.length;
     current = new Audio(tracks[currentIndex]);
     current.loop = false;

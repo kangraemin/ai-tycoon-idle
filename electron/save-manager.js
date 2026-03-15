@@ -17,6 +17,6 @@ module.exports = {
     catch { return null; }
   },
   remove() {
-    try { fs.unlinkSync(SAVE_FILE); } catch {}
+    try { fs.unlinkSync(SAVE_FILE); } catch (e) { console.error('Save delete failed:', e.message); }
   }
 };
