@@ -1480,6 +1480,7 @@ html, body {
 }
 .currency-tooltip.compute .tooltip-title { color: var(--compute); }
 .currency-tooltip.papers .tooltip-title { color: var(--papers); }
+.currency-tooltip.loc .tooltip-title { color: var(--loc); }
 .currency-tooltip.tokens .tooltip-title { color: var(--tokens); }
 .currency-tooltip .tooltip-body {
   font-size: 11px;

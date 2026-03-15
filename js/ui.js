@@ -314,6 +314,7 @@ function showToast(message, type) {
 }
 
 const CURRENCY_INFO = {
+  loc:     { name: 'Lines of Code', earn: 'Earned by typing or idle coding', spend: 'Compiled into Compute' },
   compute: { name: 'Compute', earn: 'Earned by compiling your code', spend: 'Spend on upgrades and GPU expansion' },
   papers:  { name: 'Papers',  earn: 'Earned from career advances and achievements', spend: 'Spend on Research to discover new AI models' },
   tokens:  { name: 'Tokens',  earn: 'Recharges 1 every 5 min (max 10) + 3 free challenges/day', spend: 'Spend on coding challenges for rewards' },
@@ -340,7 +341,7 @@ function showCurrencyTooltip(el, type) {
   setTimeout(dismissCurrencyTooltip, 3000);
   setTimeout(() => {
     document.addEventListener('click', dismissCurrencyTooltip, { once: true, capture: true });
-  }, 50);
+  }, 200);
 }
 
 function dismissCurrencyTooltip() {
@@ -415,7 +416,8 @@ function initUI() {
     el.style.cursor = 'pointer';
     el.onclick = function(e) {
       e.stopPropagation();
-      const type = this.classList.contains('compute') ? 'compute'
+      const type = this.classList.contains('loc') ? 'loc'
+                 : this.classList.contains('compute') ? 'compute'
                  : this.classList.contains('papers') ? 'papers' : 'tokens';
       showCurrencyTooltip(this, type);
     };
