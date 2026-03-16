@@ -1,5 +1,23 @@
 {
   "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/ram/programming/vibecoding/game/.claude/hooks/stop-active-cleanup.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/ram/programming/vibecoding/game/.claude/hooks/completion-gate.sh"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "hooks": [
@@ -38,16 +56,6 @@
           }
         ],
         "matcher": "Bash"
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/ram/programming/vibecoding/game/.claude/hooks/completion-gate.sh"
-          }
-        ]
       }
     ],
     "SubagentStart": [

@@ -1,6 +1,6 @@
 {
-  "version": "3fe5727",
-  "installed_at": "2026-03-15T14:04:44.891048",
+  "version": "24cb43b",
+  "installed_at": "2026-03-16T21:00:31.690731",
   "files": [
     "agents/dev.md",
     "agents/intent.md",
@@ -21,6 +21,5 @@
     "hooks/subagent-cleanup.sh",
     "hooks/lib/resolve-task.sh",
     "scripts/update-check.sh"
-  ],
-  "updated_at": "2026-03-16T00:00:00.000000"
+  ]
 }
