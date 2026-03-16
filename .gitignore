@@ -27,6 +27,7 @@ docs/
 .claude/hooks/doc-reminder.sh
 .claude/hooks/bash-audit.sh
 .claude/hooks/completion-gate.sh
+.claude/hooks/stop-active-cleanup.sh
 .claude/hooks/subagent-track.sh
 .claude/hooks/subagent-cleanup.sh
 .claude/hooks/lib/resolve-task.sh
