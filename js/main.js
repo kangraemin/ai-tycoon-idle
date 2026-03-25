@@ -2,6 +2,81 @@
 
 const AUTO_SAVE_INTERVAL = 30000;
 
+let _goalsStructureKey = '';
+
+function getNextGoalItems() {
+  const items = [];
+
+  // 1) 다음 잠금 해제 모델 (cheapest locked)
+  const nextModel = Object.entries(MODEL_DEFS)
+    .filter(([id, def]) => def.unlockCost > 0 && getModelState(id)?.count === 0)
+    .sort((a, b) => a[1].unlockCost - b[1].unlockCost)[0];
+  if (nextModel) {
+    const [id, def] = nextModel;
+    const iconStyle = MODEL_ICON_STYLES[Object.keys(MODEL_DEFS).indexOf(id)] || MODEL_ICON_STYLES[0];
+    items.push({ key: 'model-' + id, icon: iconStyle.icon, label: 'Unlock ' + def.name,
+      getCurrent: () => gameState.compute, required: def.unlockCost,
+      screen: 'models', color: 'var(--accent)' });
+  }
+
+  // 2) GPU 슬롯 확장 (슬롯 꽉 찼을 때만)
+  if (getOwnedModels().length >= getEffectiveGpuSlots()) {
+    items.push({ key: 'gpu', icon: 'developer_board', label: 'GPU Slot',
+      getCurrent: () => gameState.compute, required: getGpuSlotCost(),
+      screen: 'upgrade', color: 'var(--papers)' });
+  }
+
+  // 3) 다음 Career 단계
+  const nextCareer = getNextCareer();
+  if (nextCareer) {
+    items.push({ key: 'career-' + gameState.careerStage, icon: nextCareer.icon,
+      label: nextCareer.name, getCurrent: () => gameState.reputation,
+      required: nextCareer.repReq, screen: 'career', color: 'var(--reputation)' });
+  }
+
+  return items;
+}
+
+function renderGoalsCard() {
+  const card = document.getElementById('goals-card');
+  if (!card) return;
+  const items = getNextGoalItems();
+  if (!items.length) { card.style.display = 'none'; return; }
+  card.style.display = '';
+  _goalsStructureKey = items.map(i => i.key).join(',');
+  let html = '';
+  items.forEach(item => {
+    const pct = Math.min(100, Math.floor(item.getCurrent() / item.required * 100));
+    html += `<div class="goal-item" onclick="switchScreen('${item.screen}')">
+      <span class="material-symbols-outlined goal-icon">${item.icon}</span>
+      <div class="goal-info">
+        <div class="goal-label">${item.label}</div>
+        <div class="goal-bar"><div class="goal-bar-fill" id="gf-${item.key}"
+          style="width:${pct}%;background:${item.color}"></div></div>
+      </div>
+      <span class="goal-pct" id="gp-${item.key}">${pct}%</span>
+      <span class="material-symbols-outlined goal-arrow">chevron_right</span>
+    </div>`;
+  });
+  card.innerHTML = html;
+}
+
+function updateGoalsProgress() {
+  const card = document.getElementById('goals-card');
+  if (!card || card.style.display === 'none') return;
+  const items = getNextGoalItems();
+  const newKey = items.map(i => i.key).join(',');
+  if (newKey !== _goalsStructureKey) { renderGoalsCard(); return; }
+  items.forEach(item => {
+    const fill = document.getElementById('gf-' + item.key);
+    const pct_el = document.getElementById('gp-' + item.key);
+    if (!fill || !pct_el) return;
+    const pct = Math.min(100, Math.floor(item.getCurrent() / item.required * 100));
+    fill.style.width = pct + '%';
+    pct_el.textContent = pct + '%';
+  });
+}
+
 const UPGRADE_ICONS = {
   toolUse:       { icon: 'build',         bg: 'agent-bg',  category: 'agent' },
   memory:        { icon: 'psychology',     bg: 'agent-bg',  category: 'agent' },
@@ -447,6 +522,7 @@ function gameLoop() {
   updateCurrencyDisplay();
   updateChallengeCooldownDisplay();
   if (typeof updateHintBanner === 'function') updateHintBanner();
+  if (typeof updateGoalsProgress === 'function') updateGoalsProgress();
   if (typeof renderEventBanner === 'function') renderEventBanner();
   if (typeof checkAchievements === 'function') checkAchievements();
   if (typeof checkTabUnlock === 'function') checkTabUnlock();
@@ -535,7 +611,7 @@ function renderEditorScreen() {
   const container = document.getElementById('editor-content');
   if (!container) return;
 
-  let html = '<div class="code-editor">';
+  let html = '<div id="goals-card" class="goals-card"></div><div class="code-editor">';
   html += '<div class="editor-tab-bar">';
   const isAgentActive = gameState.editorTab !== 'train';
   html += '<div class="editor-tab ' + (isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'agent\')"><span class="editor-tab-icon">PY</span> agent.py</div>';
@@ -595,6 +671,7 @@ function renderEditorScreen() {
 
   container.innerHTML = html;
   if (typeof applyCareerTheme === 'function') applyCareerTheme();
+  renderGoalsCard();
 }
 
 function switchEditorTab(tab) {
