@@ -1,7 +1,7 @@
 {
-  "name": "game",
+  "name": "ai-tycoon",
   "version": "1.0.0",
-  "description": "> Raise adorable slimes, harvest jelly, and build the ultimate slime empire.",
+  "description": "Build your AI startup empire — tap, compile, and train powerful models in this idle tycoon game.",
   "main": "electron/main.js",
   "directories": {
     "doc": "docs"
