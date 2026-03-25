@@ -3,6 +3,76 @@
 const AUTO_SAVE_INTERVAL = 30000;
 
 let _goalsStructureKey = '';
+let _missionKey = '';
+
+function getCurrentMission() {
+  const st = gameState;
+  const owned = typeof getOwnedModels === 'function' ? getOwnedModels().length : 0;
+  const maxSlots = typeof getEffectiveGpuSlots === 'function' ? getEffectiveGpuSlots() : st.gpuSlots;
+
+  if (!st.stats || st.stats.totalTaps < 10)
+    return { id: 'tap', icon: 'keyboard', title: 'Write some Code!', sub: 'Tap the editor to start', screen: null, hasProg: false };
+
+  if (st.loc >= 10 && st.compute < 50)
+    return { id: 'compile', icon: 'memory', title: 'Compile your Code!', sub: 'Turn LoC into Compute', screen: null, hasProg: true, getCurrent: () => st.compute, required: 50 };
+
+  if (st.compute >= 50 && st.upgrades.infra.batchSize === 0)
+    return { id: 'batch', icon: 'data_array', title: 'Buy Batch Size upgrade!', sub: 'More Code per tap', screen: 'upgrade', hasProg: true, getCurrent: () => st.compute, required: typeof getUpgradeCost === 'function' ? getUpgradeCost('infra', 'batchSize') : 50 };
+
+  if (st.stats && st.stats.totalCompiles >= 2 && st.editorTab !== 'train' && st.papers < 20)
+    return { id: 'train', icon: 'model_training', title: 'Switch to train.js tab!', sub: 'Compile there to earn Papers', screen: null, hasProg: false };
+
+  if (st.papers >= 10 && owned < maxSlots)
+    return { id: 'research', icon: 'science', title: 'Research a new AI model!', sub: st.papers + ' Papers ready', screen: 'research', hasProg: false };
+
+  if (owned >= maxSlots && typeof getGpuSlotCost === 'function' && st.compute >= getGpuSlotCost())
+    return { id: 'gpu', icon: 'developer_board', title: 'Expand GPU slots!', sub: 'Fit more models', screen: 'upgrade', hasProg: true, getCurrent: () => st.compute, required: getGpuSlotCost() };
+
+  const nextModel = Object.entries(MODEL_DEFS)
+    .filter(([id, def]) => def.unlockCost > 0 && getModelState(id)?.count === 0)
+    .sort((a, b) => a[1].unlockCost - b[1].unlockCost)[0];
+  if (nextModel) {
+    const [id, def] = nextModel;
+    return { id: 'unlock-' + id, icon: 'smart_toy', title: 'Unlock ' + def.name + '!', sub: (typeof formatNumber === 'function' ? formatNumber(def.unlockCost) : def.unlockCost) + ' Compute needed', screen: 'models', hasProg: true, getCurrent: () => st.compute, required: def.unlockCost };
+  }
+
+  if (typeof canPromote === 'function' && canPromote())
+    return { id: 'promote', icon: 'workspace_premium', title: 'Advance your career!', sub: 'Get 2x production multiplier', screen: 'career', hasProg: false };
+
+  return null;
+}
+
+function renderMissionCard() {
+  const card = document.getElementById('mission-card');
+  if (!card) return;
+  const m = getCurrentMission();
+  if (!m) { card.style.display = 'none'; _missionKey = ''; return; }
+  _missionKey = m.id;
+  card.style.display = '';
+  const pct = m.hasProg ? Math.min(100, Math.floor(m.getCurrent() / m.required * 100)) : 0;
+  let inner = '<div class="mission-inner"' + (m.screen ? ' onclick="switchScreen(\'' + m.screen + '\')" style="cursor:pointer"' : '') + '>';
+  inner += '<span class="material-symbols-outlined mission-icon">' + m.icon + '</span>';
+  inner += '<div class="mission-info">';
+  inner += '<div class="mission-title">' + m.title + '</div>';
+  inner += '<div class="mission-sub">' + m.sub + '</div>';
+  if (m.hasProg) inner += '<div class="mission-bar"><div class="mission-bar-fill" id="mb-' + m.id + '" style="width:' + pct + '%"></div></div>';
+  inner += '</div>';
+  if (m.screen) inner += '<span class="material-symbols-outlined mission-arrow">chevron_right</span>';
+  inner += '</div>';
+  card.innerHTML = inner;
+}
+
+function updateMissionCard() {
+  const card = document.getElementById('mission-card');
+  if (!card) return;
+  const m = getCurrentMission();
+  if (!m) { if (_missionKey) { card.style.display = 'none'; _missionKey = ''; } return; }
+  if (m.id !== _missionKey) { renderMissionCard(); return; }
+  if (m.hasProg) {
+    const fill = document.getElementById('mb-' + m.id);
+    if (fill) fill.style.width = Math.min(100, Math.floor(m.getCurrent() / m.required * 100)) + '%';
+  }
+}
 
 function getNextGoalItems() {
   const items = [];
@@ -522,6 +592,7 @@ function gameLoop() {
   updateCurrencyDisplay();
   updateChallengeCooldownDisplay();
   if (typeof updateHintBanner === 'function') updateHintBanner();
+  if (typeof updateMissionCard === 'function') updateMissionCard();
   if (typeof updateGoalsProgress === 'function') updateGoalsProgress();
   if (typeof renderEventBanner === 'function') renderEventBanner();
   if (typeof checkAchievements === 'function') checkAchievements();
@@ -611,7 +682,7 @@ function renderEditorScreen() {
   const container = document.getElementById('editor-content');
   if (!container) return;
 
-  let html = '<div id="goals-card" class="goals-card"></div><div class="code-editor">';
+  let html = '<div id="mission-card" class="mission-card"></div><div id="goals-card" class="goals-card"></div><div class="code-editor">';
   html += '<div class="editor-tab-bar">';
   const isAgentActive = gameState.editorTab !== 'train';
   html += '<div class="editor-tab ' + (isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'agent\')"><span class="editor-tab-icon">PY</span> agent.py</div>';
