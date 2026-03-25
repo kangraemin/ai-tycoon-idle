@@ -427,6 +427,67 @@ function initUI() {
   currentScreen = 'editor';
 }
 
+const DAILY_REWARDS = [5, 8, 12, 15];
+
+function checkDailyBonus() {
+  const today = new Date().toDateString();
+  if (gameState.lastDailyClaimDate === today) return;
+
+  const lastDate = gameState.lastDailyClaimDate ? new Date(gameState.lastDailyClaimDate) : null;
+  const now = new Date();
+  if (lastDate) {
+    const diffDays = Math.round((now - lastDate) / 86400000);
+    gameState.dailyStreak = diffDays === 1 ? gameState.dailyStreak + 1 : 1;
+  } else {
+    gameState.dailyStreak = 1;
+  }
+
+  gameState.lastDailyClaimDate = today;
+  const streakIdx = Math.min(gameState.dailyStreak - 1, DAILY_REWARDS.length - 1);
+  const papers = DAILY_REWARDS[streakIdx];
+  gameState.papers += papers;
+  if (typeof saveGame === 'function') saveGame();
+  if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+
+  const streak = gameState.dailyStreak;
+  const streakHtml = `
+    <div style="text-align:center;padding:8px 0">
+      <span class="material-symbols-outlined" style="font-size:48px;color:var(--papers)">calendar_today</span>
+      <div style="font-size:28px;font-weight:800;color:var(--papers);margin:8px 0">+${papers} Papers</div>
+      <div style="font-size:12px;color:var(--text-secondary)">Day ${streak} streak${streak >= 4 ? ' \uD83D\uDD25 Max bonus!' : ''}</div>
+      <div style="display:flex;justify-content:center;gap:6px;margin-top:12px">
+        ${DAILY_REWARDS.map((r, i) => '<div style="padding:4px 8px;border-radius:6px;font-size:11px;font-weight:700;background:' + (i < streak ? 'var(--accent)' : 'var(--bg-elevated)') + ';color:' + (i < streak ? '#fff' : 'var(--text-muted)') + '">Day ' + (i+1) + '<br>+' + r + '</div>').join('')}
+      </div>
+    </div>
+  `;
+  showModalHtml('Daily Bonus!', streakHtml, [{ text: 'Collect!', primary: true }]);
+  if (typeof SFX !== 'undefined' && SFX.levelUp) SFX.levelUp();
+}
+
+const UNLOCK_FANFARES = {
+  career: { icon: 'work',    name: 'Career',   desc: 'Track your promotions and earn Reputation for prestige boosts!' },
+  papers: { icon: 'science', name: 'Research', desc: 'Spend Papers to discover new AI models via the gacha system!' },
+  fusion: { icon: 'merge',   name: 'Fusion',   desc: 'Combine duplicate models to create more powerful ones!' },
+};
+
+function showUnlockFanfare(key) {
+  if (!gameState.shownUnlockModals) gameState.shownUnlockModals = [];
+  if (gameState.shownUnlockModals.includes(key)) return;
+  gameState.shownUnlockModals.push(key);
+  if (typeof saveGame === 'function') saveGame();
+  const info = UNLOCK_FANFARES[key];
+  if (!info) { if (typeof showToast === 'function') showToast(key + ' unlocked!', 'success'); return; }
+  const html = `
+    <div style="text-align:center;padding:8px 0">
+      <span class="material-symbols-outlined" style="font-size:48px;color:var(--accent)">${info.icon}</span>
+      <div style="font-size:20px;font-weight:800;margin:8px 0">\uD83C\uDF89 ${info.name} Unlocked!</div>
+      <div style="font-size:12px;color:var(--text-secondary);line-height:1.5">${info.desc}</div>
+    </div>
+  `;
+  showModalHtml('New Feature!', html, [{ text: "Let's Go!", primary: true }]);
+  if (typeof SFX !== 'undefined' && SFX.levelUp) SFX.levelUp();
+}
+
 let lastTabUnlockCheck = 0;
 function checkTabUnlock() {
   const now = Date.now();
@@ -440,7 +501,7 @@ function checkTabUnlock() {
     if (cond === 'career' && gameState.reputation >= 5000) unlocked = true;
     if (unlocked && btn.classList.contains('nav-locked')) {
       btn.classList.remove('nav-locked');
-      if (typeof showToast === 'function') showToast(`${btn.querySelector('.nav-label').textContent} unlocked!`, 'success');
+      showUnlockFanfare(cond);
     }
   });
   // Models 서브탭 언락
@@ -451,7 +512,7 @@ function checkTabUnlock() {
     if (cond === 'fusion' && getOwnedModels().length >= 2) unlocked = true;
     if (unlocked && btn.classList.contains('sub-tab-locked')) {
       btn.classList.remove('sub-tab-locked');
-      if (typeof showToast === 'function') showToast(`${btn.textContent.trim()} unlocked!`, 'success');
+      showUnlockFanfare(cond);
     }
   });
 }

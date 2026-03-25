@@ -610,6 +610,7 @@ async function startGame() {
     checkTabUnlock();
   }
 
+  if (typeof checkDailyBonus === 'function') checkDailyBonus();
   renderEditorScreen();
   renderModelsScreen();
   renderUpgradeScreen();

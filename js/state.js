@@ -58,6 +58,9 @@ function createDefaultState() {
     },
 
     achievements: {},
+    lastDailyClaimDate: null,
+    dailyStreak: 0,
+    shownUnlockModals: [],
     tutorialStep: 0,
     settings: { sfx: true, music: true, notifications: true, sfxVolume: 0.3, musicVolume: 0.3 },
     saveVersion: 1,
