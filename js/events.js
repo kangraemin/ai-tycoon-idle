@@ -48,9 +48,17 @@ function eventTick(dt) {
   }
 }
 
+const HALT_EVENTS = new Set(['criticalBug', 'serverCrash', 'overheating']);
+
 function spawnEvent() {
   const eventIds = Object.keys(EVENT_DEFS);
-  const eventId = eventIds[Math.floor(Math.random() * eventIds.length)];
+  let eventId = eventIds[Math.floor(Math.random() * eventIds.length)];
+  // 초반(컴파일 15회 미만)에는 halt 이벤트 재롤
+  const isEarlyGame = !gameState.stats || gameState.stats.totalCompiles < 15;
+  if (isEarlyGame && HALT_EVENTS.has(eventId)) {
+    const safe = eventIds.filter(id => !HALT_EVENTS.has(id));
+    if (safe.length > 0) eventId = safe[Math.floor(Math.random() * safe.length)];
+  }
   const def = EVENT_DEFS[eventId];
 
   activeEvent = { id: eventId, def, startTime: Date.now() };

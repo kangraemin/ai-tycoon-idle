@@ -44,7 +44,7 @@ const TUTORIAL_STEPS = [
     id: 'go-research',
     type: 'spotlight',
     selector: '[data-screen="research"]',
-    message: 'Spend Papers to discover AI models. Earn them by compiling on train.js!',
+    message: 'Switch to the train.js tab and Compile to earn Papers! Then use Papers to discover new AI models here.',
     position: 'above',
     trigger: 'navigate',
   },

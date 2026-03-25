@@ -120,8 +120,8 @@ function doResearchPull() {
 
   if (result.slotFull) {
     if (typeof SFX !== 'undefined' && SFX.error) SFX.error();
-    if (typeof showToast === 'function') showToast('GPU slots full! Upgrade first.', 'error');
-    renderResearchScreen();
+    if (typeof showToast === 'function') showToast(`GPU slots full! Going to Upgrades... (${formatNumber(getGpuSlotCost())} Compute needed)`, 'info');
+    setTimeout(() => { if (typeof switchScreen === 'function') switchScreen('upgrade'); }, 800);
     return;
   }
 

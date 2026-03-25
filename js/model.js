@@ -1,7 +1,7 @@
 // model.js - AI Model definitions (types, production, grades)
 
 const MODEL_DEFS = {
-  chatbot:    { name: 'Chatbot',            baseLps: 1,       unlockCost: 0,       rarity: 'common',    color: '#77dd77', codeTheme: 'NLP',              description: 'Generates human-like text responses' },
+  chatbot:    { name: 'Chatbot',            baseLps: 2,       unlockCost: 0,       rarity: 'common',    color: '#77dd77', codeTheme: 'NLP',              description: 'Generates human-like text responses' },
   translator: { name: 'Translator',         baseLps: 5,       unlockCost: 100,     rarity: 'common',    color: '#74b9ff', codeTheme: 'Translation',      description: 'Translates text between languages' },
   summarizer: { name: 'Summarizer',         baseLps: 25,      unlockCost: 500,     rarity: 'uncommon',  color: '#a29bfe', codeTheme: 'Summarization',    description: 'Condenses long documents into key points' },
   imageGen:   { name: 'Image Gen',          baseLps: 125,     unlockCost: 2000,    rarity: 'uncommon',  color: '#fd79a8', codeTheme: 'Vision',           description: 'Creates images from text descriptions' },

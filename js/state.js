@@ -7,7 +7,7 @@ function createDefaultState() {
     // Resources
     loc: 0,
     compute: 0,
-    papers: 10,
+    papers: 20,
     totalLoc: 0,
     reputation: 0,
     tokens: 5,

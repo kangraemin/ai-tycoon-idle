@@ -66,7 +66,7 @@ function buyUpgrade(category, id) {
 }
 
 function getGpuSlotCost() {
-  return Math.floor(1000 * Math.pow(2, gameState.gpuSlots - 1));
+  return Math.floor(500 * Math.pow(2, gameState.gpuSlots - 1));
 }
 
 function buyGpuSlot() {
