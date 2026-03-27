@@ -661,6 +661,7 @@ async function startGame() {
   if (autoSaveId) clearInterval(autoSaveId);
   gameLoopId = setInterval(gameLoop, 100);
   autoSaveId = setInterval(saveGame, AUTO_SAVE_INTERVAL);
+  if (typeof AdMobManager !== 'undefined') AdMobManager.init();
 
   window.addEventListener('beforeunload', () => Analytics.sessionEnd());
 
