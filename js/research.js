@@ -147,7 +147,8 @@ function doResearchPull() {
           <div style="color:var(--text-secondary);font-size:12px;margin-top:4px">The AI produced nonsense... Papers refunded.</div>
         </div>
         <div class="research-pull-area" style="margin-top:16px">
-          <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>
+          <button class="research-pull-btn ${gameState.papers < RESEARCH_COST ? 'btn-disabled' : ''}"
+                  onclick="doResearchPull()" ${gameState.papers < RESEARCH_COST ? 'disabled' : ''}>Research!</button>
           <span class="research-pull-hint">${RESEARCH_COST} Papers per discovery</span>
         </div>
       `;
@@ -171,7 +172,8 @@ function doResearchPull() {
         </div>
       </div>
       <div class="research-pull-area" style="margin-top:16px">
-        <button class="research-pull-btn" onclick="doResearchPull()">Research!</button>
+        <button class="research-pull-btn ${gameState.papers < RESEARCH_COST ? 'btn-disabled' : ''}"
+                onclick="doResearchPull()" ${gameState.papers < RESEARCH_COST ? 'disabled' : ''}>Research!</button>
         <span class="research-pull-hint">${RESEARCH_COST} Papers per discovery</span>
       </div>
     `;

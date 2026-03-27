@@ -31,7 +31,7 @@ function calculateOfflineEarnings() {
 
 function applyOfflineEarnings() {
   const earnings = calculateOfflineEarnings();
-  if (!earnings || earnings.loc <= 0) return;
+  if (!earnings || !Number.isFinite(earnings.loc) || earnings.loc <= 0) return;
 
   gameState.loc += earnings.loc;
   gameState.totalLoc += earnings.loc;

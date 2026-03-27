@@ -641,6 +641,8 @@ async function startGame() {
   });
 
   lastTickTime = performance.now();
+  if (gameLoopId) clearInterval(gameLoopId);
+  if (autoSaveId) clearInterval(autoSaveId);
   gameLoopId = setInterval(gameLoop, 100);
   autoSaveId = setInterval(saveGame, AUTO_SAVE_INTERVAL);
 
