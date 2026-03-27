@@ -113,4 +113,12 @@ function compileData() {
     void pulseEl.offsetWidth;
     pulseEl.classList.add('compile-pulse');
   }
+
+  const repEl = document.getElementById('rep-display');
+  if (repEl) {
+    repEl.classList.remove('compile-pulse');
+    void repEl.offsetWidth;
+    repEl.classList.add('compile-pulse');
+    setTimeout(() => repEl.classList.remove('compile-pulse'), 600);
+  }
 }

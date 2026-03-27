@@ -111,9 +111,16 @@ function renderCareerScreen() {
   // Progress to next
   if (next) {
     const progress = Math.min(gameState.reputation / next.repReq * 100, 100);
+    const isReady = progress >= 80;
+    const toastKey = 'prestige-ready-' + gameState.careerStage;
+    if (isReady && !gameState.shownUnlockModals.includes(toastKey)) {
+      gameState.shownUnlockModals.push(toastKey);
+      if (typeof showToast === 'function') showToast('Almost there! Advance career at ' + (typeof formatNumber === 'function' ? formatNumber(next.repReq) : next.repReq) + ' Rep.', 'success');
+    }
     html += '<div class="career-progress">';
     html += '<div class="progress-header">';
     html += '<span class="progress-header-label">Next: ' + next.name + '</span>';
+    if (isReady) html += '<span style="background:var(--accent);color:#000;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:6px">🚀 Ready!</span>';
     html += '<span class="progress-header-value">' + (typeof formatNumber === 'function' ? formatNumber(gameState.reputation) : gameState.reputation) + ' / ' + (typeof formatNumber === 'function' ? formatNumber(next.repReq) : next.repReq) + ' Rep</span>';
     html += '</div>';
     html += '<div class="progress-bar"><div class="progress-fill" style="width:' + progress + '%"></div></div>';
