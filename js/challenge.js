@@ -108,6 +108,36 @@ function startChallenge(type) {
   startChallengeTimer(typeDef.time);
 }
 
+async function tryStartChallengeWithAd(type) {
+  // 쿨다운 중이면 무시
+  if (typeof getChallengeCooldown === 'function' && getChallengeCooldown() > 0) return;
+  // 무료 or 토큰 있으면 바로 시작
+  if (hasFreeChallenge() || gameState.tokens > 0) {
+    startChallenge(type);
+    return;
+  }
+  // 광고 없으면 토스트
+  if (!window.AdMobManager?.ready) {
+    if (typeof showToast === 'function') showToast('No tokens! Keep playing to earn more.', 'info');
+    return;
+  }
+  // 광고 제안
+  if (typeof showModal === 'function') {
+    showModal('No Tokens', 'Watch a short ad to get 1 free challenge attempt!', [
+      { text: 'Cancel' },
+      { text: '🎬 Watch Ad', primary: true, onClick: async () => {
+        const success = await window.AdMobManager.showRewarded('challenge_extra');
+        if (success) {
+          gameState.freeChallengesUsed = Math.max(0, gameState.freeChallengesUsed - 1);
+          startChallenge(type);
+        } else {
+          if (typeof showToast === 'function') showToast('Ad not available', 'info');
+        }
+      }}
+    ]);
+  }
+}
+
 function startChallengeTimer(seconds) {
   if (challengeTimerId) clearInterval(challengeTimerId);
   let remaining = seconds;

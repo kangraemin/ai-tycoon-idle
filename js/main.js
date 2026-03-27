@@ -745,11 +745,11 @@ function renderEditorScreen() {
     }
     const cooldown = typeof getChallengeCooldown === 'function' ? getChallengeCooldown() : 0;
     const isOnCooldown = cooldown > 0;
-    const btnDisabled = !canChallenge || isOnCooldown;
+    const btnDisabled = isOnCooldown; // 쿨다운만 비활성화, 토큰 없어도 클릭 가능
     const btnLabel = isOnCooldown
       ? `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ${Math.ceil(cooldown / 1000)}s`
       : `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> Challenge (${costLabel})`;
-    html += `<button class="btn ${btnDisabled ? 'btn-disabled' : 'btn-primary'}" onclick="startChallenge('${currentChallengeType}')" ${btnDisabled ? 'disabled' : ''} style="font-size:12px;padding:6px 16px">`;
+    html += `<button class="btn ${btnDisabled ? 'btn-disabled' : 'btn-primary'}" onclick="tryStartChallengeWithAd('${currentChallengeType}')" ${btnDisabled ? 'disabled' : ''} style="font-size:12px;padding:6px 16px">`;
     html += btnLabel;
     html += '</button>';
   }
