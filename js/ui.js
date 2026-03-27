@@ -381,6 +381,31 @@ function showOfflineModal(earnings) {
   closeBtn.textContent = 'Collect';
   closeBtn.onclick = () => overlay.classList.remove('active');
   btnEl.appendChild(closeBtn);
+
+  // 2x Bonus 버튼 (AdMob ready일 때만)
+  if (window.AdMobManager?.ready) {
+    const bonusBtn = document.createElement('button');
+    bonusBtn.className = 'btn btn-secondary';
+    bonusBtn.innerHTML = '🎬 Watch Ad for 2x Bonus';
+    bonusBtn.style.cssText = 'margin-top:8px;width:100%;';
+    bonusBtn.onclick = async () => {
+      bonusBtn.disabled = true;
+      bonusBtn.textContent = 'Loading ad...';
+      const rewarded = await (window.AdMobManager.showRewarded('offline_2x'));
+      if (rewarded) {
+        gameState.loc += earnings.loc;
+        gameState.totalLoc += earnings.loc;
+        if (earnings.compute > 0) gameState.compute += earnings.compute;
+        if (typeof showToast === 'function') showToast('2x bonus applied! 🎉', 'success');
+        if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+      } else {
+        if (typeof showToast === 'function') showToast('Ad not available', 'info');
+      }
+      overlay.classList.remove('active');
+    };
+    btnEl.appendChild(bonusBtn);
+  }
+
   overlay.classList.add('active');
 
   // Count-up animation
