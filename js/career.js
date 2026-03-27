@@ -89,6 +89,11 @@ function doCareerAdvance() {
   gameState.prestigeMultiplier = next.multiplier;
   Analytics.careerAdvance(nextStage, next.multiplier, gameState.reputation, gameState.careerHistory.length);
 
+  // Interstitial 광고 (Career advance는 희귀 이벤트 — 사용자 부담 최소)
+  if (window.AdMobManager?.ready) {
+    setTimeout(() => window.AdMobManager.showInterstitial('career_advance'), 800);
+  }
+
   return true;
 }
 
