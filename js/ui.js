@@ -23,6 +23,13 @@ function switchScreen(screen) {
   if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
   if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'navigate' && screen === 'upgrade') advanceTutorial();
 
+  if (screen === 'upgrade' && typeof gameState !== 'undefined' && !gameState.shownUnlockModals.includes('first-upgrade-visit')) {
+    gameState.shownUnlockModals.push('first-upgrade-visit');
+    setTimeout(() => {
+      if (typeof showToast === 'function') showToast('Tip: Start with Batch Size to boost tap power!', 'info');
+    }, 300);
+  }
+
   const oldScreen = document.getElementById('screen-' + currentScreen);
   const newScreen = document.getElementById('screen-' + screen);
   currentScreen = screen;
@@ -358,6 +365,7 @@ function showOfflineModal(earnings) {
   titleEl.textContent = 'Welcome Back!';
   msgEl.innerHTML = `
     <div style="text-align:center;padding:8px 0">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px">📊 Offline Summary</div>
       <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">While you were away (${formatTime(earnings.elapsed)})</div>
       <div style="font-size:24px;font-weight:700;color:var(--loc)" id="offline-loc">0</div>
       <div style="font-size:11px;color:var(--text-secondary)">Code Written</div>

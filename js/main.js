@@ -4,6 +4,7 @@ const AUTO_SAVE_INTERVAL = 30000;
 
 let _goalsStructureKey = '';
 let _missionKey = '';
+let lastUnlock80Check = 0;
 
 function getCurrentMission() {
   const st = gameState;
@@ -597,6 +598,21 @@ function gameLoop() {
   if (typeof renderEventBanner === 'function') renderEventBanner();
   if (typeof checkAchievements === 'function') checkAchievements();
   if (typeof checkTabUnlock === 'function') checkTabUnlock();
+
+  if (now - lastUnlock80Check > 5000) {
+    lastUnlock80Check = now;
+    for (const model of gameState.models) {
+      if (model.count > 0) continue;
+      const def = typeof MODEL_DEFS !== 'undefined' ? MODEL_DEFS[model.id] : null;
+      if (!def || !def.unlockCost) continue;
+      const pct = gameState.compute / def.unlockCost * 100;
+      const key = 'unlock80-' + model.id;
+      if (pct >= 80 && pct < 100 && !gameState.shownUnlockModals.includes(key)) {
+        gameState.shownUnlockModals.push(key);
+        if (typeof showToast === 'function') showToast('Almost there! ' + def.name + ' is within reach!', 'info');
+      }
+    }
+  }
 }
 
 async function startGame() {

@@ -89,8 +89,11 @@ function spawnEvent() {
     lastRenderedEventId = null;
   }
 
-  if (gameState.eventStats.total === 1 && def.type === 'negative') {
-    if (typeof showToast === 'function') showToast('Red events slow you down — tap Fix to resolve and earn a bonus!', 'info');
+  if (gameState.eventStats.total === 1) {
+    const msg = def.type === 'negative'
+      ? 'Red events slow you down — tap Fix to resolve and earn a bonus!'
+      : 'Green events give you a boost! They appear randomly during play.';
+    if (typeof showToast === 'function') showToast(msg, def.type === 'negative' ? 'info' : 'success');
   }
 
   renderEventBanner();
