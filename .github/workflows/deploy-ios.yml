@@ -38,6 +38,11 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync ios
 
+      - name: Set up SSH key for Match
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.MATCH_DEPLOY_KEY }}
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:

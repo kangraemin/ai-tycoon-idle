@@ -1,4 +1,4 @@
-git_url(ENV["MATCH_GIT_URL"] || "https://github.com/kangraemin/match-certs.git")  # GitHub Secret: MATCH_GIT_URL
+git_url(ENV["MATCH_GIT_URL"] || "git@github.com:kangraemin/match-certs.git")  # SSH URL
 storage_mode("git")
 type("appstore")
 app_identifier(["com.aitycoon.game"])
