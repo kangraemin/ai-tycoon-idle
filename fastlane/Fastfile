@@ -58,6 +58,7 @@ platform :ios do
 
   desc "Build iOS app"
   lane :build do
+    setup_ci if ENV["CI"]
     match(type: "appstore", readonly: true, api_key: api_key)
     update_code_signing_settings(
       use_automatic_signing: false,
