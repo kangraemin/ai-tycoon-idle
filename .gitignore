@@ -4,7 +4,6 @@ node_modules/
 *.key
 *.pem
 docs/
-ios/
 www/
 
 # Fastlane secrets (절대 커밋 금지)

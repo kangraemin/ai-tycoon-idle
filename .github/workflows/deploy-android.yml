@@ -38,6 +38,9 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
+      - name: Build web assets
+        run: npm run build:web
+
       - name: Sync Capacitor web assets
         run: npx cap sync android
 
