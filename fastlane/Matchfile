@@ -1,0 +1,5 @@
+git_url(ENV["MATCH_GIT_URL"] || "https://github.com/kangraemin/match-certs.git")  # GitHub Secret: MATCH_GIT_URL
+storage_mode("git")
+type("appstore")
+app_identifier(["com.aitycoon.game"])
+username("remin1994@gmail.com")

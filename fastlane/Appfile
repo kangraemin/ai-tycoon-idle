@@ -1,0 +1,10 @@
+app_identifier("com.aitycoon.game")
+
+# Apple
+apple_id("remin1994@gmail.com")
+itc_team_id(ENV["ITC_TEAM_ID"] || "")  # App Store Connect Team ID → GitHub Secret: ITC_TEAM_ID
+team_id("7LZK6PGS47")
+
+# Android
+json_key_file(ENV["GOOGLE_PLAY_KEY_FILE"] || "fastlane/google-play-key.json")
+package_name("com.aitycoon.game")
