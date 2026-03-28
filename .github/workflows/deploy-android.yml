@@ -1,9 +1,10 @@
 name: Deploy Android
 
 on:
-  push:
-    tags:
-      - 'v*'
+  # Google Play 계정 승인 후 활성화
+  # push:
+  #   tags:
+  #     - 'v*'
   workflow_dispatch:
     inputs:
       track:
