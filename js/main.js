@@ -703,6 +703,27 @@ function renderEditorScreen() {
   if (!container) return;
 
   let html = '<div id="mission-card" class="mission-card"></div><div id="goals-card" class="goals-card"></div><div class="code-editor">';
+  html += '<div class="editor-challenge-area" style="padding:8px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">';
+  const challengeTypes = typeof CHALLENGE_TYPES !== 'undefined' ? Object.keys(CHALLENGE_TYPES) : [];
+  const canChallenge = typeof canStartChallenge === 'function' && canStartChallenge();
+  const freeLeft = typeof hasFreeChallenge === 'function' && hasFreeChallenge()
+    ? (DAILY_FREE_CHALLENGES - (gameState.freeChallengesUsed || 0)) : 0;
+  const costLabel = freeLeft > 0 ? `Free (${freeLeft} left)` : '1 Token';
+  if (challengeTypes.length > 0) {
+    if (!currentChallengeType || !challengeTypes.includes(currentChallengeType)) {
+      currentChallengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
+    }
+    const cooldown = typeof getChallengeCooldown === 'function' ? getChallengeCooldown() : 0;
+    const isOnCooldown = cooldown > 0;
+    const btnDisabled = isOnCooldown; // 쿨다운만 비활성화, 토큰 없어도 클릭 가능
+    const btnLabel = isOnCooldown
+      ? `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ${Math.ceil(cooldown / 1000)}s`
+      : `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> Challenge (${costLabel})`;
+    html += `<button class="btn ${btnDisabled ? 'btn-disabled' : 'btn-primary'}" onclick="tryStartChallengeWithAd('${currentChallengeType}')" ${btnDisabled ? 'disabled' : ''} style="font-size:12px;padding:6px 16px">`;
+    html += btnLabel;
+    html += '</button>';
+  }
+  html += '</div>';
   html += '<div class="editor-tab-bar">';
   const isAgentActive = gameState.editorTab !== 'train';
   html += '<div class="editor-tab ' + (isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'agent\')"><span class="editor-tab-icon">PY</span> agent.py</div>';
@@ -740,27 +761,6 @@ function renderEditorScreen() {
     }
   });
   html += '</div>';
-  html += '</div>';
-  html += '<div class="editor-challenge-area" style="padding:8px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">';
-  const challengeTypes = typeof CHALLENGE_TYPES !== 'undefined' ? Object.keys(CHALLENGE_TYPES) : [];
-  const canChallenge = typeof canStartChallenge === 'function' && canStartChallenge();
-  const freeLeft = typeof hasFreeChallenge === 'function' && hasFreeChallenge()
-    ? (DAILY_FREE_CHALLENGES - (gameState.freeChallengesUsed || 0)) : 0;
-  const costLabel = freeLeft > 0 ? `Free (${freeLeft} left)` : '1 Token';
-  if (challengeTypes.length > 0) {
-    if (!currentChallengeType || !challengeTypes.includes(currentChallengeType)) {
-      currentChallengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
-    }
-    const cooldown = typeof getChallengeCooldown === 'function' ? getChallengeCooldown() : 0;
-    const isOnCooldown = cooldown > 0;
-    const btnDisabled = isOnCooldown; // 쿨다운만 비활성화, 토큰 없어도 클릭 가능
-    const btnLabel = isOnCooldown
-      ? `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ${Math.ceil(cooldown / 1000)}s`
-      : `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> Challenge (${costLabel})`;
-    html += `<button class="btn ${btnDisabled ? 'btn-disabled' : 'btn-primary'}" onclick="tryStartChallengeWithAd('${currentChallengeType}')" ${btnDisabled ? 'disabled' : ''} style="font-size:12px;padding:6px 16px">`;
-    html += btnLabel;
-    html += '</button>';
-  }
   html += '</div>';
   html += '<div class="editor-status-bar">';
   html += '<div class="editor-status-left"><span class="editor-status-item">' + (gameState.editorTab === 'train' ? 'JavaScript' : 'Python') + '</span></div>';
