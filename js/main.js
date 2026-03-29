@@ -115,20 +115,19 @@ function renderGoalsCard() {
   if (!items.length) { card.style.display = 'none'; return; }
   card.style.display = '';
   _goalsStructureKey = items.map(i => i.key).join(',');
-  let html = '';
-  items.forEach(item => {
-    const pct = Math.min(100, Math.floor(item.getCurrent() / item.required * 100));
-    html += `<div class="goal-item" onclick="switchScreen('${item.screen}')">
-      <span class="material-symbols-outlined goal-icon">${item.icon}</span>
+  const mainItem = items[0];
+  const pct = Math.min(100, Math.floor(mainItem.getCurrent() / mainItem.required * 100));
+  let html = `<div class="goal-item" onclick="switchScreen('${mainItem.screen}')">
+      <span class="material-symbols-outlined goal-icon">${mainItem.icon}</span>
       <div class="goal-info">
-        <div class="goal-label">${item.label}</div>
-        <div class="goal-bar"><div class="goal-bar-fill" id="gf-${item.key}"
-          style="width:${pct}%;background:${item.color}"></div></div>
+        <div class="goal-label">${mainItem.label}</div>
+        <div class="goal-bar"><div class="goal-bar-fill" id="gf-${mainItem.key}"
+          style="width:${pct}%;background:${mainItem.color}"></div></div>
       </div>
-      <span class="goal-pct" id="gp-${item.key}">${pct}%</span>
+      <span class="goal-pct" id="gp-${mainItem.key}">${pct}%</span>
       <span class="material-symbols-outlined goal-arrow">chevron_right</span>
     </div>`;
-  });
+  if (items.length > 1) html += `<div class="goal-more">+${items.length - 1} more goals</div>`;
   card.innerHTML = html;
 }
 
@@ -138,14 +137,14 @@ function updateGoalsProgress() {
   const items = getNextGoalItems();
   const newKey = items.map(i => i.key).join(',');
   if (newKey !== _goalsStructureKey) { renderGoalsCard(); return; }
-  items.forEach(item => {
-    const fill = document.getElementById('gf-' + item.key);
-    const pct_el = document.getElementById('gp-' + item.key);
-    if (!fill || !pct_el) return;
-    const pct = Math.min(100, Math.floor(item.getCurrent() / item.required * 100));
+  const mainItem = items[0];
+  const fill = document.getElementById('gf-' + mainItem.key);
+  const pct_el = document.getElementById('gp-' + mainItem.key);
+  if (fill && pct_el) {
+    const pct = Math.min(100, Math.floor(mainItem.getCurrent() / mainItem.required * 100));
     fill.style.width = pct + '%';
     pct_el.textContent = pct + '%';
-  });
+  }
 }
 
 const UPGRADE_ICONS = {
@@ -853,6 +852,30 @@ function renderModelsScreen() {
     }
   };
   grid.appendChild(expandEl);
+
+  // Coming Next: locked models preview
+  const lockedModels = Object.entries(MODEL_DEFS)
+    .filter(([id, def]) => def.unlockCost > 0 && getModelState(id)?.count === 0)
+    .sort((a, b) => a[1].unlockCost - b[1].unlockCost)
+    .slice(0, 3);
+  if (lockedModels.length > 0) {
+    const section = document.createElement('div');
+    section.className = 'locked-models-section';
+    section.innerHTML = '<div class="locked-models-title">Coming Next</div>';
+    lockedModels.forEach(([id, def]) => {
+      const pct = Math.min(100, Math.floor(gameState.compute / def.unlockCost * 100));
+      const item = document.createElement('div');
+      item.className = 'locked-model-item';
+      item.innerHTML = `
+        <span class="material-symbols-outlined locked-model-icon">lock</span>
+        <div class="locked-model-info">
+          <div class="locked-model-name">${def.name}</div>
+          <div class="locked-model-cost">${formatNumber(def.unlockCost)} Compute · ${pct}%</div>
+        </div>`;
+      section.appendChild(item);
+    });
+    grid.parentNode.appendChild(section);
+  }
 }
 
 function showModelDetail(modelId) {
