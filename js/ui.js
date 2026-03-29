@@ -115,6 +115,15 @@ function updateCurrencyDisplay() {
   document.getElementById('loc-display').textContent = formatNumber(gameState.loc);
   document.getElementById('lps-display').textContent = formatNumber(getLocPerSecond()) + '/s';
 
+  // Progressive disclosure: dim Papers and Tokens early in tutorial
+  const papersDim = typeof gameState !== 'undefined' && gameState.tutorialStep < 6 && gameState.papers <= 20;
+  const papersEl = document.querySelector('.currency.papers');
+  if (papersEl) papersEl.style.opacity = papersDim ? '0.35' : '1';
+
+  const tokensDim = typeof gameState !== 'undefined' && gameState.tutorialStep < 9 && gameState.tokens <= 5;
+  const tokensEl = document.querySelector('.currency.tokens');
+  if (tokensEl) tokensEl.style.opacity = tokensDim ? '0.35' : '1';
+
   const compileBtn = document.querySelector('.compile-btn-mini');
   if (compileBtn) {
     if (gameState.loc > 0) {
