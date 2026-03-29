@@ -22,6 +22,7 @@ function switchScreen(screen) {
   }
   if (typeof SFX !== 'undefined' && SFX.navigate) SFX.navigate();
   if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'navigate' && screen === 'upgrade') advanceTutorial();
+  if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'navigate-models' && screen === 'models') advanceTutorial();
 
   if (screen === 'upgrade' && typeof gameState !== 'undefined' && !gameState.shownUnlockModals.includes('first-upgrade-visit')) {
     gameState.shownUnlockModals.push('first-upgrade-visit');

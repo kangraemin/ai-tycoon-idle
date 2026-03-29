@@ -1,34 +1,41 @@
-// tutorial.js - First-play onboarding (AI Tycoon, 8 steps)
+// tutorial.js - First-play onboarding (AI Tycoon, 10 steps)
 
 const TUTORIAL_STEPS = [
   {
     id: 'welcome',
     type: 'modal',
     title: 'Welcome to AI Tycoon!',
-    message: "You're an AI startup founder! Write code, compile it into Compute, and build powerful AI models.",
-    btnText: "Let's Go!",
+    message: "You're an AI engineer. Write code, train models, and grow your startup into an AI empire!",
+    btnText: "Let's Build!",
   },
   {
     id: 'tap-editor',
     type: 'spotlight',
     selector: '.editor-body',
-    message: 'Tap to write Lines of Code (LoC) — your raw material!',
+    message: 'Tap the editor to write Lines of Code (LoC) — your raw material!',
     position: 'below',
     trigger: 'tap',
   },
   {
-    id: 'compile',
+    id: 'got-loc',
     type: 'spotlight',
-    selector: '.compile-btn',
-    message: 'Convert LoC into Compute — the currency for upgrades!',
+    selector: '.compile-btn-mini',
+    message: 'Tap Compile to convert LoC into Compute — the currency for upgrades!',
     position: 'below',
     trigger: 'sell',
+  },
+  {
+    id: 'models-passive',
+    type: 'modal',
+    title: 'Your AI Models Auto-Code!',
+    message: 'Your Chatbot generates LoC automatically over time. Unlock more models for faster idle production!',
+    btnText: 'Nice!',
   },
   {
     id: 'go-upgrade',
     type: 'spotlight',
     selector: '[data-screen="upgrade"]',
-    message: 'Check out Upgrades!',
+    message: 'Go to Upgrades to boost your efficiency!',
     position: 'above',
     trigger: 'navigate',
   },
@@ -36,23 +43,31 @@ const TUTORIAL_STEPS = [
     id: 'buy-upgrade',
     type: 'spotlight',
     selector: '.upgrade-card:first-child .btn',
-    message: 'Buy your first upgrade!',
+    message: 'Buy Batch Size — more LoC per tap!',
     position: 'below',
     trigger: 'buy',
   },
   {
+    id: 'train-tab',
+    type: 'spotlight',
+    selector: '.editor-tab:last-child',
+    message: 'Switch to train.js — compiling here earns Papers for Research!',
+    position: 'below',
+    trigger: 'tab',
+  },
+  {
     id: 'go-research',
     type: 'spotlight',
-    selector: '[data-screen="research"]',
-    message: 'Switch to the train.js tab and Compile to earn Papers! Then use Papers to discover new AI models here.',
+    selector: '[data-screen="models"]',
+    message: 'Head to Models — use Papers to discover new AI!',
     position: 'above',
-    trigger: 'navigate',
+    trigger: 'navigate-models',
   },
   {
     id: 'do-research',
     type: 'spotlight',
     selector: '.research-pull-btn',
-    message: 'Tap to discover a model!',
+    message: 'Pull to discover a new AI model!',
     position: 'below',
     trigger: 'buy',
   },
@@ -60,8 +75,8 @@ const TUTORIAL_STEPS = [
     id: 'complete',
     type: 'modal',
     title: "You're Ready!",
-    message: 'Tokens recharge over time — use them for Challenges! Tap any resource icon for details.',
-    btnText: 'Start Playing!',
+    message: 'Try Challenges in the editor for bonus Compute. Build Rep to unlock Career for a 2× production multiplier. Check the Mission Card anytime for guidance!',
+    btnText: 'Start Building!',
   },
 ];
 
@@ -85,6 +100,11 @@ function showTutorialStep(step) {
   }
 
   const s = TUTORIAL_STEPS[step];
+
+  // Auto-open Research sub-tab for do-research step
+  if (s.id === 'do-research' && typeof switchModelsSubTab === 'function') {
+    setTimeout(() => switchModelsSubTab('research'), 100);
+  }
 
   if (s.type === 'modal') {
     overlay.classList.add('active');
