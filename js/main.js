@@ -709,6 +709,14 @@ function renderEditorScreen() {
   html += '<div class="editor-tab ' + (!isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'train\')"><span class="editor-tab-icon">JS</span> train.js</div>';
   html += '</div>';
   html += '<div class="editor-body" onclick="tapEditor(event)">';
+  const showTapPrompt = typeof isTutorialActive === 'function' && isTutorialActive()
+    && typeof gameState !== 'undefined' && gameState.tutorialStep === 1;
+  if (showTapPrompt) {
+    html += '<div class="tap-prompt">'
+      + '<span class="material-symbols-outlined tap-prompt-icon">touch_app</span>'
+      + '<span class="tap-prompt-label">Tap to Code</span>'
+      + '</div>';
+  }
   html += '<div class="line-numbers">';
   const activeLines = getActiveCodeLines();
   activeLines.forEach((_, i) => {
@@ -778,6 +786,7 @@ function switchEditorTab(tab) {
   lines.length = 0;
   sets[pick].forEach(l => lines.push(l));
   renderEditorScreen();
+  if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'tab' && tab === 'train') advanceTutorial();
 }
 
 function renderModelsScreen() {

@@ -270,3 +270,37 @@
   background: linear-gradient(90deg, #569cd6, #4ec9b0);
   width: 0%;
 }
+
+/* Tap prompt — tutorial tap-editor step visual cue */
+.tap-prompt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 2;
+  animation: tapPromptPulse 1.4s ease-in-out infinite;
+}
+
+.tap-prompt-icon {
+  font-size: 32px;
+  color: rgba(86, 156, 214, 0.9);
+}
+
+.tap-prompt-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(86, 156, 214, 0.85);
+  letter-spacing: 0.05em;
+  font-family: 'Fira Code', monospace;
+  text-transform: uppercase;
+}
+
+@keyframes tapPromptPulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.95); }
+  50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.05); }
+}
