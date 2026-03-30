@@ -637,6 +637,7 @@ async function startGame() {
   if (loaded) {
     applyOfflineEarnings();
   }
+  gameState._sessionStartTime = Date.now();
   Analytics.sessionStart(loaded);
 
   if (gameState.tutorialStep < (typeof TUTORIAL_STEPS !== 'undefined' ? TUTORIAL_STEPS.length : 6)) {
@@ -662,7 +663,7 @@ async function startGame() {
   autoSaveId = setInterval(saveGame, AUTO_SAVE_INTERVAL);
   if (typeof AdMobManager !== 'undefined') AdMobManager.init();
 
-  window.addEventListener('beforeunload', () => Analytics.sessionEnd());
+  window.addEventListener('beforeunload', () => Analytics.sessionEnd(gameState));
 
   // Apply saved volume settings
   if (typeof SFX !== 'undefined' && SFX._setVolume && gameState.settings?.sfxVolume !== undefined) {

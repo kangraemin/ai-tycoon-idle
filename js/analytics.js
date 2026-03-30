@@ -7,8 +7,15 @@ const Analytics = {
     this._send('session_start', { is_returning: isReturning });
   },
 
-  sessionEnd() {
-    this._send('session_end');
+  sessionEnd(state) {
+    this._send('session_end', state ? {
+      career_stage: state.careerStage || 0,
+      tutorial_step: state.tutorialStep || 0,
+      total_taps: state.stats?.totalTaps || 0,
+      total_compiles: state.stats?.totalCompiles || 0,
+      compute: Math.floor(state.compute || 0),
+      play_seconds: state._sessionStartTime ? Math.floor((Date.now() - state._sessionStartTime) / 1000) : 0,
+    } : {});
   },
 
   screenView(screenName) {
