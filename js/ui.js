@@ -160,6 +160,10 @@ function showFloatingText(x, y, text) {
 
 function showModal(title, message, buttons) {
   const overlay = document.getElementById('modal-overlay');
+  const tutorialOverlay = document.getElementById('tutorial-overlay');
+  const tutorialWasActive = tutorialOverlay?.classList.contains('active');
+  if (tutorialWasActive) tutorialOverlay.classList.remove('active');
+
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-message').textContent = message;
 
@@ -172,6 +176,7 @@ function showModal(title, message, buttons) {
     if (btn.disabled) el.disabled = true;
     el.onclick = () => {
       overlay.classList.remove('active');
+      if (tutorialWasActive && typeof showTutorialStep === 'function') showTutorialStep(gameState.tutorialStep);
       if (btn.onClick) btn.onClick();
     };
     btnContainer.appendChild(el);
@@ -182,6 +187,10 @@ function showModal(title, message, buttons) {
 
 function showModalHtml(title, htmlContent, buttons) {
   const overlay = document.getElementById('modal-overlay');
+  const tutorialOverlay = document.getElementById('tutorial-overlay');
+  const tutorialWasActive = tutorialOverlay?.classList.contains('active');
+  if (tutorialWasActive) tutorialOverlay.classList.remove('active');
+
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-message').innerHTML = htmlContent;
 
@@ -194,6 +203,7 @@ function showModalHtml(title, htmlContent, buttons) {
     if (btn.disabled) el.disabled = true;
     el.onclick = () => {
       overlay.classList.remove('active');
+      if (tutorialWasActive && typeof showTutorialStep === 'function') showTutorialStep(gameState.tutorialStep);
       if (btn.onClick) btn.onClick();
     };
     btnContainer.appendChild(el);
