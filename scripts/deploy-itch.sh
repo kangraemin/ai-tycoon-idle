@@ -12,6 +12,7 @@ zip "$ZIP" index.html privacy-policy.html
 zip -r "$ZIP" css/ js/ assets/
 
 echo "🚀 itch.io 배포 중..."
-butler push "$ZIP" "$TARGET"
+BUTLER="${BUTLER:-$(which butler 2>/dev/null || echo "$HOME/bin/butler")}"
+"$BUTLER" push "$ZIP" "$TARGET"
 
 echo "✅ 배포 완료: https://ramang.itch.io/ai-tycoon"
