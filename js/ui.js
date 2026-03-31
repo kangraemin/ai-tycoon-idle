@@ -338,7 +338,8 @@ function showToast(message, type) {
   container.appendChild(toast);
   setTimeout(() => {
     toast.classList.add('toast-exit');
-    toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    const fallback = setTimeout(() => toast.remove(), 300);
+    toast.addEventListener('animationend', () => { clearTimeout(fallback); toast.remove(); }, { once: true });
   }, 1800);
 }
 
