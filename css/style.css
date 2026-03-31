@@ -700,6 +700,7 @@ html, body {
   background: var(--bg-elevated);
   border-radius: 9999px;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .progress-fill {
@@ -707,6 +708,7 @@ html, body {
   background: linear-gradient(90deg, var(--accent), var(--papers));
   border-radius: 9999px;
   transition: width 0.3s;
+  min-width: 4px;
 }
 
 .progress-text {

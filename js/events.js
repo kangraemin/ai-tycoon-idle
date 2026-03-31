@@ -219,6 +219,8 @@ function renderEventBanner() {
     lastRenderedEventId = null;
     lastRenderedBuffCount = -1;
     banner.style.display = 'none';
+    // event banner가 꺼지면 hint banner 재평가
+    if (typeof updateHintBanner === 'function') updateHintBanner();
   }
 }
 

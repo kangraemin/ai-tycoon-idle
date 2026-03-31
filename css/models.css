@@ -154,17 +154,17 @@
 .model-slot.gpu-expand {
   cursor: pointer;
   justify-content: center;
-  border: 2px dashed var(--accent, #6366f1);
-  background: rgba(99,102,241, 0.06);
+  border: 1px solid rgba(86, 156, 214, 0.25);
+  background: rgba(86, 156, 214, 0.05);
 }
 .gpu-expand-icon .material-symbols-outlined {
   font-size: 28px;
-  color: var(--accent, #6366f1);
+  color: var(--accent, #569cd6);
 }
 .gpu-expand-label {
   font-size: 10px;
   font-weight: 700;
-  color: var(--accent, #6366f1);
+  color: var(--accent, #569cd6);
   margin-top: 4px;
 }
 .gpu-expand-cost {

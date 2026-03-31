@@ -129,6 +129,13 @@ function updateHintBanner() {
   const banner = document.getElementById('hint-banner');
   if (!banner) return;
 
+  // event-banner가 활성화되어 있으면 hint-banner 숨김 (배너 중첩 방지)
+  const eventBanner = document.getElementById('event-banner');
+  if (eventBanner && eventBanner.style.display !== 'none') {
+    banner.style.display = 'none';
+    return;
+  }
+
   for (const hint of HINTS) {
     try {
       if (hint.check()) {
