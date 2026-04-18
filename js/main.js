@@ -34,7 +34,7 @@ function getCurrentMission() {
     .sort((a, b) => a[1].unlockCost - b[1].unlockCost)[0];
   if (nextModel) {
     const [id, def] = nextModel;
-    return { id: 'unlock-' + id, icon: 'smart_toy', title: 'Unlock ' + def.name + '!', sub: (typeof formatNumber === 'function' ? formatNumber(def.unlockCost) : def.unlockCost) + ' Compute needed', screen: 'models', hasProg: true, getCurrent: () => st.compute, required: def.unlockCost };
+    return { id: 'unlock-' + id, icon: 'smart_toy', title: 'Unlock ' + def.name + '!', sub: 'Research with Papers to unlock', screen: 'research', hasProg: false };
   }
 
   if (typeof canPromote === 'function' && canPromote())
