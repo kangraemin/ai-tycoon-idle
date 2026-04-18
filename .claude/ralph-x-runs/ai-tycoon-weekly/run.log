@@ -126,3 +126,5 @@ Iter 7 분석 완료 및 커밋/푸시됨 (`963beb1`).
 [16] Step 1: Analyze
 커밋 `c5d4826` 푸시 완료. iter-0016 분석 파일 4개(01-analysis.md + 스크린샷 3장)와 log.md/run.log 업데이트 반영됐습니다.
 [16] Step 2: Implement
+`run.log` 커밋 및 푸시 완료 (`dbed7b2`).
+[16] Step 3: Deploy

@@ -168,3 +168,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 3/5] UI 6a254e1 — Fix career rep-rate subtext +1/+10->+5/+50 (LOC +1/-1)
 - [IMPLEMENT 4/5] 기획자 089cbe0 — Career Advance-In hint for manual players (LOC +1/-1)
 - [IMPLEMENT 5/5] 게이머 98ec5c2 — Fix tutorial step 7 spotlight target (LOC +4/-0)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
