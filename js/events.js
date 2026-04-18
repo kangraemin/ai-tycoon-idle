@@ -38,6 +38,7 @@ let _flowMeterResetTimer = null;
 
 function eventTick(dt) {
   if (activeEvent) return; // Don't spawn while event is active
+  if (typeof isTutorialActive === 'function' && isTutorialActive()) return;
 
   const now = Date.now();
   // Clamp stale lastEventTime (e.g. from old saves) so first event fires after normal delay
