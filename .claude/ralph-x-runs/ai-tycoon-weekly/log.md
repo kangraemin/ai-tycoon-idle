@@ -145,3 +145,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 2/3] Developer 4ea5df0 — Fix gpuSlots reset to 2 on career advance (LOC +1/-1)
 - [IMPLEMENT 3/3] UI/Gamer a187743 — Add +1 Rep floating text on each editor tap (LOC +1/-0)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 15 -- 기획자/UI/UX/개발자/게이머 -- 2026-04-18T23:30
+- [ANALYZE] Primary: Rebalance Rep gain rate (+5/tap +50/compile, repReq 10K->2K) — career prestige loop unreachable at current rates
+- Delta: activeUsers 0->0 (GA silent), tutorial/user N/A->N/A
+- Lens choice reasoning: 기획자(9) — career advance requires 67+ sessions at current rep rate; systemic balance blocker. UI/개발자(8) — rep-display DOM element missing, compile floating text silently broken. UX(7) — hallucination event fires within 60s on stale lastEventTime. 개발자+게이머(5) — first-compile paper bug + flow meter dead state. All 5 lenses scored >=5, all in queue.
