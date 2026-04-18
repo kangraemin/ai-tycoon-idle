@@ -29,3 +29,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Files: js/tutorial.js, css/style.css
 - LOC: +54/-2
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 2 — UX — 2026-04-18T10:15
+- [ANALYZE] Suppress unlock fanfare modals during active tutorial (modal-on-modal collision fix)
+- Delta: activeUsers N/A->N/A (GA empty), tutorial/user 2.00->N/A (baseline only)
+- Rotation reason: Double-modal collision on step 1 is deterministic UX failure affecting 100% of new players; tutorial_step/user=2.0 baseline is consistent with this being the drop cause
