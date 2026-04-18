@@ -77,32 +77,37 @@ function updateMissionCard() {
 
 function getNextGoalItems() {
   const items = [];
+  const mission = getCurrentMission();
+  const earlyMissionIds = new Set(['tap', 'compile', 'batch', 'train', 'research', 'gpu']);
+  const missionIsEarlyPhase = mission && earlyMissionIds.has(mission.id);
 
-  // 1) 다음 잠금 해제 모델 (cheapest locked)
-  const nextModel = Object.entries(MODEL_DEFS)
-    .filter(([id, def]) => def.unlockCost > 0 && getModelState(id)?.count === 0)
-    .sort((a, b) => a[1].unlockCost - b[1].unlockCost)[0];
-  if (nextModel) {
-    const [id, def] = nextModel;
-    const iconStyle = MODEL_ICON_STYLES[Object.keys(MODEL_DEFS).indexOf(id)] || MODEL_ICON_STYLES[0];
-    items.push({ key: 'model-' + id, icon: iconStyle.icon, label: 'Unlock ' + def.name,
-      getCurrent: () => gameState.compute, required: def.unlockCost,
-      screen: 'models', color: 'var(--accent)' });
+  // 1) Career progress first — long-term anchor separate from Mission tactical steps
+  const nextCareer = getNextCareer();
+  if (nextCareer) {
+    items.push({ key: 'career-' + gameState.careerStage, icon: nextCareer.icon,
+      label: nextCareer.name, getCurrent: () => gameState.reputation,
+      required: nextCareer.repReq, screen: 'career', color: 'var(--reputation)' });
   }
 
-  // 2) GPU 슬롯 확장 (슬롯 꽉 찼을 때만)
+  // 2) GPU slot expansion (only when full)
   if (getOwnedModels().length >= getEffectiveGpuSlots()) {
     items.push({ key: 'gpu', icon: 'developer_board', label: 'GPU Slot',
       getCurrent: () => gameState.compute, required: getGpuSlotCost(),
       screen: 'upgrade', color: 'var(--papers)' });
   }
 
-  // 3) 다음 Career 단계
-  const nextCareer = getNextCareer();
-  if (nextCareer) {
-    items.push({ key: 'career-' + gameState.careerStage, icon: nextCareer.icon,
-      label: nextCareer.name, getCurrent: () => gameState.reputation,
-      required: nextCareer.repReq, screen: 'career', color: 'var(--reputation)' });
+  // 3) Next model unlock — suppressed during early-phase missions to avoid CTA conflict with Mission card
+  if (!missionIsEarlyPhase) {
+    const nextModel = Object.entries(MODEL_DEFS)
+      .filter(([id, def]) => def.unlockCost > 0 && getModelState(id)?.count === 0)
+      .sort((a, b) => a[1].unlockCost - b[1].unlockCost)[0];
+    if (nextModel) {
+      const [id, def] = nextModel;
+      const iconStyle = MODEL_ICON_STYLES[Object.keys(MODEL_DEFS).indexOf(id)] || MODEL_ICON_STYLES[0];
+      items.push({ key: 'model-' + id, icon: iconStyle.icon, label: 'Unlock ' + def.name,
+        getCurrent: () => gameState.compute, required: def.unlockCost,
+        screen: 'models', color: 'var(--accent)' });
+    }
   }
 
   return items;
