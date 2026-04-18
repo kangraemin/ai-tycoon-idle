@@ -26,8 +26,21 @@ function produceTick(dt) {
   gameState.totalLoc += produced;
 }
 
-function autoCompileTick() {
-  // Removed: auto-compile was confusing users (LoC silently decreasing)
+const BASE_AUTO_COMPILE_INTERVAL = 10; // seconds at Orchestrator Lv.1
+
+function autoCompileTick(dt) {
+  const orchLevel = gameState.upgrades.teamAgent.orchestrator;
+  if (orchLevel === 0) return;
+  if (typeof isHaltActive === 'function' && isHaltActive()) return;
+  if (gameState.loc < 1) return;
+
+  const speedMult = 1 + orchLevel * 0.15;
+  autoCompileTimer += dt * speedMult;
+
+  if (autoCompileTimer >= BASE_AUTO_COMPILE_INTERVAL) {
+    compileData();
+    autoCompileTimer = 0;
+  }
 }
 
 function tapEditor(event) {

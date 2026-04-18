@@ -8,7 +8,7 @@ const UPGRADE_DEFS = {
   },
   teamAgent: {
     multiAgent:   { name: 'Multi-Agent',   baseCost: 1000, description: '+1 GPU slot per level' },
-    orchestrator: { name: 'Orchestrator',   baseCost: 1500, description: 'Auto-Compile runs 15% faster per level' },
+    orchestrator: { name: 'Orchestrator',   baseCost: 1500, description: 'Lv.1+: Auto-Compile every 10s — 15% faster per level' },
     delegation:   { name: 'Delegation',     baseCost: 2000, description: '-10% fusion cost per level' },
   },
   skill: {
