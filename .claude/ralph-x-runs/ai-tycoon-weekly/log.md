@@ -192,3 +192,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 3/5] 기획자 14810cf — Suppress compile-code hint when mission compile active (LOC +5/-1)
 - [IMPLEMENT 4/5] UI fbed71b — Token display N/10 format + hide countdown at max (LOC +3/-2)
 - [IMPLEMENT 5/5] 게이머 5091549 — Challenge button show bestGrade after first play (LOC +4/-1)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon

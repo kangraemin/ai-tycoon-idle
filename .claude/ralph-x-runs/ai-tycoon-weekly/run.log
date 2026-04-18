@@ -148,3 +148,5 @@ Iter 7 분석 완료 및 커밋/푸시됨 (`963beb1`).
 [18] Step 1: Analyze
 커밋 및 푸시 완료. `0870739` — iter 18 분석 파일 + 플레이테스트 스크린샷 5장 + 로그 업데이트.
 [18] Step 2: Implement
+`run.log` 변경사항 커밋 및 푸시 완료. (`0` 파일은 빈 untracked 파일로 무시했습니다.)
+[18] Step 3: Deploy
