@@ -34,3 +34,7 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Suppress unlock fanfare modals during active tutorial (modal-on-modal collision fix)
 - Delta: activeUsers N/A->N/A (GA empty), tutorial/user 2.00->N/A (baseline only)
 - Rotation reason: Double-modal collision on step 1 is deterministic UX failure affecting 100% of new players; tutorial_step/user=2.0 baseline is consistent with this being the drop cause
+
+- [IMPLEMENT] 92cdeff — feat: [ralph iter 2/UX] suppress unlock fanfare during active tutorial
+- Files: js/ui.js
+- LOC: +5/-0
