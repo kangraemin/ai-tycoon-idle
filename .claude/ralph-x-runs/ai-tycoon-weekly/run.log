@@ -134,3 +134,9 @@ Iter 7 분석 완료 및 커밋/푸시됨 (`963beb1`).
 [17] Step 1: Analyze
 커밋 `334d21f` 푸시 완료. iter-0017 분석 파일(01-analysis.md + 스크린샷 3장)과 log.md 업데이트가 origin/main에 반영됐습니다.
 [17] Step 2: Implement
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] 기획자 be0cfcb -- Fix Mission/Goals card guidance conflict (LOC +22/-17)
+- [IMPLEMENT 2/5] UI d2cb4fd -- Move Challenge area below editor body (LOC +22/-22)
+- [IMPLEMENT 3/5] UX 4320a78 -- Dynamic compile button mode label (LOC +8/-0)
+- [IMPLEMENT 4/5] 개발자 ead21c4 -- Manual rep rate estimate in Career Advance In (LOC +6/-2)
+- [IMPLEMENT 5/5] 게이머 7462519 -- Challenge discoverability: post-tutorial hint (LOC +12/-0)
