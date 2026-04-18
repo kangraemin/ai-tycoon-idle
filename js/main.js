@@ -795,7 +795,9 @@ function renderEditorScreen() {
     html += '</div>';
     if (!isOnCooldown) {
       const bestGrade = gameState.challengeStats && gameState.challengeStats.bestGrade;
-      html += '<div style="font-size:10px;color:var(--text-muted);margin-top:3px">Win → +Rep +Papers +Compute' + (bestGrade ? ' · Best: ' + bestGrade : '') + '</div>';
+      const noFreeLeft = freeLeft === 0 && gameState.tokens <= 0;
+      const rechargeHint = noFreeLeft ? ' · Free recharges at midnight' : '';
+      html += '<div style="font-size:10px;color:var(--text-muted);margin-top:3px">Win → +Rep +Papers +Compute' + (bestGrade ? ' · Best: ' + bestGrade : '') + rechargeHint + '</div>';
     }
     html += '</div>';
   }

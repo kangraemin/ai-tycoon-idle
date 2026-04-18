@@ -59,7 +59,7 @@ let challengeTimerId = null;
 let lastChallengeCompleteTime = 0;
 const CHALLENGE_COOLDOWN = 30000;
 
-const DAILY_FREE_CHALLENGES = 3;
+const DAILY_FREE_CHALLENGES = 5;
 
 function hasFreeChallenge() {
   const now = new Date();
