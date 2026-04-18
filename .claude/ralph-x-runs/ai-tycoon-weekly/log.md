@@ -144,3 +144,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 1/3] UX/Planner 75b210f — Fix train-tab hint/mission gate papers<20->papers<50 (LOC +2/-2)
 - [IMPLEMENT 2/3] Developer 4ea5df0 — Fix gpuSlots reset to 2 on career advance (LOC +1/-1)
 - [IMPLEMENT 3/3] UI/Gamer a187743 — Add +1 Rep floating text on each editor tap (LOC +1/-0)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
