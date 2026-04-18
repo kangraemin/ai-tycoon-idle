@@ -11,7 +11,7 @@ function getCurrentMission() {
   const owned = typeof getOwnedModels === 'function' ? getOwnedModels().length : 0;
   const maxSlots = typeof getEffectiveGpuSlots === 'function' ? getEffectiveGpuSlots() : st.gpuSlots;
 
-  if (!st.stats || st.stats.totalTaps < 10)
+  if (!st.stats || (st.stats.totalTaps < 10 && st.compute < 30 && st.loc < 30))
     return { id: 'tap', icon: 'keyboard', title: 'Write some Code!', sub: 'Tap the editor to start', screen: null, hasProg: false };
 
   if (st.loc >= 10 && st.compute < 50)
@@ -124,7 +124,7 @@ function renderGoalsCard() {
         <div class="goal-bar"><div class="goal-bar-fill" id="gf-${mainItem.key}"
           style="width:${pct}%;background:${mainItem.color}"></div></div>
       </div>
-      <span class="goal-pct" id="gp-${mainItem.key}">${pct}%</span>
+      <span class="goal-pct${pct === 100 ? ' goal-pct-ready' : ''}" id="gp-${mainItem.key}">${pct === 100 ? 'READY!' : pct + '%'}</span>
       <span class="material-symbols-outlined goal-arrow">chevron_right</span>
     </div>`;
   if (items.length > 1) html += `<div class="goal-more">+${items.length - 1} more goals</div>`;
@@ -143,7 +143,8 @@ function updateGoalsProgress() {
   if (fill && pct_el) {
     const pct = Math.min(100, Math.floor(mainItem.getCurrent() / mainItem.required * 100));
     fill.style.width = pct + '%';
-    pct_el.textContent = pct + '%';
+    pct_el.textContent = pct === 100 ? 'READY!' : pct + '%';
+    pct_el.classList.toggle('goal-pct-ready', pct === 100);
   }
 }
 

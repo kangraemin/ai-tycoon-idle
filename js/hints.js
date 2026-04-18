@@ -136,6 +136,13 @@ function updateHintBanner() {
     return;
   }
 
+  // 미션카드가 이미 actionable 방향을 제시하면 hint-banner 억제 (CTA 충돌 방지)
+  const activeMission = typeof getCurrentMission === 'function' ? getCurrentMission() : null;
+  if (activeMission && activeMission.screen) {
+    banner.style.display = 'none';
+    return;
+  }
+
   for (const hint of HINTS) {
     try {
       if (hint.check()) {

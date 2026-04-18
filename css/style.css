@@ -1397,6 +1397,12 @@ html, body {
   text-align: right;
 }
 
+.goal-pct-ready {
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
 .goal-arrow {
   font-size: 16px;
   color: var(--text-muted);
