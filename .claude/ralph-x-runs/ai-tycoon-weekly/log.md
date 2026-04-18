@@ -28,3 +28,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] 9038e46 — feat: [ralph iter 1/UI] 튜토리얼 진행 표시줄 + 스포트라이트 펄스 + 방향 화살표 추가
 - Files: js/tutorial.js, css/style.css
 - LOC: +54/-2
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
