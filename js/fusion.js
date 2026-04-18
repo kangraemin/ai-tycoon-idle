@@ -143,8 +143,14 @@ function renderFusionScreen() {
       html += `<div style="color:var(--text-primary);font-weight:700">${defA.name} + ${defB.name}</div>`;
       html += `<div style="color:var(--accent);margin-top:4px">→ ${defR.name}</div>`;
     } else {
-      html += `<div style="color:var(--text-muted)">??? + ???</div>`;
+      const ownA = (getModelState(recipe.inputs[0])?.count || 0) > 0;
+      const ownB = (getModelState(recipe.inputs[1])?.count || 0) > 0;
+      const ownedCount = (ownA ? 1 : 0) + (ownB ? 1 : 0);
+      html += `<div style="color:var(--text-muted)"><span style="${ownA ? 'color:var(--accent)' : ''}">???</span> + <span style="${ownB ? 'color:var(--accent)' : ''}">???</span></div>`;
       html += `<div style="color:var(--text-muted);margin-top:4px">→ ???</div>`;
+      if (ownedCount > 0) {
+        html += `<div style="color:var(--text-secondary);font-size:10px;margin-top:2px">${ownedCount}/2 ingredients owned</div>`;
+      }
     }
     html += '</div>';
   });
