@@ -193,3 +193,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 4/5] UI fbed71b — Token display N/10 format + hide countdown at max (LOC +3/-2)
 - [IMPLEMENT 5/5] 게이머 5091549 — Challenge button show bestGrade after first play (LOC +4/-1)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 19 — 기획자 — 2026-04-19T
+- [ANALYZE] Rep gain scales with prestige multiplier (primary: 기획자 9/10)
+- Delta: activeUsers 0->0 (GA completely silent both snapshots), tutorial/user N/A->N/A
+- Lens choice reasoning: 기획자(9) — production.js flat +5/+50 rep vs career.js 10x req curve; prestige loop broken past stage 2. UX(7)+게이머(7)+UI(6)+개발자(5) all >=5, all in queue. Playtest confirmed tutorial clean Step 1-4, misleading Rep/hr -- on career screen.
