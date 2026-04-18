@@ -162,7 +162,7 @@ function renderCareerScreen() {
   html += '<div class="career-card-value">' + (typeof formatNumber === 'function' ? formatNumber(gameState.reputation) : gameState.reputation) + '</div></div>';
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--accent-green)">speed</span><span class="career-card-label">Rep / hr</span></div>';
   html += '<div class="career-card-value">' + (repRate ? (typeof formatNumber === 'function' ? formatNumber(repRate) : repRate) : '--') + '</div>';
-  html += '<div class="career-card-sub ' + (repRate ? 'green' : '') + '">' + (repRate ? 'via Orchestrator' : 'Need Orchestrator') + '</div></div>';
+  html += '<div class="career-card-sub ' + (repRate ? 'green' : '') + '">' + (repRate ? 'via Orchestrator' : 'Tap +1 / Compile +10') + '</div></div>';
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--reputation)">schedule</span><span class="career-card-label">Advance In</span></div>';
   html += '<div class="career-card-value" style="font-size:18px">' + (timeToAdv || (next ? '--' : 'Max!')) + '</div>';
   if (!next) html += '<div class="career-card-sub green">Top rank!</div>';
