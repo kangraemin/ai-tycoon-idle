@@ -427,7 +427,7 @@ let autoSaveId = null;
 let currentCodeLine = 0;
 let currentCharIndex = 0;
 let autoTypeAccum = 0;
-let currentChallengeType = null;
+let currentChallengeType = null; // mirrors gameState.currentChallengeType for render access
 let _lastEditorLine = -1;
 
 // Advance typing by N characters in the editor
@@ -756,8 +756,12 @@ function renderEditorScreen() {
   html += '</div>';
   const challengeTypes = typeof CHALLENGE_TYPES !== 'undefined' ? Object.keys(CHALLENGE_TYPES) : [];
   if (challengeTypes.length > 0) {
-    if (!currentChallengeType || !challengeTypes.includes(currentChallengeType)) {
+    // Restore from gameState on re-render; fall back to random only on first ever init
+    if (gameState.currentChallengeType && challengeTypes.includes(gameState.currentChallengeType)) {
+      currentChallengeType = gameState.currentChallengeType;
+    } else if (!currentChallengeType || !challengeTypes.includes(currentChallengeType)) {
       currentChallengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
+      gameState.currentChallengeType = currentChallengeType;
     }
     const freeLeft = typeof hasFreeChallenge === 'function' && hasFreeChallenge()
       ? (DAILY_FREE_CHALLENGES - (gameState.freeChallengesUsed || 0)) : 0;
@@ -797,6 +801,7 @@ function cycleChallengeType() {
   if (challengeTypes.length < 2) return;
   const idx = challengeTypes.indexOf(currentChallengeType);
   currentChallengeType = challengeTypes[(idx + 1) % challengeTypes.length];
+  gameState.currentChallengeType = currentChallengeType;
   if (typeof renderEditorScreen === 'function') renderEditorScreen();
 }
 

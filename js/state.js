@@ -45,6 +45,7 @@ function createDefaultState() {
     freeChallengesUsed: 0,
     lastFreeChallengeReset: Date.now(),
     challengeStats: { played: 0, bestGrade: null },
+    currentChallengeType: null,
     eventStats: { total: 0, responded: 0, eurekaTriggered: false },
     lastEventTime: Date.now(),
 
