@@ -289,9 +289,10 @@ function submitChallenge(forcedAnswer) {
 
   // Calculate rewards
   const rlhfBonus = typeof getUpgradeEffect === 'function' ? 1 + getUpgradeEffect('skill', 'rlhf') : 1;
-  const locReward = Math.floor(100 * gradeInfo.multiplier * rlhfBonus);
-  const computeReward = Math.floor(50 * gradeInfo.multiplier * rlhfBonus);
-  const repReward = Math.floor(100 * gradeInfo.multiplier);
+  const prestige = gameState.prestigeMultiplier || 1;
+  const locReward = Math.floor(100 * gradeInfo.multiplier * rlhfBonus * prestige);
+  const computeReward = Math.floor(50 * gradeInfo.multiplier * rlhfBonus * prestige);
+  const repReward = Math.floor(100 * gradeInfo.multiplier * prestige);
   const paperReward = gradeInfo.grade === 'S' ? 3 : gradeInfo.grade === 'A' ? 1 : 0;
 
   // Apply rewards
