@@ -97,7 +97,7 @@ function doCareerAdvance() {
     }
   }
 
-  gameState.gpuSlots = 1;
+  gameState.gpuSlots = 2;
 
   // Keep these
   // papers, tokens, reputation, discoveredFusions, achievements — preserved
