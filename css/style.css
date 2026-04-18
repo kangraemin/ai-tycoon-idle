@@ -1147,6 +1147,13 @@ html, body {
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
   z-index: 1000;
   pointer-events: none;
+  border: 2px solid rgba(59, 130, 246, 0.5);
+  animation: tutorialHighlightPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes tutorialHighlightPulse {
+  0%, 100% { border-color: rgba(59, 130, 246, 0.3); }
+  50% { border-color: rgba(59, 130, 246, 1.0); }
 }
 
 .tutorial-bubble {
@@ -1220,6 +1227,46 @@ html, body {
 @keyframes tutorialFadeIn {
   0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
   100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.tutorial-step-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.tutorial-progress {
+  height: 4px;
+  background: var(--border-light);
+  border-radius: 2px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.tutorial-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.tutorial-arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid var(--bg-card);
+  margin: 0 auto 4px;
+}
+
+.tutorial-arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--bg-card);
+  margin: 4px auto 0;
 }
 
 /* ===== Mission Card ===== */

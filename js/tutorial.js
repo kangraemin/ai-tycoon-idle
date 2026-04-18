@@ -106,11 +106,14 @@ function showTutorialStep(step) {
     setTimeout(() => switchModelsSubTab('research'), 100);
   }
 
+  const progressPct = Math.round((step + 1) / TUTORIAL_STEPS.length * 100);
+  const progressHTML = '<div class="tutorial-step-label">Step ' + (step + 1) + ' of ' + TUTORIAL_STEPS.length + '</div><div class="tutorial-progress"><div class="tutorial-progress-bar" style="width:' + progressPct + '%"></div></div>';
+
   if (s.type === 'modal') {
     overlay.classList.add('active');
     if (spotlight) spotlight.style.display = 'none';
     bubble.className = 'tutorial-bubble tutorial-modal-mode';
-    bubble.innerHTML = '<div class="tutorial-modal-title">' + s.title + '</div><div class="tutorial-modal-msg">' + s.message + '</div><button class="btn btn-primary tutorial-next-btn" onclick="advanceTutorial()">' + s.btnText + '</button><button class="tutorial-skip" onclick="skipTutorial()">Skip Tutorial</button>';
+    bubble.innerHTML = progressHTML + '<div class="tutorial-modal-title">' + s.title + '</div><div class="tutorial-modal-msg">' + s.message + '</div><button class="btn btn-primary tutorial-next-btn" onclick="advanceTutorial()">' + s.btnText + '</button><button class="tutorial-skip" onclick="skipTutorial()">Skip Tutorial</button>';
   } else if (s.type === 'spotlight') {
     overlay.classList.add('active');
     const target = document.querySelector(s.selector);
@@ -137,7 +140,9 @@ function showTutorialStep(step) {
     }
     bubble.style.left = '50%';
     bubble.style.transform = 'translateX(-50%)';
-    bubble.innerHTML = '<div class="tutorial-msg">' + s.message + '</div><button class="tutorial-skip" onclick="skipTutorial()">Skip</button>';
+    const arrowUp = '<div class="tutorial-arrow-up"></div>';
+    const arrowDown = '<div class="tutorial-arrow-down"></div>';
+    bubble.innerHTML = (isAbove ? '' : arrowUp) + progressHTML + '<div class="tutorial-msg">' + s.message + '</div><button class="tutorial-skip" onclick="skipTutorial()">Skip</button>' + (isAbove ? arrowDown : '');
 
     target.style.position = 'relative';
     target.style.zIndex = '1001';
