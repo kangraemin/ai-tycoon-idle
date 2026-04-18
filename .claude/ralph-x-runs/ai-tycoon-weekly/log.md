@@ -38,3 +38,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] 92cdeff — feat: [ralph iter 2/UX] suppress unlock fanfare during active tutorial
 - Files: js/ui.js
 - LOC: +5/-0
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon

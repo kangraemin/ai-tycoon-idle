@@ -12,3 +12,5 @@
 [2] Step 1: Analyze
 커밋 및 푸시 완료. `e962a99` — iter-0002 분석 파일 6개 (01-analysis.md + 플레이테스트 스크린샷 3장 + 스냅샷 + 로그) 포함.
 [2] Step 2: Implement
+커밋 `f1a1fcf` 푸시 완료. 로그, run.log, 분석 리포트, iter-0002 구현 파일 포함.
+[2] Step 3: Deploy
