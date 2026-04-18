@@ -40,6 +40,10 @@ function eventTick(dt) {
   if (activeEvent) return; // Don't spawn while event is active
 
   const now = Date.now();
+  // Clamp stale lastEventTime (e.g. from old saves) so first event fires after normal delay
+  if ((now - gameState.lastEventTime) / 1000 > EVENT_SPAWN_MAX) {
+    gameState.lastEventTime = now - EVENT_SPAWN_MAX * 1000;
+  }
   const elapsed = (now - gameState.lastEventTime) / 1000;
   const threshold = EVENT_SPAWN_MIN + Math.random() * (EVENT_SPAWN_MAX - EVENT_SPAWN_MIN);
 
@@ -50,14 +54,15 @@ function eventTick(dt) {
 }
 
 const HALT_EVENTS = new Set(['criticalBug', 'serverCrash', 'overheating']);
+const EARLY_GAME_BLOCKED = new Set(['criticalBug', 'serverCrash', 'overheating', 'hallucination']);
 
 function spawnEvent() {
   const eventIds = Object.keys(EVENT_DEFS);
   let eventId = eventIds[Math.floor(Math.random() * eventIds.length)];
-  // 초반(컴파일 15회 미만)에는 halt 이벤트 재롤
+  // 초반(컴파일 15회 미만)에는 halt/stopAutoProd 이벤트 재롤
   const isEarlyGame = !gameState.stats || gameState.stats.totalCompiles < 15;
-  if (isEarlyGame && HALT_EVENTS.has(eventId)) {
-    const safe = eventIds.filter(id => !HALT_EVENTS.has(id));
+  if (isEarlyGame && EARLY_GAME_BLOCKED.has(eventId)) {
+    const safe = eventIds.filter(id => !EARLY_GAME_BLOCKED.has(id));
     if (safe.length > 0) eventId = safe[Math.floor(Math.random() * safe.length)];
   }
   const def = EVENT_DEFS[eventId];
