@@ -154,8 +154,8 @@ function renderCareerScreen() {
 
   // Stats cards
   const repRate = getRepRate();
-  // When Orchestrator is not unlocked, estimate 1,500 Rep/hr (30 compiles/hr × 50 Rep) for display
-  const MANUAL_REP_EST = 1500;
+  // Estimate manual rep/hr: 30 compiles/hr × 50 Rep × prestige multiplier
+  const MANUAL_REP_EST = Math.round(1500 * gameState.prestigeMultiplier);
   const displayRepRate = repRate || MANUAL_REP_EST;
   const timeToAdv = next ? getTimeToAdvance(displayRepRate) : null;
   const timeIsEst = next && !repRate;
@@ -165,8 +165,8 @@ function renderCareerScreen() {
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--reputation)">star</span><span class="career-card-label">Reputation</span></div>';
   html += '<div class="career-card-value">' + (typeof formatNumber === 'function' ? formatNumber(gameState.reputation) : gameState.reputation) + '</div></div>';
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--accent-green)">speed</span><span class="career-card-label">Rep / hr</span></div>';
-  html += '<div class="career-card-value">' + (repRate ? (typeof formatNumber === 'function' ? formatNumber(repRate) : repRate) : '--') + '</div>';
-  html += '<div class="career-card-sub ' + (repRate ? 'green' : '') + '">' + (repRate ? 'via Orchestrator' : 'Tap +5 / Compile +50') + '</div></div>';
+  html += '<div class="career-card-value">' + (typeof formatNumber === 'function' ? formatNumber(displayRepRate) : displayRepRate) + (timeIsEst ? '<span style="font-size:11px;opacity:0.6">~</span>' : '') + '</div>';
+  html += '<div class="career-card-sub ' + (repRate ? 'green' : '') + '">' + (repRate ? 'via Orchestrator' : 'est. 30 compiles/hr') + '</div></div>';
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--reputation)">schedule</span><span class="career-card-label">Advance In</span></div>';
   html += '<div class="career-card-value" style="font-size:18px">' + (timeToAdv || (next ? '--' : 'Max!')) + '</div>';
   if (!next) html += '<div class="career-card-sub green">Top rank!</div>';
