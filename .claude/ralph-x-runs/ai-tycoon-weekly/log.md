@@ -39,3 +39,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Files: js/ui.js
 - LOC: +5/-0
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 3 — 기획자 — 2026-04-18T11:04
+- [ANALYZE] Start with 2 GPU slots + soft pity on first research pull
+- Delta: activeUsers 45->N/A (1-day GA empty), research_pull reach 20% (9/45 users), gpu_expansion reach 15.6% (7/45 users)
+- Rotation reason: loop broken at step 3 for 80% of players — gpuSlots=1 structural wall confirmed by GA (20% reach) + code review + playtest
