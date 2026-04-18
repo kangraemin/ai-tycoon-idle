@@ -66,3 +66,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Files: js/events.js, css/style.css, index.html
 - LOC: +95/-1
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 6 — UI — 2026-04-18T14:36
+- [ANALYZE] Fix tutorial spotlight stacking context — lift ancestor z-indexes for .top-bar and .bottom-nav targets
+- Delta: activeUsers 0->1 (1 bounce, 2.29s, 0 game events), game_events/user stuck at 0
+- Rotation reason: Tutorial steps 3/5/8 unclickable (z-index:10 parent < overlay z-index:1000) — UI perspective catches visual-vs-interactive discrepancy
