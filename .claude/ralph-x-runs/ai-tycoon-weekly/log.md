@@ -25,3 +25,6 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] 튜토리얼 단계별 시각적 하이라이트 + 진행 표시줄 추가
 - Delta: activeUsers baseline=45, tutorial/user baseline=2.00
 - Rotation reason: tutorial_step/user=2.0 → UI가 다음 단계 안내 실패. 리텐션 0%는 첫 세션 UI 인상 부족 신호.
+- [IMPLEMENT] 9038e46 — feat: [ralph iter 1/UI] 튜토리얼 진행 표시줄 + 스포트라이트 펄스 + 방향 화살표 추가
+- Files: js/tutorial.js, css/style.css
+- LOC: +54/-2
