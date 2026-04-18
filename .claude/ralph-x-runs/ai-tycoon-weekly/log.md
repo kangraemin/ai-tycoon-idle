@@ -140,3 +140,7 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Fix train-tab hint/mission gate: papers < 20 -> papers < 50 (main.js + hints.js)
 - Delta: activeUsers 0->0 (GA silent), tutorial/user N/A->N/A
 - Lens choice reasoning: papers < 20 gate in both main.js:23 and hints.js:80 blocks 100% of players starting with >=20 papers from seeing train.js guidance -- confirmed by code + playtest. Developer gpuSlots=2 fix and Gamer +1 Rep float also in queue.
+- [IMPLEMENT-SUMMARY] Attempted 3, Committed 3, Skipped 0+0
+- [IMPLEMENT 1/3] UX/Planner 75b210f — Fix train-tab hint/mission gate papers<20->papers<50 (LOC +2/-2)
+- [IMPLEMENT 2/3] Developer 4ea5df0 — Fix gpuSlots reset to 2 on career advance (LOC +1/-1)
+- [IMPLEMENT 3/3] UI/Gamer a187743 — Add +1 Rep floating text on each editor tap (LOC +1/-0)
