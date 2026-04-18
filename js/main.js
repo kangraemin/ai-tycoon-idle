@@ -773,7 +773,10 @@ function renderEditorScreen() {
     html += `<button class="btn ${btnDisabled ? 'btn-disabled' : 'btn-primary'}" onclick="tryStartChallengeWithAd('${currentChallengeType}')" ${btnDisabled ? 'disabled' : ''} style="font-size:12px;padding:6px 16px">`;
     html += btnLabel;
     html += '</button>';
-    if (!isOnCooldown) html += '<div style="font-size:10px;color:var(--text-muted);margin-top:3px">Win → +Papers +Compute</div>';
+    if (!isOnCooldown) {
+      const bestGrade = gameState.challengeStats && gameState.challengeStats.bestGrade;
+      html += '<div style="font-size:10px;color:var(--text-muted);margin-top:3px">Win → +Papers +Compute' + (bestGrade ? ' · Best: ' + bestGrade : '') + '</div>';
+    }
     html += '</div>';
   }
   html += '</div>';
