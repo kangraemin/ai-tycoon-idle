@@ -51,3 +51,7 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] 게임루프에서 upgrade 버튼 canBuy 상태 incremental 업데이트 추가
 - Delta: activeUsers N/A (GA empty), tutorial/user 2.00->N/A (baseline only)
 - Rotation reason: 코드 로직 버그(업그레이드 버튼 stale disabled) — 개발자 관점만이 검증 가능한 deterministic 전환 킬러
+
+- [IMPLEMENT] fe59d7a — feat: [ralph iter 4/개발자] 게임루프에서 upgrade 버튼 canBuy 상태 incremental 업데이트 추가
+- Files: js/ui.js, js/main.js
+- LOC: +55/-2
