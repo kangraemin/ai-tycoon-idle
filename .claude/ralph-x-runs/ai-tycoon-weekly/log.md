@@ -1,0 +1,27 @@
+# AI Tycoon 자동 개선 루프 — Work Log
+
+## 관점 Rotation
+Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod 5]
+
+- **UI** — 가독성, 색·대비, 정보 계층, 버튼 위치/크기, 폰트, 여백
+- **UX** — 플로우 마찰, 튜토리얼 UX, 클릭 동선, 애니메이션 타이밍, 피드백 가시성
+- **기획자** — 게임 밸런스, 보상감, 루프 설계, 경제 곡선, 난이도, 컨텐츠 깊이
+- **개발자** — 코드 품질, 버그, 성능, 기술 부채, 에러 핸들링, 리팩토링
+- **게이머** — 재미, 중독성, 숨겨진 즐거움, 리드아웃, 몰입감, 체감 보상
+
+## 기록 구조
+각 iteration마다 `iterations/iter-NNN/` 아래:
+- `01-analysis.md` — 스냅샷 델타 수치표 + 선정 개선안 + 기각된 대안 + 관점 선택 이유
+- `02-implementation.md` — 변경 파일 + git diff + 커밋 해시 + 리스크
+- `03-deploy.md` — 빌드 체크 결과 + 배포 output + URL
+- `deploy-success` (marker) — 존재 시 성공 → 1h sleep, 없으면 즉시 재시도
+
+## 실행 로그 (iteration별 요약)
+
+---
+
+
+## Iter 1 — UI — 2026-04-18T09:15
+- [ANALYZE] 튜토리얼 단계별 시각적 하이라이트 + 진행 표시줄 추가
+- Delta: activeUsers baseline=45, tutorial/user baseline=2.00
+- Rotation reason: tutorial_step/user=2.0 → UI가 다음 단계 안내 실패. 리텐션 0%는 첫 세션 UI 인상 부족 신호.

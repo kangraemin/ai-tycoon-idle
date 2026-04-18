@@ -1,0 +1,17 @@
+{
+  "ai-tycoon-weekly": {
+    "model": "sonnet",
+    "task_template": "AI Tycoon 1시간 자동 개선 루프 — GA 스냅샷 → 5관점 분석 → 구현+커밋 → 빌드+배포",
+    "steps": [
+      {"name": "analyze (ga-analyze skill)", "skill": "ga-analyze"},
+      {"name": "implement + commit + push", "skill": null},
+      {"name": "build check + deploy (itch.io)", "skill": null}
+    ],
+    "max_iterations": 1000,
+    "checklist": [],
+    "perspectives": ["UI", "UX", "기획자", "개발자", "게이머"],
+    "sleep_success_sec": 3600,
+    "sleep_fail_sec": 0,
+    "caffeinate": true
+  }
+}
