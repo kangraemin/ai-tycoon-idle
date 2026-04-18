@@ -86,3 +86,5 @@ Iter 7 분석 완료 및 커밋/푸시됨 (`963beb1`).
 [11] Step 1: Analyze
 커밋 `86ed7cc` 푸시 완료. iter-0011 분석 파일(01-analysis.md + 플레이테스트 스크린샷 3장)과 log.md 업데이트가 반영됐습니다.
 [11] Step 2: Implement
+커밋 `3eeb743` 푸시 완료. `02-implementation.md`, `log.md`, `run.log` 3개 파일이 반영됐습니다.
+[11] Step 3: Deploy

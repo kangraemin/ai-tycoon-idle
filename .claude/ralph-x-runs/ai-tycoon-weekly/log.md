@@ -115,3 +115,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] UX | 86db3c2 — Fix mission card staleness + resolve 3-CTA conflict
 - Files: js/main.js, js/hints.js, css/style.css
 - LOC: +17/-3
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
