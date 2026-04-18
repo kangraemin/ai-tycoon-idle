@@ -45,6 +45,18 @@ const HINTS = [
     icon: 'emoji_events',
   },
   {
+    id: 'discover-challenge',
+    check: () => {
+      const tutorialDone = typeof TUTORIAL_STEPS !== 'undefined' && gameState.tutorialStep >= TUTORIAL_STEPS.length;
+      const neverPlayed = !gameState.challengeStats || gameState.challengeStats.played === 0;
+      const notOnCooldown = typeof getChallengeCooldown === 'function' && getChallengeCooldown() === 0;
+      return tutorialDone && neverPlayed && notOnCooldown;
+    },
+    text: 'New: Challenge mode — beat the clock for bonus rewards!',
+    screen: 'editor',
+    icon: 'emoji_events',
+  },
+  {
     id: 'try-fusion',
     check: () => typeof getOwnedModels === 'function' && getOwnedModels().length >= 2,
     text: 'Try fusing two models!',
