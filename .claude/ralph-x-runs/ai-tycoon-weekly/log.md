@@ -121,3 +121,6 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Fix save/load: persist shownUnlockModals + dailyStreak + tutorial re-trigger guard
 - Delta: activeUsers 0→0 (GA silent), tutorial/user N/A→N/A
 - Lens choice reasoning: 개발자 — three confirmed save/load bugs (shownUnlockModals reset, dailyStreak reset, tutorialStep:0 re-triggers welcome modal for returning players). Last used iter 4 (8 iters ago). Playtest confirmed tutorial modal firing for player with 28 papers.
+- [IMPLEMENT-SUMMARY] Attempted 2, Committed 2, Skipped 0+0
+- [IMPLEMENT 1/2] 개발자 7643e01 — Fix save/load persistence + tutorial re-trigger guard (LOC +12/-1)
+- [IMPLEMENT 2/2] 게이머 55ae566 — Flow State 20-tap milestone: hold meter + FLOW! label 1s (LOC +29/-1)
