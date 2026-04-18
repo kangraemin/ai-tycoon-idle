@@ -566,6 +566,10 @@ function checkDailyBonus() {
       </div>
     </div>
   `;
+  if (gameState.tutorialStep < (typeof TUTORIAL_STEPS !== 'undefined' ? TUTORIAL_STEPS.length : 10)) {
+    if (typeof showToast === 'function') showToast(`+${papers} Papers (Daily Bonus)`, 'success');
+    return;
+  }
   showModalHtml('Daily Bonus!', streakHtml, [{ text: 'Collect!', primary: true }]);
   if (typeof SFX !== 'undefined' && SFX.levelUp) SFX.levelUp();
 }
