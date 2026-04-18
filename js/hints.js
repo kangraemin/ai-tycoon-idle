@@ -157,16 +157,17 @@ function updateHintBanner() {
     return;
   }
 
-  // 미션카드가 이미 actionable 방향을 제시하면 hint-banner 억제 (CTA 충돌 방지)
+  // 미션카드가 이미 같은 화면을 가리키는 hint만 억제 (CTA 충돌 방지)
+  // 다른 화면을 가리키는 hint(예: try-fusion)는 억제하지 않음
   const activeMission = typeof getCurrentMission === 'function' ? getCurrentMission() : null;
-  if (activeMission && activeMission.screen) {
-    banner.style.display = 'none';
-    return;
-  }
 
   for (const hint of HINTS) {
     try {
       if (hint.check()) {
+        // Suppress only when mission already guides to the same destination
+        if (activeMission && activeMission.screen && activeMission.screen === hint.screen) {
+          continue;
+        }
         if (currentHint !== hint.id) {
           currentHint = hint.id;
           banner.innerHTML = '<span class="material-symbols-outlined hint-icon">' + hint.icon + '</span><span class="hint-text">' + hint.text + '</span><span class="material-symbols-outlined hint-arrow">chevron_right</span>';

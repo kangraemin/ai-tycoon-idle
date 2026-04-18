@@ -110,6 +110,21 @@ function getNextGoalItems() {
     }
   }
 
+  // 4) Fusion goal — when player has 2+ owned models but hasn't fused yet
+  if (gameState.discoveredFusions.length === 0 && typeof FUSION_RECIPES !== 'undefined') {
+    const availableRecipe = FUSION_RECIPES.find(r => {
+      const a = getModelState(r.inputs[0]);
+      const b = getModelState(r.inputs[1]);
+      return a && b && a.count > 0 && b.count > 0;
+    });
+    if (availableRecipe) {
+      const cost = typeof getFusionCost === 'function' ? getFusionCost(availableRecipe) : availableRecipe.cost;
+      items.push({ key: 'fusion-first', icon: 'merge', label: 'Try Fusion!',
+        getCurrent: () => gameState.compute, required: cost,
+        screen: 'fusion', color: 'var(--accent)' });
+    }
+  }
+
   return items;
 }
 
