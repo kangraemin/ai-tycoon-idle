@@ -116,3 +116,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Files: js/main.js, js/hints.js, css/style.css
 - LOC: +17/-3
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 12 — 개발자 — 2026-04-18T20:00
+- [ANALYZE] Fix save/load: persist shownUnlockModals + dailyStreak + tutorial re-trigger guard
+- Delta: activeUsers 0→0 (GA silent), tutorial/user N/A→N/A
+- Lens choice reasoning: 개발자 — three confirmed save/load bugs (shownUnlockModals reset, dailyStreak reset, tutorialStep:0 re-triggers welcome modal for returning players). Last used iter 4 (8 iters ago). Playtest confirmed tutorial modal firing for player with 28 papers.
