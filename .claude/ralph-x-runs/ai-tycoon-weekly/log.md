@@ -71,3 +71,7 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Fix tutorial spotlight stacking context — lift ancestor z-indexes for .top-bar and .bottom-nav targets
 - Delta: activeUsers 0->1 (1 bounce, 2.29s, 0 game events), game_events/user stuck at 0
 - Rotation reason: Tutorial steps 3/5/8 unclickable (z-index:10 parent < overlay z-index:1000) — UI perspective catches visual-vs-interactive discrepancy
+
+- [IMPLEMENT] b94a370 — Fix tutorial spotlight stacking context (lift .top-bar/.bottom-nav z-index above overlay)
+- Files: js/tutorial.js
+- LOC: +23/-0
