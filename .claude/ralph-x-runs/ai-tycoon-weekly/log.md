@@ -134,3 +134,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 1/3] UX/개발자 bf8f7aa — Fix Research Unlocked modal: reorder checkDailyBonus + fix tutorial guard (LOC +3/-3)
 - [IMPLEMENT 2/3] 게이머 4eb1710 — Add reward hint to Challenge button label (LOC +1/-0)
 - [IMPLEMENT 3/3] 기획자 5291de4 — Show tap/compile rep rate on Career screen (LOC +1/-1)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
