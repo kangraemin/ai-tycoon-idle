@@ -135,3 +135,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 2/3] 게이머 4eb1710 — Add reward hint to Challenge button label (LOC +1/-0)
 - [IMPLEMENT 3/3] 기획자 5291de4 — Show tap/compile rep rate on Career screen (LOC +1/-1)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 14 -- UX/기획자 -- 2026-04-18T22:30
+- [ANALYZE] Fix train-tab hint/mission gate: papers < 20 -> papers < 50 (main.js + hints.js)
+- Delta: activeUsers 0->0 (GA silent), tutorial/user N/A->N/A
+- Lens choice reasoning: papers < 20 gate in both main.js:23 and hints.js:80 blocks 100% of players starting with >=20 papers from seeing train.js guidance -- confirmed by code + playtest. Developer gpuSlots=2 fix and Gamer +1 Rep float also in queue.
