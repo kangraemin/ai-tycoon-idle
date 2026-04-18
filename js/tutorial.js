@@ -110,6 +110,10 @@ function showTutorialStep(step) {
 
   const s = TUTORIAL_STEPS[step];
 
+  // Return to editor screen so train.js tab is visible and selectable
+  if (s.id === 'train-tab' && typeof switchScreen === 'function') {
+    switchScreen('editor');
+  }
   // Auto-open Research sub-tab for do-research step
   if (s.id === 'do-research' && typeof switchModelsSubTab === 'function') {
     setTimeout(() => switchModelsSubTab('research'), 100);
