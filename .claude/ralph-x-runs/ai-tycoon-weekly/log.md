@@ -215,3 +215,9 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Add fusion goal to getNextGoalItems() + fix hint suppression (primary: 기획자 8/10)
 - Delta: activeUsers 0->0 (GA completely silent both snapshots), tutorial/user N/A->N/A
 - Lens choice reasoning: 기획자(8) - fusion invisible in goals card + try-fusion hint suppressed by active mission screen; 게이머(7) - fusion screen no recipe ownership status; UX(7) - career nav unlock threshold 5000 vs 2000 req; 개발자(6) - getRepRate() 5x wrong formula; UI(6) - pity guarantee not shown on research screen. All >= 5, all in queue. Two consecutive 기획자 primary (19+20) not three - rule not triggered.
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] 기획자 e6ed5f9 — Add fusion goal + fix hint suppression (LOC +21/-5)
+- [IMPLEMENT 2/5] 게이머 6e40746 — Fusion codex per-recipe ownership status (LOC +7/-1)
+- [IMPLEMENT 3/5] UX 3123438 — Lower career nav unlock 5000->2000 rep (LOC +1/-1)
+- [IMPLEMENT 4/5] 개발자 3c70233 — Fix getRepRate() formula 5x off (LOC +1/-1)
+- [IMPLEMENT 5/5] UI 6861cd7 — Show first-pull pity guarantee on research screen (LOC +4/-0)
