@@ -84,3 +84,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] UX | 7ed4525 — Suppress Daily Bonus modal during tutorial — defer to toast
 - Files: js/ui.js
 - LOC: +4/-0
+
+## Iter 8 — 기획자 — 2026-04-18T16:00
+- [ANALYZE] Re-implement Auto-Compile via Orchestrator upgrade — fix broken idle mechanic
+- Delta: activeUsers 1->0 (1d empty), game_events/user stuck at 0
+- Lens choice reasoning: 기획자 — Orchestrator upgrade charges compute but autoCompileTick() is empty; idle mechanic promise broken. 기획자 last used iter 3 (5 iters ago). UX avoided (used iter 7).

@@ -1,0 +1,29 @@
+{
+  "taken_at": "2026-04-18T15:32:47",
+  "period_days": 1,
+  "property_id": "528427024",
+  "sections": {
+    "overview": [],
+    "sources": [],
+    "new_users_by_day": [],
+    "devices": [],
+    "countries": [],
+    "events": [],
+    "pages": [],
+    "first_session_engagement": [],
+    "purchases": [],
+    "ads": []
+  },
+  "sections_status": {
+    "overview": "ok",
+    "sources": "ok",
+    "new_users_by_day": "ok",
+    "devices": "ok",
+    "countries": "ok",
+    "events": "ok",
+    "pages": "ok",
+    "first_session_engagement": "ok",
+    "purchases": "ok",
+    "ads": "ok"
+  }
+}
