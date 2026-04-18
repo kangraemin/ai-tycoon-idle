@@ -18,6 +18,26 @@ function getModelsByRarity(rarity) {
 }
 
 function rollResearch() {
+  // First-pull pity: guarantee uncommon+ and skip hallucination
+  if (gameState.stats && gameState.stats.gachaPulls === 0) {
+    const pityRates = [
+      { rarity: 'uncommon', weight: 70 },
+      { rarity: 'rare',     weight: 30 },
+    ];
+    const roll = Math.random() * 100;
+    let cumulative = 0;
+    for (const rate of pityRates) {
+      cumulative += rate.weight;
+      if (roll < cumulative) {
+        const candidates = getModelsByRarity(rate.rarity);
+        if (candidates.length > 0) {
+          const modelId = candidates[Math.floor(Math.random() * candidates.length)];
+          return { modelId, rarity: rate.rarity, hallucination: false };
+        }
+      }
+    }
+  }
+
   // Hallucination check
   if (Math.random() < HALLUCINATION_CHANCE) {
     return { modelId: null, rarity: null, hallucination: true };

@@ -36,7 +36,7 @@ function createDefaultState() {
     },
 
     // Systems
-    gpuSlots: 1,
+    gpuSlots: 2,
     editorTab: 'agent',
     careerStage: 0,
     careerHistory: [],
