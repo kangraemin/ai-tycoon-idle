@@ -150,3 +150,9 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Primary: Rebalance Rep gain rate (+5/tap +50/compile, repReq 10K->2K) — career prestige loop unreachable at current rates
 - Delta: activeUsers 0->0 (GA silent), tutorial/user N/A->N/A
 - Lens choice reasoning: 기획자(9) — career advance requires 67+ sessions at current rep rate; systemic balance blocker. UI/개발자(8) — rep-display DOM element missing, compile floating text silently broken. UX(7) — hallucination event fires within 60s on stale lastEventTime. 개발자+게이머(5) — first-compile paper bug + flow meter dead state. All 5 lenses scored >=5, all in queue.
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] 기획자 5ce3692 — Rebalance Rep gain: +5/tap +50/compile, repReq 5x reduction (LOC +12/-12)
+- [IMPLEMENT 2/5] UI/개발자 9ca7889 — Add rep-display slot to top-bar HUD (LOC +7/-0)
+- [IMPLEMENT 3/5] UX 489d761 — Fix stale lastEventTime + hallucination early-game guard (LOC +8/-3)
+- [IMPLEMENT 4/5] 개발자 e7a4d8b — Fix first-compile paper bonus off-by-one (LOC +2/-2)
+- [IMPLEMENT 5/5] 게이머 d44cb18 — Hide flow meter label when consecutiveTaps=0 (LOC +2/-0)
