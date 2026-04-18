@@ -212,9 +212,20 @@ browse 스킬로 직접 플레이하며 발견한 것 (스크린샷 파일 경�
 - **Candidate**: <title> / Score: N/10 / Evidence: <...>
 
 ## Lens Choice Reasoning
-최고 점수 렌즈 선택. 최근 5 iters의 렌즈 이력(log.md 참조) 확인 후, 같은 렌즈 3번+ 연속이면 대안 고려한 과정 설명.
+각 렌즈 후보 중 score ≥ 5 인 것들을 **전부 이번 iter에 구현**한다 (선택 아니라 다 시도). 최근 5 iters 이력 참조하여 같은 렌즈가 과하게 반복되지 않도록 점수 경계 케이스(정확히 5/10) 판단. 이 섹션은 이제 "각 후보가 왜 통과 또는 컷오프됐는지" 설명.
 
-## Selected Improvement
+## Implementation Queue
+아래 순서대로 Step 2에서 구현한다. Primary를 우선, 나머지는 점수 내림차순. 각 항목은 별도 commit.
+
+| # | Lens | Title | Score | Files (예상) |
+|---|---|---|---|---|
+| 1 | <lens> | <title> | N/10 | `path1`, `path2` |
+| 2 | <lens> | <title> | N/10 | `path3` |
+| 3 | <lens> | <title> | N/10 | `path4` |
+
+(Score < 5 인 후보는 이 표에 넣지 않음. "Considered but Rejected" 섹션에 이동.)
+
+## Primary Improvement (점수 가장 높은 것 상세)
 **Lens**: <UI | UX | 기획자 | 개발자 | 게이머>
 **Title**: <한 줄>
 **Why**: <findings와 논리적 연결>
@@ -251,70 +262,80 @@ You are in a ralph loop for AI Tycoon game improvement.
 
 Working directory: /Users/ram/programming/vibecoding/game
 
-**Step 2 — Implement + Commit + Push**
+**Step 2 — Implement ALL candidates in Implementation Queue + per-candidate commit + push**
 
 ### Procedure
 
-1. Read `{ITER_DIR}/01-analysis.md`. Focus on Selected Improvement section.
+1. Read `{ITER_DIR}/01-analysis.md` → **Implementation Queue** table. If queue empty or analysis missing, write `SKIPPED` to `{ITER_DIR}/02-implementation.md` and stop.
 
-2. If analysis empty or improvement title is "-":
-   - Write to `{ITER_DIR}/02-implementation.md`:
-     ```markdown
-     # Iter {ITER} Implementation — SKIPPED
-     Reason: <no analysis / empty / etc.>
-     ```
-   - Append `- [SKIP] no analysis` to `{RUN_DIR}/log.md` and stop.
-
-3. Implement the improvement in the specified files. Do NOT scope-creep.
-
-4. **Syntax check per-file**: For every `.js` file edited, run `node --check <file>`. Fix before committing.
-
-5. Stage files individually (NEVER `git add -A` / `git add .`):
+2. **Track which files each candidate touches in this iter** to detect conflicts:
    ```
-   git add <path1> <path2>
+   FILES_MODIFIED_THIS_ITER = set()
    ```
 
-6. Read the **Lens** from `{ITER_DIR}/01-analysis.md` → Selected Improvement → Lens field.
-   Commit with HEREDOC, using that lens in the tag (body = bullet list):
-   ```bash
-   git commit -m "$(cat <<'EOF'
-   feat: [ralph iter {ITER}/<lens-from-analysis>] <short title>
+3. For each candidate in queue (order = as listed in table, Primary first):
 
-   - <change line 1>
-   - <change line 2>
-   EOF
-   )"
-   ```
+   a. **Conflict check**: read the candidate's "Files (예상)" column. If any file is already in `FILES_MODIFIED_THIS_ITER` AND the change would overlap in the same function/region, **skip this candidate** and log `[SKIP-CONFLICT]`. (Different files → proceed. Same file but clearly separate regions → proceed. Same region → skip.)
 
-7. `git push origin main`.
+   b. Implement the candidate — read only the files needed, make the change focused on this candidate's scope. Do NOT scope-creep into other candidates.
+
+   c. **Syntax check per-file**: `node --check <file>` for each `.js` edited. If any fails, revert this candidate's changes (git checkout -- <files>) and log `[SKIP-BUILDFAIL] <reason>`. Proceed to next candidate.
+
+   d. Stage files individually (NEVER `git add -A`):
+      ```
+      git add <path1> <path2>
+      ```
+
+   e. Commit with HEREDOC using this candidate's lens:
+      ```bash
+      git commit -m "$(cat <<'EOF'
+      feat: [ralph iter {ITER}/<lens> #<k>] <short title>
+
+      - <change line 1>
+      - <change line 2>
+      EOF
+      )"
+      ```
+      where `<k>` = 1-based position in queue.
+
+   f. Add each edited file to `FILES_MODIFIED_THIS_ITER`.
+
+   g. Track commit hash for this candidate.
+
+4. After all candidates processed: `git push origin main` (single push for whole iter).
 
 ### Output — `{ITER_DIR}/02-implementation.md`:
 
 ```markdown
-# Iter {ITER} Implementation (lens: read from 01-analysis.md Selected Improvement)
+# Iter {ITER} Implementation (multi-candidate)
 
-## Files changed
-- `path/to/file.js`: <1-line summary>
-- `path/to/file.css`: <1-line summary>
+Queue length: N
 
-## Git diff summary
-Paste output of `git diff HEAD~1 --stat`:
-\`\`\`
-<paste>
-\`\`\`
+## Candidate 1 — <lens> (score N/10)
+**Title**: <title>
+**Files changed**:
+- `path`: <1-line summary>
 
-## Full diff (key hunks)
-Paste top 150 lines of `git show HEAD`:
-\`\`\`diff
-<paste>
-\`\`\`
+**Commit**: <full hash>
+**LOC**: +<a>/-<d>
+**Status**: committed | skipped-conflict | skipped-buildfail
+**Notes**: <if skipped, why>
 
-## Commit
-- Hash: <full hash>
-- Message: <title>
+## Candidate 2 — <lens> (score N/10)
+(same structure)
 
-## Risk notes
-- <risky/untested/side effects>
+## Candidate N — ...
+
+## Summary
+- Attempted: N
+- Committed: M
+- Skipped (conflict): K
+- Skipped (build fail): L
+- Total LOC: +<a>/-<d>
+
+## Files Modified This Iter
+- `file1` (from candidate 1, 2)
+- `file2` (from candidate 3)
 
 ## Push status
 - success | fail: <reason>
@@ -322,9 +343,10 @@ Paste top 150 lines of `git show HEAD`:
 
 ### Log append to `{RUN_DIR}/log.md`:
 ```
-- [IMPLEMENT] <lens> | <short_hash> — <title>
-- Files: <comma-separated>
-- LOC: +<added>/-<deleted>
+- [IMPLEMENT-SUMMARY] Attempted N, Committed M, Skipped K+L
+- [IMPLEMENT 1/N] <lens> <short_hash> — <title> (LOC +a/-d)
+- [IMPLEMENT 2/N] <lens> <short_hash> — <title>
+- [SKIP-CONFLICT N/N] <lens> <title> — reason
 ```
 
 Work autonomously. No questions.
@@ -342,7 +364,9 @@ Working directory: /Users/ram/programming/vibecoding/game
 
 ### Procedure
 
-1. Read `{ITER_DIR}/02-implementation.md`. If SKIPPED, write same to `{ITER_DIR}/03-deploy.md` and stop — **do NOT create the `deploy-success` marker**.
+1. Read `{ITER_DIR}/02-implementation.md`. Check the **Summary** section:
+   - If `Committed: 0`, write `SKIPPED — no candidates committed` to `{ITER_DIR}/03-deploy.md` and stop. **Do NOT create the `deploy-success` marker**.
+   - If `Committed: ≥1`, proceed with build+deploy. Even partial iter (some skipped) is worth deploying.
 
 2. **Full syntax check**: For every `.js` under `js/`, `node --check <file>`. Collect failures.
 
