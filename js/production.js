@@ -74,6 +74,7 @@ function tapEditor(event) {
           fy = Math.random() * (editorEl.clientHeight * 0.4) + editorEl.clientHeight * 0.2;
         }
         showFloatingText(fx, fy, '+' + formatNumber(tapPower) + ' Code');
+        showFloatingText(fx + 4, fy + 18, '+1 Rep');
       }
     }
   }
