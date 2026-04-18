@@ -130,3 +130,7 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Fix Research Unlocked modal blocking new players: reorder checkDailyBonus after startTutorial + remove papers > 20 tutorial guard
 - Delta: activeUsers 0->0 (GA silent), tutorial/user N/A->N/A
 - Lens choice reasoning: UX/개발자 - checkDailyBonus() before startTutorial() causes papers=25 > 20 guard to skip tutorial; without isTutorialActive()=true, Research Unlocked modal blocks 100% of new players before first tap. Deterministic failure confirmed by code + playtest. Impl queue: UX(9) + 개발자(8) unified, 게이머(6), 기획자(5).
+- [IMPLEMENT-SUMMARY] Attempted 3, Committed 3, Skipped 0+0
+- [IMPLEMENT 1/3] UX/개발자 bf8f7aa — Fix Research Unlocked modal: reorder checkDailyBonus + fix tutorial guard (LOC +3/-3)
+- [IMPLEMENT 2/3] 게이머 4eb1710 — Add reward hint to Challenge button label (LOC +1/-0)
+- [IMPLEMENT 3/3] 기획자 5291de4 — Show tap/compile rep rate on Career screen (LOC +1/-1)
