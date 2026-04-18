@@ -157,3 +157,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 4/5] 개발자 e7a4d8b — Fix first-compile paper bonus off-by-one (LOC +2/-2)
 - [IMPLEMENT 5/5] 게이머 d44cb18 — Hide flow meter label when consecutiveTaps=0 (LOC +2/-0)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 16 - 개발자/UX/UI/기획자/게이머 - 2026-04-19T00:47
+- [ANALYZE] Primary: Fix stale lastEventTime clamp (events.js:45) - immediate event fires on every load
+- Delta: activeUsers 0->0 (GA silent), tutorial/user N/A->N/A
+- Lens choice reasoning: 개발자(9) - deterministic bug: New Regulation fires within 60s on every session. UX(8) - no isTutorialActive guard in eventTick. UI(8) - career.js:165 shows +1/+10 but iter15 changed to +5/+50 (5x wrong). 기획자(6) - career Advance In shows -- for all new players. 게이머(6) - step 7 spotlight targets wrong element.
