@@ -10,7 +10,11 @@ const HINTS = [
   },
   {
     id: 'compile-code',
-    check: () => gameState.loc >= 10 && gameState.compute < 10,
+    check: () => {
+      if (!(gameState.loc >= 10 && gameState.compute < 10)) return false;
+      const activeMission = typeof getCurrentMission === 'function' ? getCurrentMission() : null;
+      return !(activeMission && activeMission.id === 'compile');
+    },
     text: 'Compile your code to earn Compute!',
     screen: null,
     icon: 'memory',
