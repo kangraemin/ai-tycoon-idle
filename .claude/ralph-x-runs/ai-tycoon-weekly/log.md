@@ -209,3 +209,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Challenge rewards scale with prestigeMultiplier (primary: 기획자 9/10)
 - Delta: activeUsers 0->0 (GA completely silent both snapshots), tutorial/user N/A->N/A
 - Lens choice reasoning: 기획자(9) — challenge.js:292-294 flat rewards vs production.js prestige scaling; challenges dead at ChatJBT+ (300 Rep vs 2M req). UX(8)+개발자(8)+UI(7)+게이머(7) all >=5, all in queue.
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon

@@ -171,3 +171,5 @@ Iter 7 분석 완료 및 커밋/푸시됨 (`963beb1`).
 - [IMPLEMENT 3/5] 개발자 e0c74a0 — Fix offline modal blocked by tutorial step-4 overlay (+12/-1)
 - [IMPLEMENT 4/5] UI 90f0a11 — Fix Coming Next misleading Compute label (+1/-1)
 - [IMPLEMENT 5/5] 게이머 b870abb — Raise free challenges 3->5, add recharge hint (+4/-2)
+워크로그 작성 완료 (Notion 전송 완료). Iter 17~20 Ralph 루프 작업 내용이 기록됐습니다.
+[20] Step 3: Deploy
