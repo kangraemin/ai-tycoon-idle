@@ -648,7 +648,18 @@ async function startGame() {
   Analytics.sessionStart(loaded);
 
   if (gameState.tutorialStep < (typeof TUTORIAL_STEPS !== 'undefined' ? TUTORIAL_STEPS.length : 6)) {
-    startTutorial();
+    const modalOverlay = document.getElementById('modal-overlay');
+    if (modalOverlay && modalOverlay.classList.contains('active')) {
+      const obs = new MutationObserver(() => {
+        if (!modalOverlay.classList.contains('active')) {
+          obs.disconnect();
+          startTutorial();
+        }
+      });
+      obs.observe(modalOverlay, { attributes: true, attributeFilter: ['class'] });
+    } else {
+      startTutorial();
+    }
   }
 
   if (typeof checkDailyBonus === 'function') checkDailyBonus();
