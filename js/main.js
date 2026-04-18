@@ -780,6 +780,14 @@ function renderEditorScreen() {
   container.innerHTML = html;
   if (typeof applyCareerTheme === 'function') applyCareerTheme();
   renderGoalsCard();
+  updateCompileBtn();
+}
+
+function updateCompileBtn() {
+  const btn = document.querySelector('.compile-btn-mini');
+  if (!btn) return;
+  const isPapers = typeof gameState !== 'undefined' && gameState.editorTab === 'train';
+  btn.textContent = isPapers ? 'Compile → Papers' : 'Compile → Compute';
 }
 
 function switchEditorTab(tab) {
