@@ -186,3 +186,9 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Tutorial step 7 spotlight timing fix (primary: UX/개발자 9/10)
 - Delta: activeUsers 0->0 (GA completely silent), tutorial/user N/A->N/A
 - Lens choice reasoning: UX/개발자(9) — tutorial step 7 spotlight mispositioned on upgrade screen (currentScreen guard + setTimeout fix needed); UX(8) — hint banner shows during tutorial (missing isTutorialActive guard); 기획자(7) — compile-code hint duplicates mission card; UI(6) — token display ambiguous; 게이머(6) — bestGrade unused in challenge button. All 5 lenses >= 5, all in queue.
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] UX/개발자 ff3621f — Tutorial step 7 currentScreen guard + setTimeout (LOC +5/-1)
+- [IMPLEMENT 2/5] UX 388c7d2 — Hint banner isTutorialActive suppress during tutorial (LOC +5/-0)
+- [IMPLEMENT 3/5] 기획자 14810cf — Suppress compile-code hint when mission compile active (LOC +5/-1)
+- [IMPLEMENT 4/5] UI fbed71b — Token display N/10 format + hide countdown at max (LOC +3/-2)
+- [IMPLEMENT 5/5] 게이머 5091549 — Challenge button show bestGrade after first play (LOC +4/-1)
