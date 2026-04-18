@@ -76,3 +76,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Files: js/tutorial.js
 - LOC: +23/-0
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 7 — UX — 2026-04-18T15:32
+- [ANALYZE] Suppress Daily Bonus modal during tutorial — defer to toast
+- Delta: activeUsers 1->0 (1d window empty), tutorial/user N/A (0 game events from only visitor)
+- Lens choice reasoning: Daily Bonus + Tutorial modal collision confirmed by playtest (play-02-mid.png) — affects 100% of day-1 users; UX last used iter 2, 5 iters ago
