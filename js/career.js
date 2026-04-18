@@ -22,6 +22,26 @@ function getNextCareer() {
   return CAREER_STAGES[gameState.careerStage + 1];
 }
 
+function getRepRate() {
+  const orchLevel = gameState.upgrades?.teamAgent?.orchestrator || 0;
+  if (orchLevel === 0) return null;
+  const speedMult = 1 + orchLevel * 0.15;
+  const firesPerHour = (3600 / BASE_AUTO_COMPILE_INTERVAL) * speedMult;
+  return Math.round(firesPerHour * 10);
+}
+
+function getTimeToAdvance(repRate) {
+  const next = getNextCareer();
+  if (!next || !repRate || repRate <= 0) return null;
+  const repNeeded = next.repReq - gameState.reputation;
+  if (repNeeded <= 0) return 'Ready!';
+  const hoursNeeded = repNeeded / repRate;
+  if (hoursNeeded < 1 / 60) return '<1m';
+  if (hoursNeeded < 1) return '~' + Math.round(hoursNeeded * 60) + 'm';
+  if (hoursNeeded < 24) return '~' + hoursNeeded.toFixed(1) + 'h';
+  return '~' + Math.round(hoursNeeded / 24) + 'd';
+}
+
 function canPromote() {
   const next = getNextCareer();
   if (!next) return false;
@@ -133,11 +153,21 @@ function renderCareerScreen() {
   }
 
   // Stats cards
+  const repRate = getRepRate();
+  const timeToAdv = next ? getTimeToAdvance(repRate) : null;
   html += '<div class="career-cards">';
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--accent)">trending_up</span><span class="career-card-label">Multiplier</span></div>';
   html += '<div class="career-card-value">' + current.multiplier.toFixed(1) + 'x</div></div>';
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--reputation)">star</span><span class="career-card-label">Reputation</span></div>';
   html += '<div class="career-card-value">' + (typeof formatNumber === 'function' ? formatNumber(gameState.reputation) : gameState.reputation) + '</div></div>';
+  html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--accent-green)">speed</span><span class="career-card-label">Rep / hr</span></div>';
+  html += '<div class="career-card-value">' + (repRate ? (typeof formatNumber === 'function' ? formatNumber(repRate) : repRate) : '--') + '</div>';
+  html += '<div class="career-card-sub ' + (repRate ? 'green' : '') + '">' + (repRate ? 'via Orchestrator' : 'Need Orchestrator') + '</div></div>';
+  html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--reputation)">schedule</span><span class="career-card-label">Advance In</span></div>';
+  html += '<div class="career-card-value" style="font-size:18px">' + (timeToAdv || (next ? '--' : 'Max!')) + '</div>';
+  if (!next) html += '<div class="career-card-sub green">Top rank!</div>';
+  else if (!repRate) html += '<div class="career-card-sub">idle off</div>';
+  html += '</div>';
   html += '</div>';
 
   // Promote button

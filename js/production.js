@@ -113,6 +113,22 @@ function compileData() {
     }
   }
   gameState.reputation += 10;
+  // Floating +10 Rep feedback near rep-display in top bar
+  const _repEl = document.getElementById('rep-display');
+  if (_repEl) {
+    const _rect = _repEl.getBoundingClientRect();
+    const _ft = document.createElement('div');
+    _ft.className = 'floating-text';
+    _ft.textContent = '+10 Rep';
+    _ft.style.position = 'fixed';
+    _ft.style.left = (_rect.left + _rect.width / 2) + 'px';
+    _ft.style.top = (_rect.bottom + 2) + 'px';
+    _ft.style.transform = 'translateX(-50%)';
+    _ft.style.color = 'var(--reputation)';
+    _ft.style.fontSize = '13px';
+    document.body.appendChild(_ft);
+    setTimeout(() => _ft.remove(), 1000);
+  }
   if (gameState.stats) gameState.stats.totalCompiles++;
   gameState.loc = 0;
   if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'sell') advanceTutorial();
