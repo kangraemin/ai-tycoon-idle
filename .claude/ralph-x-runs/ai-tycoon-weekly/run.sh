@@ -24,6 +24,7 @@ LOG_FILE="$RUN_DIR/log.md"
 CHECKLIST_FILE="$RUN_DIR/checklist.md"
 STATUS_FILE="$RUN_DIR/run.log"
 MAX_ITER=1000
+START_ITER=${START_ITER:-1}
 SLEEP_SUCCESS=3600
 SLEEP_FAIL=0
 
@@ -73,37 +74,82 @@ You are in a ralph loop for AI Tycoon game improvement.
 
 Working directory: /Users/ram/programming/vibecoding/game
 
-**Step 1 — Analyze (via ga-analyze skill)**
+**Step 1 — Analyze (3-way triangulation: GA + Code fresh-eye + Direct playtest)**
 
-You MUST use the `ga-analyze` skill for data analysis. The skill's full workflow lives at
-`~/.claude/skills/ga-analyze/SKILL.md`. Its snapshot script is already installed at
-`scripts/ga-snapshot.py` in this project.
+GA alone is noisy at this traffic level. You MUST triangulate with code review and direct play.
 
 ### Procedure
 
-1. **Read recent history** — read last 200 lines of `{RUN_DIR}/log.md`. Note which improvements past iterations tried. Avoid repeating the exact same change within the last 10 iters.
+1. **Read recent history** — read last 200 lines of `{RUN_DIR}/log.md`. Note what past iters tried. Avoid repeating exact changes within last 10 iters.
 
-2. **Run ga-analyze snapshot**:
+2. **Signal A — GA data** (via `ga-analyze` skill at `~/.claude/skills/ga-analyze/SKILL.md`):
    ```
    python3 scripts/ga-snapshot.py --days 1
    ```
-   This writes `analytics/snapshots/<timestamp>.json` and a report to `analytics/reports/<date>.md`.
+   Read the 2 most recent snapshot JSON files in `analytics/snapshots/` and compute key deltas.
+   If only 1 snapshot exists, use it as baseline.
 
-3. **Compute deltas** — read the 2 most recent snapshot JSON files in `analytics/snapshots/`. If only 1 exists, prev values = "-" (baseline).
+3. **Signal B — Code fresh-eye review**:
+   From this iteration's PERSPECTIVE ({PERSPECTIVE}), read 3-5 most relevant source files.
+   - UI/UX → `css/*.css`, `js/ui.js`, `js/tutorial.js`, `index.html`
+   - 기획자 → `js/career.js`, `js/events.js`, `js/upgrade.js`, `js/research.js`, balance constants
+   - 개발자 → 아무 파일 고르되 최근 수정된 hot spots + `js/main.js`, error paths
+   - 게이머 → 핵심 루프 (`js/production.js`, `js/main.js`, reward paths)
 
-4. **Perspective this iteration is fixed: {PERSPECTIVE}** (Iter {ITER}).
-   Do NOT change it. Definitions:
+   Note specific smells / inconsistencies / incomplete systems / obvious UX issues visible in source.
+
+4. **Signal C — Direct playtest via browse skill**:
+   ```bash
+   # Start local server in background
+   python3 -m http.server 8765 --directory /Users/ram/programming/vibecoding/game >/dev/null 2>&1 &
+   SERVER_PID=$!
+   sleep 1
+
+   BROWSE=/Users/ram/programming/vibecoding/gstack/browse/dist/browse
+   $BROWSE goto http://localhost:8765
+   $BROWSE text                                    # capture initial state
+   $BROWSE screenshot {ITER_DIR}/play-01-start.png
+
+   # Play as a real user for ~2 minutes. Based on PERSPECTIVE, focus on:
+   # - UI: read every label, check contrast, spacing
+   # - UX: click through tutorial, note friction at each step
+   # - 기획자: buy upgrades, track resource flow, see if loop feels rewarding
+   # - 개발자: open browser devtools in output; look for console errors
+   # - 게이머: just play naturally, note what's boring/confusing/fun
+
+   # Perform 5-10 realistic actions. Capture text + screenshot at milestones:
+   $BROWSE click '.editor-body'
+   $BROWSE click '.editor-body'
+   $BROWSE click '.editor-body'
+   $BROWSE click '.compile-btn-mini'
+   $BROWSE text
+   $BROWSE screenshot {ITER_DIR}/play-02-mid.png
+
+   # Continue exploring — buy upgrades, try tabs, trigger events if possible
+   # Take final screenshot
+   $BROWSE screenshot {ITER_DIR}/play-03-end.png
+
+   # Stop server
+   kill $SERVER_PID 2>/dev/null
+   ```
+
+   Write observations: what felt good, what felt broken, what was unclear, what UI elements were confusing.
+
+5. **Perspective this iteration is fixed: {PERSPECTIVE}** (Iter {ITER}). Do NOT change it.
    - **UI** → 가독성, 색·대비, 정보 계층, 버튼 위치/크기, 폰트, 여백
    - **UX** → 플로우 마찰, 튜토리얼 UX, 클릭 동선, 애니메이션 타이밍, 피드백 가시성
    - **기획자** → 게임 밸런스, 보상감, 루프 설계, 경제 곡선, 난이도, 컨텐츠 깊이
    - **개발자** → 코드 품질, 버그, 성능, 기술 부채, 에러 핸들링, 리팩토링
    - **게이머** → 재미, 중독성, 숨겨진 즐거움, 리드아웃, 몰입감, 체감 보상
 
-5. **Decide ONE improvement** that:
+6. **Triangulate** the 3 signals. The best improvements match BOTH what GA/history suggests AND what code review / playtest reveals. If GA is silent (too few users), lean more on B + C.
+
+7. **Decide ONE improvement** that:
    - Matches the perspective
-   - Implementable in <200 lines of change
+   - Has scope appropriate to the problem — small polish for minor issues, system-level rework for systemic issues. Do NOT artificially cap LOC. If the right fix needs 800 lines across 6 files, do 800 lines. If it needs 30, do 30.
    - Not tried in last 10 iters
    - Clear hypothesized impact tied to a metric in the snapshot delta table
+   - Real problems for an idle/tycoon game at this stage often require system-level work — prestige loops, economy rebalance, new content types, onboarding rewrites, feature additions. Do NOT default to tiny CSS polish unless that's genuinely the highest-impact change.
 
 ### Output — write to `{ITER_DIR}/01-analysis.md` with this EXACT structure:
 
@@ -128,8 +174,23 @@ _Generated: <date>_
 2. <numeric finding>
 3. <numeric finding>
 
+## Code Fresh-eye Findings
+이번 관점에서 읽은 파일 목록 + 구체적 관찰 (최소 3개):
+1. `<file>:<line>` — <관찰 내용>
+2. `<file>:<line>` — <관찰 내용>
+3. `<file>:<line>` — <관찰 내용>
+
+## Playtest Observations
+browse 스킬로 직접 플레이하며 발견한 것 (스크린샷 파일 경로 포함, 최소 3개):
+1. <관찰> (screenshot: play-01-start.png)
+2. <관찰> (screenshot: play-02-mid.png)
+3. <관찰> (screenshot: play-03-end.png)
+
+## Triangulation
+3 신호가 어떻게 수렴하는지 한 문단. GA / Code / Playtest 중 어느 쪽이 가장 강한 신호를 줬는지 명시.
+
 ## Perspective Rotation Reason
-이번 iteration 관점은 **{PERSPECTIVE}**. 이 관점이 지금 iter에 왜 의미 있는지 한 문단. 위 GA findings과 어떻게 연결되는지 논리 제시.
+이번 iteration 관점은 **{PERSPECTIVE}**. 이 관점이 지금 iter에 왜 의미 있는지 한 문단. 3 신호 findings과 어떻게 연결되는지 논리 제시.
 
 ## Selected Improvement
 **Title**: <한 줄>
@@ -329,7 +390,7 @@ S3EOF
 # ─────────────────────────────────────────────────────────────────────
 # MAIN LOOP
 # ─────────────────────────────────────────────────────────────────────
-for i in $(seq 1 $MAX_ITER); do
+for i in $(seq $START_ITER $MAX_ITER); do
   ITER_NUM=$(printf '%04d' $i)
   ITER_DIR="$RUN_DIR/iterations/iter-$ITER_NUM"
   mkdir -p "$ITER_DIR"
