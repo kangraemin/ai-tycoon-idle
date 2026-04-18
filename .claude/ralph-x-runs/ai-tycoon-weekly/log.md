@@ -162,3 +162,9 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Primary: Fix stale lastEventTime clamp (events.js:45) - immediate event fires on every load
 - Delta: activeUsers 0->0 (GA silent), tutorial/user N/A->N/A
 - Lens choice reasoning: 개발자(9) - deterministic bug: New Regulation fires within 60s on every session. UX(8) - no isTutorialActive guard in eventTick. UI(8) - career.js:165 shows +1/+10 but iter15 changed to +5/+50 (5x wrong). 기획자(6) - career Advance In shows -- for all new players. 게이머(6) - step 7 spotlight targets wrong element.
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] 개발자 c534dc0 — Fix stale lastEventTime clamp SPAWN_MAX->SPAWN_MIN (LOC +1/-1)
+- [IMPLEMENT 2/5] UX 23b2e84 — Suppress events during active tutorial (LOC +1/-0)
+- [IMPLEMENT 3/5] UI 6a254e1 — Fix career rep-rate subtext +1/+10->+5/+50 (LOC +1/-1)
+- [IMPLEMENT 4/5] 기획자 089cbe0 — Career Advance-In hint for manual players (LOC +1/-1)
+- [IMPLEMENT 5/5] 게이머 98ec5c2 — Fix tutorial step 7 spotlight target (LOC +4/-0)
