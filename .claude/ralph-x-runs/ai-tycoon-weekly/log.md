@@ -156,3 +156,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 3/5] UX 489d761 — Fix stale lastEventTime + hallucination early-game guard (LOC +8/-3)
 - [IMPLEMENT 4/5] 개발자 e7a4d8b — Fix first-compile paper bonus off-by-one (LOC +2/-2)
 - [IMPLEMENT 5/5] 게이머 d44cb18 — Hide flow meter label when consecutiveTaps=0 (LOC +2/-0)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
