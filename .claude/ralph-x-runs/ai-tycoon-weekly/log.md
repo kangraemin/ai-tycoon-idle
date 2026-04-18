@@ -97,3 +97,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 
 ## Iter 9 — 게이머 — 2026-04-18T17:08
 - [SKIPPED] 02-implementation.md 없음 — 구현 단계 미완료
+
+## Iter 10 — 기획자 — 2026-04-18T18:00
+- [ANALYZE] Career Progression Velocity — Rep rate display + compile rep feedback
+- Delta: activeUsers 1->1 (no change), game_events/user 0->0 (still silent), avg_session_sec 2.29->2.29
+- Lens choice reasoning: 기획자 — career screen shows 11/10,000 Rep with zero velocity info; compileData() adds +10 rep silently; idle game players quit when they cannot perceive progress. 기획자 last completed iter 8, highest candidate score 9/10.
