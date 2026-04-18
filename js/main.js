@@ -627,7 +627,6 @@ async function startGame() {
     checkTabUnlock();
   }
 
-  if (typeof checkDailyBonus === 'function') checkDailyBonus();
   renderEditorScreen();
   renderModelsScreen();
   renderUpgradeScreen();
@@ -645,6 +644,8 @@ async function startGame() {
   if (gameState.tutorialStep < (typeof TUTORIAL_STEPS !== 'undefined' ? TUTORIAL_STEPS.length : 6)) {
     startTutorial();
   }
+
+  if (typeof checkDailyBonus === 'function') checkDailyBonus();
 
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
