@@ -114,6 +114,8 @@ function updateCurrencyDisplay() {
   }
   document.getElementById('loc-display').textContent = formatNumber(gameState.loc);
   document.getElementById('lps-display').textContent = formatNumber(getLocPerSecond()) + '/s';
+  const repDisplay = document.getElementById('rep-display');
+  if (repDisplay) repDisplay.textContent = formatNumber(gameState.reputation);
 
   // Progressive disclosure: dim Papers and Tokens early in tutorial
   const papersDim = typeof gameState !== 'undefined' && gameState.tutorialStep < 6 && gameState.papers <= 20;
