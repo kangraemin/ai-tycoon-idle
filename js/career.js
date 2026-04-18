@@ -166,7 +166,7 @@ function renderCareerScreen() {
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--reputation)">schedule</span><span class="career-card-label">Advance In</span></div>';
   html += '<div class="career-card-value" style="font-size:18px">' + (timeToAdv || (next ? '--' : 'Max!')) + '</div>';
   if (!next) html += '<div class="career-card-sub green">Top rank!</div>';
-  else if (!repRate) html += '<div class="career-card-sub">idle off</div>';
+  else if (!repRate) html += '<div class="career-card-sub">Tap &amp; Compile for Rep</div>';
   html += '</div>';
   html += '</div>';
 
