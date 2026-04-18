@@ -527,6 +527,11 @@ const UNLOCK_FANFARES = {
 function showUnlockFanfare(key) {
   if (!gameState.shownUnlockModals) gameState.shownUnlockModals = [];
   if (gameState.shownUnlockModals.includes(key)) return;
+  if (typeof isTutorialActive === 'function' && isTutorialActive()) {
+    gameState.shownUnlockModals.push(key);
+    if (typeof saveGame === 'function') saveGame();
+    return;
+  }
   gameState.shownUnlockModals.push(key);
   if (typeof saveGame === 'function') saveGame();
   const info = UNLOCK_FANFARES[key];
