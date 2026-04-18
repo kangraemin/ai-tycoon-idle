@@ -42,7 +42,7 @@ function eventTick(dt) {
   const now = Date.now();
   // Clamp stale lastEventTime (e.g. from old saves) so first event fires after normal delay
   if ((now - gameState.lastEventTime) / 1000 > EVENT_SPAWN_MAX) {
-    gameState.lastEventTime = now - EVENT_SPAWN_MAX * 1000;
+    gameState.lastEventTime = now - EVENT_SPAWN_MIN * 1000;
   }
   const elapsed = (now - gameState.lastEventTime) / 1000;
   const threshold = EVENT_SPAWN_MIN + Math.random() * (EVENT_SPAWN_MAX - EVENT_SPAWN_MIN);
