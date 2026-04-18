@@ -112,3 +112,6 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Fix mission card staleness — remove totalTaps gate + resolve three competing CTAs
 - Delta: activeUsers 0→0 (GA silent), tutorial/user N/A→N/A
 - Lens choice reasoning: UX — main.js:14의 totalTaps < 10 게이트가 idle 유저의 올바른 미션 안내 전면 차단. Code + Playtest 양측 확인. 기획자 2회 연속 후 UX 전환.
+- [IMPLEMENT] UX | 86db3c2 — Fix mission card staleness + resolve 3-CTA conflict
+- Files: js/main.js, js/hints.js, css/style.css
+- LOC: +17/-3
