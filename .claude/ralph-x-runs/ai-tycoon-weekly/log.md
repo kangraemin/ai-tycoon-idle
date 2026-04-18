@@ -169,3 +169,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 4/5] 기획자 089cbe0 — Career Advance-In hint for manual players (LOC +1/-1)
 - [IMPLEMENT 5/5] 게이머 98ec5c2 — Fix tutorial step 7 spotlight target (LOC +4/-0)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 17 — 기획자/UI/UX/개발자/게이머 — 2026-04-19T
+- [ANALYZE] Fix Mission/Goals card guidance conflict (Primary: 기획자 8/10)
+- Delta: activeUsers 0->0 (GA completely silent both snapshots), tutorial/user N/A->N/A
+- Lens choice reasoning: 기획자(8) — getNextGoalItems() independent of getCurrentMission() causes "Buy Batch Size" vs "Unlock Translator READY!" conflict after first compile; confirmed by playtest. UI(7)+UX(7)+개발자(6)+게이머(6) all >= 5, all in queue. Last 5 iters covered all lenses, no rotation needed.
