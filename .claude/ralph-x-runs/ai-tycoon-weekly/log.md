@@ -65,3 +65,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] 3791216 — feat: [ralph iter 5/게이머] Flow State 빌업 미터 추가
 - Files: js/events.js, css/style.css, index.html
 - LOC: +95/-1
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
