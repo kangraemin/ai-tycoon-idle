@@ -106,3 +106,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] 기획자 | da2a7a0 — Career progression velocity: Rep/hr + compile rep feedback
 - Files: js/career.js, js/production.js
 - LOC: +46/-0
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
