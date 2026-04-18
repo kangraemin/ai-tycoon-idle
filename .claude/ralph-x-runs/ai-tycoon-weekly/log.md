@@ -222,3 +222,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 4/5] 개발자 3c70233 — Fix getRepRate() formula 5x off (LOC +1/-1)
 - [IMPLEMENT 5/5] UI 6861cd7 — Show first-pull pity guarantee on research screen (LOC +4/-0)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 22 - 게이머 - 2026-04-19T08:15
+- [ANALYZE] Level Up shortcut in research reveal for duplicate pulls
+- Delta: activeUsers 0->0 (GA completely silent), tutorial/user N/A->N/A
+- Lens choice reasoning: 게이머(8) - research reveal shows duplicate with 5-step level-up path; inline CTA collapses to 0 navigation. Anti-stagnation: 기획자 used 3 consecutive iters (19-21), picking different lens. UX(7)+개발자(6)+UI(6)+기획자(5) all in queue.
