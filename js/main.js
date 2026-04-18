@@ -770,12 +770,17 @@ function renderEditorScreen() {
       ? `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ${Math.ceil(cooldown / 1000)}s`
       : `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> ${typeName} (${costLabel})`;
     html += '<div class="editor-challenge-area" style="padding:8px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">';
+    html += '<div style="display:flex;align-items:center;justify-content:center;gap:6px">';
     html += `<button class="btn ${btnDisabled ? 'btn-disabled' : 'btn-primary'}" onclick="tryStartChallengeWithAd('${currentChallengeType}')" ${btnDisabled ? 'disabled' : ''} style="font-size:12px;padding:6px 16px">`;
     html += btnLabel;
     html += '</button>';
     if (!isOnCooldown) {
+      html += `<button class="btn btn-secondary" onclick="cycleChallengeType()" style="font-size:11px;padding:6px 8px;min-width:0" title="Switch challenge type"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">shuffle</span></button>`;
+    }
+    html += '</div>';
+    if (!isOnCooldown) {
       const bestGrade = gameState.challengeStats && gameState.challengeStats.bestGrade;
-      html += '<div style="font-size:10px;color:var(--text-muted);margin-top:3px">Win → +Papers +Compute' + (bestGrade ? ' · Best: ' + bestGrade : '') + '</div>';
+      html += '<div style="font-size:10px;color:var(--text-muted);margin-top:3px">Win → +Rep +Papers +Compute' + (bestGrade ? ' · Best: ' + bestGrade : '') + '</div>';
     }
     html += '</div>';
   }
@@ -785,6 +790,14 @@ function renderEditorScreen() {
   if (typeof applyCareerTheme === 'function') applyCareerTheme();
   renderGoalsCard();
   updateCompileBtn();
+}
+
+function cycleChallengeType() {
+  const challengeTypes = typeof CHALLENGE_TYPES !== 'undefined' ? Object.keys(CHALLENGE_TYPES) : [];
+  if (challengeTypes.length < 2) return;
+  const idx = challengeTypes.indexOf(currentChallengeType);
+  currentChallengeType = challengeTypes[(idx + 1) % challengeTypes.length];
+  if (typeof renderEditorScreen === 'function') renderEditorScreen();
 }
 
 function updateCompileBtn() {
