@@ -615,7 +615,7 @@ function checkTabUnlock() {
   document.querySelectorAll('.nav-btn[data-unlock]').forEach(btn => {
     const cond = btn.dataset.unlock;
     let unlocked = false;
-    if (cond === 'career' && gameState.reputation >= 5000) unlocked = true;
+    if (cond === 'career' && gameState.reputation >= 2000) unlocked = true;
     if (unlocked && btn.classList.contains('nav-locked')) {
       btn.classList.remove('nav-locked');
       showUnlockFanfare(cond);
