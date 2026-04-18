@@ -93,3 +93,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] 기획자 | 1309fb3 — Re-implement Auto-Compile via Orchestrator upgrade
 - Files: js/production.js, js/upgrade.js
 - LOC: +16/-3
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
