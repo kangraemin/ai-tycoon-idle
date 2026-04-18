@@ -2,15 +2,15 @@
 
 const CAREER_STAGES = [
   { name: 'NullPointer',     multiplier: 1.0,  repReq: 0,           icon: 'bug_report' },
-  { name: 'BugFarm',         multiplier: 2.0,  repReq: 10000,       icon: 'pest_control' },
-  { name: 'StackUnderflow',  multiplier: 3.5,  repReq: 100000,      icon: 'layers' },
-  { name: 'Cloudish',        multiplier: 6.0,  repReq: 1000000,     icon: 'cloud' },
-  { name: 'ChatJBT',         multiplier: 10.0, repReq: 10000000,    icon: 'chat' },
-  { name: 'FAANG',           multiplier: 15.0, repReq: 100000000,   icon: 'corporate_fare',
+  { name: 'BugFarm',         multiplier: 2.0,  repReq: 2000,        icon: 'pest_control' },
+  { name: 'StackUnderflow',  multiplier: 3.5,  repReq: 20000,       icon: 'layers' },
+  { name: 'Cloudish',        multiplier: 6.0,  repReq: 200000,      icon: 'cloud' },
+  { name: 'ChatJBT',         multiplier: 10.0, repReq: 2000000,     icon: 'chat' },
+  { name: 'FAANG',           multiplier: 15.0, repReq: 20000000,    icon: 'corporate_fare',
     variants: ['Goggles', 'Mapple', 'Megaa', 'Amazoom', 'Netflex'] },
-  { name: 'AI Lab',          multiplier: 25.0, repReq: 1000000000,  icon: 'science',
+  { name: 'AI Lab',          multiplier: 25.0, repReq: 200000000,   icon: 'science',
     variants: ['ClosedAI', 'ShallowMind', 'Anthropomorphic'] },
-  { name: 'Founder',         multiplier: 50.0, repReq: 10000000000, icon: 'rocket_launch' },
+  { name: 'Founder',         multiplier: 50.0, repReq: 2000000000,  icon: 'rocket_launch' },
 ];
 
 function getCurrentCareer() {

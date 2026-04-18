@@ -50,7 +50,7 @@ function tapEditor(event) {
   const tapPower = (1 + getUpgradeEffect('infra', 'batchSize')) * gameState.prestigeMultiplier;
   gameState.loc += tapPower;
   gameState.totalLoc += tapPower;
-  gameState.reputation += 1;
+  gameState.reputation += 5;
   if (gameState.stats) gameState.stats.totalTaps++;
   if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'tap') advanceTutorial();
 
@@ -74,7 +74,7 @@ function tapEditor(event) {
           fy = Math.random() * (editorEl.clientHeight * 0.4) + editorEl.clientHeight * 0.2;
         }
         showFloatingText(fx, fy, '+' + formatNumber(tapPower) + ' Code');
-        showFloatingText(fx + 4, fy + 18, '+1 Rep');
+        showFloatingText(fx + 4, fy + 18, '+5 Rep');
       }
     }
   }
@@ -113,14 +113,14 @@ function compileData() {
       if (typeof showToast === 'function') showToast('+1 Paper (compile bonus)', 'success');
     }
   }
-  gameState.reputation += 10;
-  // Floating +10 Rep feedback near rep-display in top bar
+  gameState.reputation += 50;
+  // Floating +50 Rep feedback near rep-display in top bar
   const _repEl = document.getElementById('rep-display');
   if (_repEl) {
     const _rect = _repEl.getBoundingClientRect();
     const _ft = document.createElement('div');
     _ft.className = 'floating-text';
-    _ft.textContent = '+10 Rep';
+    _ft.textContent = '+50 Rep';
     _ft.style.position = 'fixed';
     _ft.style.left = (_rect.left + _rect.width / 2) + 'px';
     _ft.style.top = (_rect.bottom + 2) + 'px';
