@@ -124,6 +124,10 @@ function renderResearchScreen() {
             </div>
           `).join('')}
         </div>
+        ${(!gameState.stats || gameState.stats.gachaPulls === 0) ? `
+        <div style="margin-top:8px;padding:6px 10px;background:var(--bg-card);border:1px solid var(--accent);border-radius:6px;font-size:11px;color:var(--accent);text-align:center">
+          ✦ First pull guaranteed Uncommon (70%) or Rare (30%)
+        </div>` : ''}
       </div>
     </div>
   `;
