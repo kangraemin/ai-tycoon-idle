@@ -221,3 +221,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 3/5] UX 3123438 — Lower career nav unlock 5000->2000 rep (LOC +1/-1)
 - [IMPLEMENT 4/5] 개발자 3c70233 — Fix getRepRate() formula 5x off (LOC +1/-1)
 - [IMPLEMENT 5/5] UI 6861cd7 — Show first-pull pity guarantee on research screen (LOC +4/-0)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
