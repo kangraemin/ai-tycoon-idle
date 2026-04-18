@@ -138,6 +138,58 @@ function updateCurrencyDisplay() {
   }
 }
 
+function updateUpgradeButtonStates() {
+  document.querySelectorAll('.upgrade-card[data-category]').forEach(card => {
+    const catId = card.dataset.category;
+    const id = card.dataset.id;
+    let cost, canBuy;
+    if (catId === 'gpu') {
+      cost = typeof getGpuSlotCost === 'function' ? getGpuSlotCost() : Infinity;
+      canBuy = gameState.compute >= cost;
+    } else {
+      if (!id) return;
+      cost = typeof getUpgradeCost === 'function' ? getUpgradeCost(catId, id) : Infinity;
+      canBuy = gameState.compute >= cost;
+    }
+
+    if (canBuy) {
+      card.classList.remove('locked');
+    } else {
+      card.classList.add('locked');
+    }
+
+    const btn = card.querySelector('button.btn');
+    if (btn) {
+      if (canBuy) {
+        btn.classList.remove('btn-disabled');
+        btn.classList.add('btn-primary');
+        btn.disabled = false;
+      } else {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-disabled');
+        btn.disabled = true;
+      }
+    }
+
+    const hint = card.querySelector('.lock-hint');
+    if (!canBuy) {
+      if (hint) {
+        hint.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px">lock</span> Need ${typeof formatNumber === 'function' ? formatNumber(cost - gameState.compute) : (cost - gameState.compute)} more compute`;
+      } else {
+        const bottom = card.querySelector('.upgrade-card-bottom');
+        if (bottom && btn) {
+          const newHint = document.createElement('div');
+          newHint.className = 'lock-hint';
+          newHint.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px">lock</span> Need ${typeof formatNumber === 'function' ? formatNumber(cost - gameState.compute) : (cost - gameState.compute)} more compute`;
+          bottom.insertBefore(newHint, btn);
+        }
+      }
+    } else if (hint) {
+      hint.remove();
+    }
+  });
+}
+
 const MAX_FLOATING = 5;
 
 function showFloatingText(x, y, text) {

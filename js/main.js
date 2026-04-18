@@ -590,6 +590,7 @@ function gameLoop() {
     lastTickTime = now;
   }
   updateCurrencyDisplay();
+  if (currentScreen === 'upgrade' && typeof updateUpgradeButtonStates === 'function') updateUpgradeButtonStates();
   updateChallengeCooldownDisplay();
   if (typeof updateHintBanner === 'function') updateHintBanner();
   if (typeof updateMissionCard === 'function') updateMissionCard();
@@ -964,7 +965,7 @@ function renderUpgradeScreen() {
       const canBuy = gameState.compute >= cost;
 
       html += `
-        <div class="upgrade-card cat-${catId} ${canBuy ? '' : 'locked'}">
+        <div class="upgrade-card cat-${catId} ${canBuy ? '' : 'locked'}" data-category="${catId}" data-id="${id}">
           <div class="upgrade-card-top">
             <div class="upgrade-icon-wrap ${upgradeIcon.bg}">
               <span class="material-symbols-outlined">${upgradeIcon.icon}</span>
@@ -994,7 +995,7 @@ function renderUpgradeScreen() {
   html += `<div class="section-header"><span class="material-symbols-outlined">memory</span><h2>GPU Expansion</h2></div>`;
   const gpuCost = getGpuSlotCost();
   html += `
-    <div class="upgrade-card cat-infra">
+    <div class="upgrade-card cat-infra" data-category="gpu">
       <div class="upgrade-card-top">
         <div class="upgrade-icon-wrap infra-bg">
           <span class="material-symbols-outlined">developer_board</span>
