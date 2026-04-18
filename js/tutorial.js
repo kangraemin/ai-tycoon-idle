@@ -147,10 +147,31 @@ function showTutorialStep(step) {
     target.style.position = 'relative';
     target.style.zIndex = '1001';
     target.dataset.tutorialTarget = 'true';
+    liftAncestorStackingContexts(target);
   }
 }
 
+function liftAncestorStackingContexts(target) {
+  let el = target.parentElement;
+  while (el && el !== document.body) {
+    const zi = parseInt(window.getComputedStyle(el).zIndex);
+    if (!isNaN(zi) && zi > 0 && zi < 1000) {
+      el.dataset.tutorialZSave = el.style.zIndex;
+      el.style.zIndex = '1002';
+    }
+    el = el.parentElement;
+  }
+}
+
+function restoreAncestorStackingContexts() {
+  document.querySelectorAll('[data-tutorial-z-save]').forEach(el => {
+    el.style.zIndex = el.dataset.tutorialZSave;
+    delete el.dataset.tutorialZSave;
+  });
+}
+
 function advanceTutorial() {
+  restoreAncestorStackingContexts();
   const prevTarget = document.querySelector('[data-tutorial-target]');
   if (prevTarget) {
     prevTarget.style.zIndex = '';
@@ -166,6 +187,7 @@ function advanceTutorial() {
 }
 
 function skipTutorial() {
+  restoreAncestorStackingContexts();
   const prevTarget = document.querySelector('[data-tutorial-target]');
   if (prevTarget) {
     prevTarget.style.zIndex = '';
@@ -178,6 +200,7 @@ function skipTutorial() {
 }
 
 function endTutorial() {
+  restoreAncestorStackingContexts();
   tutorialActive = false;
   Analytics.tutorialStep(gameState.tutorialStep, 'complete');
   const overlay = document.getElementById('tutorial-overlay');
