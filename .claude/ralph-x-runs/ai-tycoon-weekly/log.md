@@ -198,3 +198,9 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Rep gain scales with prestige multiplier (primary: 기획자 9/10)
 - Delta: activeUsers 0->0 (GA completely silent both snapshots), tutorial/user N/A->N/A
 - Lens choice reasoning: 기획자(9) — production.js flat +5/+50 rep vs career.js 10x req curve; prestige loop broken past stage 2. UX(7)+게이머(7)+UI(6)+개발자(5) all >=5, all in queue. Playtest confirmed tutorial clean Step 1-4, misleading Rep/hr -- on career screen.
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] 기획자 d006a17 — Rep gain scales with prestige multiplier (LOC +7/-5)
+- [IMPLEMENT 2/5] UX d3fdbd3 — Career Rep/hr shows real manual estimate instead of -- (LOC +4/-4)
+- [IMPLEMENT 3/5] 게이머 7e4ce88 — Challenge type cycling button + Rep in subtext (LOC +14/-1)
+- [IMPLEMENT 4/5] UI 7e4ce88 — Challenge subtext shows Rep reward (included in 3/5)
+- [IMPLEMENT 5/5] 개발자 922cdac — Persist currentChallengeType in gameState (LOC +8/-2)
