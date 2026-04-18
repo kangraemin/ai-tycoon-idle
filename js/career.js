@@ -154,7 +154,11 @@ function renderCareerScreen() {
 
   // Stats cards
   const repRate = getRepRate();
-  const timeToAdv = next ? getTimeToAdvance(repRate) : null;
+  // When Orchestrator is not unlocked, estimate 1,500 Rep/hr (30 compiles/hr × 50 Rep) for display
+  const MANUAL_REP_EST = 1500;
+  const displayRepRate = repRate || MANUAL_REP_EST;
+  const timeToAdv = next ? getTimeToAdvance(displayRepRate) : null;
+  const timeIsEst = next && !repRate;
   html += '<div class="career-cards">';
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--accent)">trending_up</span><span class="career-card-label">Multiplier</span></div>';
   html += '<div class="career-card-value">' + current.multiplier.toFixed(1) + 'x</div></div>';
@@ -166,7 +170,7 @@ function renderCareerScreen() {
   html += '<div class="career-card"><div class="career-card-header"><span class="material-symbols-outlined" style="color:var(--reputation)">schedule</span><span class="career-card-label">Advance In</span></div>';
   html += '<div class="career-card-value" style="font-size:18px">' + (timeToAdv || (next ? '--' : 'Max!')) + '</div>';
   if (!next) html += '<div class="career-card-sub green">Top rank!</div>';
-  else if (!repRate) html += '<div class="career-card-sub">Tap &amp; Compile for Rep</div>';
+  else if (timeIsEst) html += '<div class="career-card-sub">est. at 30 compiles/hr</div>';
   html += '</div>';
   html += '</div>';
 
