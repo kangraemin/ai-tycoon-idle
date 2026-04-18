@@ -27,7 +27,7 @@ function getRepRate() {
   if (orchLevel === 0) return null;
   const speedMult = 1 + orchLevel * 0.15;
   const firesPerHour = (3600 / BASE_AUTO_COMPILE_INTERVAL) * speedMult;
-  return Math.round(firesPerHour * 10);
+  return Math.round(firesPerHour * 50 * (gameState.prestigeMultiplier || 1));
 }
 
 function getTimeToAdvance(repRate) {
