@@ -55,3 +55,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] fe59d7a — feat: [ralph iter 4/개발자] 게임루프에서 upgrade 버튼 canBuy 상태 incremental 업데이트 추가
 - Files: js/ui.js, js/main.js
 - LOC: +55/-2
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
