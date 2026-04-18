@@ -16,3 +16,19 @@ fastlane/screenshots/
 fastlane/test_output/
 
 .gstack/
+
+# IDE
+.idea/
+
+# Claude local
+.claude/settings.local.json
+
+# Fastlane auto-generated
+fastlane/README.md
+
+# Ruby
+Gemfile.lock
+
+# Local dev tools
+scripts/ralph/
+skip.html
