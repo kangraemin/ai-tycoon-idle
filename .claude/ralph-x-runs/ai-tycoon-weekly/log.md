@@ -75,3 +75,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT] b94a370 — Fix tutorial spotlight stacking context (lift .top-bar/.bottom-nav z-index above overlay)
 - Files: js/tutorial.js
 - LOC: +23/-0
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
