@@ -210,3 +210,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Delta: activeUsers 0->0 (GA completely silent both snapshots), tutorial/user N/A->N/A
 - Lens choice reasoning: 기획자(9) — challenge.js:292-294 flat rewards vs production.js prestige scaling; challenges dead at ChatJBT+ (300 Rep vs 2M req). UX(8)+개발자(8)+UI(7)+게이머(7) all >=5, all in queue.
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 21 - 기획자/게이머/UX/개발자/UI - 2026-04-19T06:39
+- [ANALYZE] Add fusion goal to getNextGoalItems() + fix hint suppression (primary: 기획자 8/10)
+- Delta: activeUsers 0->0 (GA completely silent both snapshots), tutorial/user N/A->N/A
+- Lens choice reasoning: 기획자(8) - fusion invisible in goals card + try-fusion hint suppressed by active mission screen; 게이머(7) - fusion screen no recipe ownership status; UX(7) - career nav unlock threshold 5000 vs 2000 req; 개발자(6) - getRepRate() 5x wrong formula; UI(6) - pity guarantee not shown on research screen. All >= 5, all in queue. Two consecutive 기획자 primary (19+20) not three - rule not triggered.
