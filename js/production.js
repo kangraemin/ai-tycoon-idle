@@ -107,8 +107,8 @@ function compileData() {
     // agent.py → Compute (기존)
     gameState.compute += output;
     if (gameState.stats) gameState.stats.totalCompute += output;
-    // Paper reward every 10 compiles
-    if (gameState.stats && gameState.stats.totalCompiles % 10 === 0) {
+    // Paper reward every 10 compiles (check after increment to avoid firing at compile #1)
+    if (gameState.stats && (gameState.stats.totalCompiles + 1) % 10 === 0) {
       gameState.papers += 1;
       if (typeof showToast === 'function') showToast('+1 Paper (compile bonus)', 'success');
     }
