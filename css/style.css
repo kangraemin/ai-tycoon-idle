@@ -1573,6 +1573,61 @@ html, body {
   transition: transform 0.1s ease, filter 0.1s ease;
 }
 
+/* ===== Flow State Meter ===== */
+#flow-meter-wrap {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0 6px;
+  margin-bottom: 4px;
+}
+#flow-meter-wrap.visible {
+  display: flex;
+}
+#flow-meter-fill {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+#flow-meter-fill::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--flow-pct, 0%);
+  background: var(--accent, #4fc3f7);
+  border-radius: 2px;
+  transition: width 0.15s ease;
+}
+#flow-meter-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+  white-space: nowrap;
+  min-width: 38px;
+  text-align: right;
+}
+#flow-meter-wrap.flow-meter-hot #flow-meter-fill::after {
+  background: #ff9800;
+  box-shadow: 0 0 6px rgba(255,152,0,0.6);
+  animation: flowPulse 0.4s ease-in-out infinite alternate;
+}
+#flow-meter-wrap.flow-meter-hot #flow-meter-label {
+  color: #ff9800;
+}
+@keyframes flowPulse {
+  from { opacity: 0.75; }
+  to { opacity: 1; box-shadow: 0 0 10px rgba(255,152,0,0.85); }
+}
+@keyframes editorFlashFlow {
+  0% { background: rgba(255,152,0,0.12); }
+  100% { background: transparent; }
+}
+.editor-flash-flow {
+  animation: editorFlashFlow 0.6s ease-out;
+}
+
 /* ===== Challenge Overlay ===== */
 .challenge-overlay {
   position: fixed;

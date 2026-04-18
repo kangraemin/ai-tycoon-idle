@@ -34,6 +34,7 @@ let consecutiveTaps = 0;
 let lastTapTime = 0;
 let consecutiveCompiles = 0;
 let lastCompileTime = 0;
+let _flowMeterResetTimer = null;
 
 function eventTick(dt) {
   if (activeEvent) return; // Don't spawn while event is active
@@ -224,15 +225,49 @@ function renderEventBanner() {
   }
 }
 
+// --- Flow State meter ---
+function updateFlowMeter(n) {
+  const wrap = document.getElementById('flow-meter-wrap');
+  if (!wrap) return;
+  if (n <= 0) {
+    wrap.classList.remove('visible', 'flow-meter-hot');
+    return;
+  }
+  wrap.classList.add('visible');
+  wrap.style.setProperty('--flow-pct', Math.min(n / 20 * 100, 100) + '%');
+  const label = document.getElementById('flow-meter-label');
+  if (label) label.textContent = '\uD83D\uDD25 ' + n + '/20';
+  if (n >= 15) wrap.classList.add('flow-meter-hot');
+  else wrap.classList.remove('flow-meter-hot');
+}
+
 // --- Behavior-triggered events ---
 function trackTapBehavior() {
   const now = Date.now();
-  if (now - lastTapTime > 3000) consecutiveTaps = 0;
+  if (now - lastTapTime > 3000) {
+    consecutiveTaps = 0;
+    updateFlowMeter(0);
+  }
   lastTapTime = now;
   consecutiveTaps++;
+  updateFlowMeter(consecutiveTaps);
+
+  clearTimeout(_flowMeterResetTimer);
+  _flowMeterResetTimer = setTimeout(() => {
+    consecutiveTaps = 0;
+    updateFlowMeter(0);
+  }, 3000);
+
   if (consecutiveTaps === 20) {
+    clearTimeout(_flowMeterResetTimer);
+    const editorBody = document.querySelector('.editor-body');
+    if (editorBody) {
+      editorBody.classList.add('editor-flash-flow');
+      setTimeout(() => editorBody.classList.remove('editor-flash-flow'), 600);
+    }
     triggerBehaviorEvent('Flow State!', 'keyboard', 'loc', 3, 20);
     consecutiveTaps = 0;
+    updateFlowMeter(0);
   }
 }
 
