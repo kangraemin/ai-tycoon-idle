@@ -162,3 +162,12 @@ Iter 7 분석 완료 및 커밋/푸시됨 (`963beb1`).
 [19] ❌ failure/skip — immediate retry (sleep 0s)
 ━━━ Iter 20/1000 — 2026-04-19 05:12 — multi-lens ━━━
 [20] Step 1: Analyze
+커밋 및 푸시 완료. `f9a12ec` — iter-0020 분석 파일 6개 (01-analysis.md + 스크린샷 3장 + log.md + run.log) 업스트림 반영됐습니다.
+[20] Step 2: Implement
+
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] 기획자 ad3c19e — Challenge rewards scale with prestigeMultiplier (+4/-3)
+- [IMPLEMENT 2/5] UX 63c35de — Fix mission card model-unlock sub-text + screen routing (+1/-1)
+- [IMPLEMENT 3/5] 개발자 e0c74a0 — Fix offline modal blocked by tutorial step-4 overlay (+12/-1)
+- [IMPLEMENT 4/5] UI 90f0a11 — Fix Coming Next misleading Compute label (+1/-1)
+- [IMPLEMENT 5/5] 게이머 b870abb — Raise free challenges 3->5, add recharge hint (+4/-2)
