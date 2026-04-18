@@ -112,7 +112,11 @@ function showTutorialStep(step) {
 
   // Return to editor screen so train.js tab is visible and selectable
   if (s.id === 'train-tab' && typeof switchScreen === 'function') {
-    switchScreen('editor');
+    if (typeof currentScreen !== 'undefined' && currentScreen !== 'editor') {
+      switchScreen('editor');
+      setTimeout(() => showTutorialStep(step), 50);
+      return;
+    }
   }
   // Auto-open Research sub-tab for do-research step
   if (s.id === 'do-research' && typeof switchModelsSubTab === 'function') {
