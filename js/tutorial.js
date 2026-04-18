@@ -84,6 +84,16 @@ let tutorialActive = false;
 
 function startTutorial() {
   if (gameState.tutorialStep >= TUTORIAL_STEPS.length) return;
+  // Guard: returning player with real progress but tutorialStep stuck at 0
+  if (gameState.tutorialStep === 0 && (
+    (gameState.stats && gameState.stats.totalCompiles > 0) ||
+    gameState.reputation > 0 ||
+    gameState.papers > 20
+  )) {
+    gameState.tutorialStep = TUTORIAL_STEPS.length;
+    if (typeof saveGame === 'function') saveGame();
+    return;
+  }
   tutorialActive = true;
   showTutorialStep(gameState.tutorialStep);
 }

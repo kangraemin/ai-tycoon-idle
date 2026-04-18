@@ -111,13 +111,14 @@ async function loadGame() {
                           'prestigeMultiplier', 'lastSaveTime', 'totalPlayTime',
                           'lastTokenRecharge', 'lastEventTime', 'tutorialStep',
                           'freeChallengesUsed', 'lastFreeChallengeReset', 'editorTab',
-                          'saveVersion']) {
+                          'saveVersion', 'dailyStreak', 'lastDailyClaimDate']) {
         if (parsed[key] !== undefined) defaults[key] = parsed[key];
       }
 
       // Safe merge: arrays
       if (Array.isArray(parsed.careerHistory)) defaults.careerHistory = parsed.careerHistory;
       if (Array.isArray(parsed.discoveredFusions)) defaults.discoveredFusions = parsed.discoveredFusions;
+      if (Array.isArray(parsed.shownUnlockModals)) defaults.shownUnlockModals = parsed.shownUnlockModals;
 
       // Safe merge: upgrades (nested)
       if (parsed.upgrades) {
