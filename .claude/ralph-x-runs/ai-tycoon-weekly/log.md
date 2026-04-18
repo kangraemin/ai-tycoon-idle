@@ -94,3 +94,6 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Files: js/production.js, js/upgrade.js
 - LOC: +16/-3
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 9 — 게이머 — 2026-04-18T17:08
+- [SKIPPED] 02-implementation.md 없음 — 구현 단계 미완료
