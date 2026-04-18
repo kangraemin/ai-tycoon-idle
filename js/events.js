@@ -236,6 +236,8 @@ function updateFlowMeter(n) {
   if (!wrap) return;
   if (n <= 0) {
     wrap.classList.remove('visible', 'flow-meter-hot');
+    const label = document.getElementById('flow-meter-label');
+    if (label) label.textContent = '';
     return;
   }
   wrap.classList.add('visible');
