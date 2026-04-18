@@ -124,3 +124,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT-SUMMARY] Attempted 2, Committed 2, Skipped 0+0
 - [IMPLEMENT 1/2] 개발자 7643e01 — Fix save/load persistence + tutorial re-trigger guard (LOC +12/-1)
 - [IMPLEMENT 2/2] 게이머 55ae566 — Flow State 20-tap milestone: hold meter + FLOW! label 1s (LOC +29/-1)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
