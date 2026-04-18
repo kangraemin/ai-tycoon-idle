@@ -46,3 +46,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Rotation reason: loop broken at step 3 for 80% of players — gpuSlots=1 structural wall confirmed by GA (20% reach) + code review + playtest
 
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 4 — 개발자 — 2026-04-18T12:30
+- [ANALYZE] 게임루프에서 upgrade 버튼 canBuy 상태 incremental 업데이트 추가
+- Delta: activeUsers N/A (GA empty), tutorial/user 2.00->N/A (baseline only)
+- Rotation reason: 코드 로직 버그(업그레이드 버튼 stale disabled) — 개발자 관점만이 검증 가능한 deterministic 전환 킬러

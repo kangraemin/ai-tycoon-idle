@@ -1,0 +1,105 @@
+{
+  "taken_at": "2026-04-18T12:09:20",
+  "period_days": 7,
+  "property_id": "528427024",
+  "sections": {
+    "overview": [
+      {
+        "activeUsers": "1",
+        "newUsers": "1",
+        "sessions": "1",
+        "screenPageViews": "1",
+        "averageSessionDuration": "2.290686",
+        "userEngagementDuration": "0",
+        "engagementRate": "0"
+      }
+    ],
+    "sources": [
+      {
+        "sessionSource": "(direct)",
+        "sessionMedium": "(none)",
+        "sessions": "1",
+        "activeUsers": "1",
+        "userEngagementDuration": "0"
+      }
+    ],
+    "new_users_by_day": [
+      {
+        "date": "20260414",
+        "newUsers": "1",
+        "activeUsers": "1"
+      }
+    ],
+    "devices": [
+      {
+        "deviceCategory": "desktop",
+        "activeUsers": "1",
+        "sessions": "1",
+        "averageSessionDuration": "2.290686"
+      }
+    ],
+    "countries": [
+      {
+        "country": "Cyprus",
+        "activeUsers": "1",
+        "sessions": "1",
+        "userEngagementDuration": "0"
+      }
+    ],
+    "events": [
+      {
+        "eventName": "session_start",
+        "eventCount": "2",
+        "totalUsers": "1",
+        "eventCountPerUser": "2"
+      },
+      {
+        "eventName": "first_visit",
+        "eventCount": "1",
+        "totalUsers": "1",
+        "eventCountPerUser": "1"
+      },
+      {
+        "eventName": "page_view",
+        "eventCount": "1",
+        "totalUsers": "1",
+        "eventCountPerUser": "1"
+      },
+      {
+        "eventName": "scroll",
+        "eventCount": "1",
+        "totalUsers": "1",
+        "eventCountPerUser": "1"
+      }
+    ],
+    "pages": [
+      {
+        "pageTitle": "AI Tycoon",
+        "screenPageViews": "1",
+        "activeUsers": "1"
+      }
+    ],
+    "first_session_engagement": [
+      {
+        "firstSessionDate": "20260414",
+        "userEngagementDuration": "0",
+        "eventCountPerUser": "5",
+        "totalUsers": "1"
+      }
+    ],
+    "purchases": [],
+    "ads": []
+  },
+  "sections_status": {
+    "overview": "ok",
+    "sources": "ok",
+    "new_users_by_day": "ok",
+    "devices": "ok",
+    "countries": "ok",
+    "events": "ok",
+    "pages": "ok",
+    "first_session_engagement": "ok",
+    "purchases": "ok",
+    "ads": "ok"
+  }
+}
