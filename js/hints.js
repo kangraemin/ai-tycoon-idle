@@ -141,6 +141,11 @@ function updateHintBanner() {
   const banner = document.getElementById('hint-banner');
   if (!banner) return;
 
+  if (typeof isTutorialActive === 'function' && isTutorialActive()) {
+    banner.style.display = 'none';
+    return;
+  }
+
   // event-banner가 활성화되어 있으면 hint-banner 숨김 (배너 중첩 방지)
   const eventBanner = document.getElementById('event-banner');
   if (eventBanner && eventBanner.style.display !== 'none') {
