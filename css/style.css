@@ -1633,6 +1633,22 @@ html, body {
 .editor-flash-flow {
   animation: editorFlashFlow 0.6s ease-out;
 }
+@keyframes flowCelebrate {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.06); }
+  60% { transform: scale(1.03); }
+}
+#flow-meter-wrap.flow-state-celebrate {
+  animation: flowCelebrate 0.5s ease-out;
+}
+#flow-meter-wrap.flow-state-celebrate #flow-meter-fill::after {
+  background: #ffeb3b;
+  box-shadow: 0 0 12px rgba(255,235,59,0.9);
+}
+#flow-meter-wrap.flow-state-celebrate #flow-meter-label {
+  color: #ffeb3b;
+  font-weight: bold;
+}
 
 /* ===== Challenge Overlay ===== */
 .challenge-overlay {

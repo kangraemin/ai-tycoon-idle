@@ -265,9 +265,21 @@ function trackTapBehavior() {
       editorBody.classList.add('editor-flash-flow');
       setTimeout(() => editorBody.classList.remove('editor-flash-flow'), 600);
     }
+    // Hold meter at 100% with FLOW! label for 1s before reset
+    const flowWrap = document.getElementById('flow-meter-wrap');
+    if (flowWrap) {
+      flowWrap.classList.add('flow-state-celebrate');
+      flowWrap.style.setProperty('--flow-pct', '100%');
+      const flowLabel = document.getElementById('flow-meter-label');
+      if (flowLabel) flowLabel.textContent = '\uD83D\uDD25 FLOW!';
+    }
     triggerBehaviorEvent('Flow State!', 'keyboard', 'loc', 3, 20);
     consecutiveTaps = 0;
-    updateFlowMeter(0);
+    setTimeout(() => {
+      const w = document.getElementById('flow-meter-wrap');
+      if (w) w.classList.remove('flow-state-celebrate');
+      updateFlowMeter(0);
+    }, 1000);
   }
 }
 
