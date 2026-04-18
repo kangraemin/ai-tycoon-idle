@@ -181,3 +181,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 4/5] 개발자 ead21c4 — Manual rep rate estimate in Career Advance In (LOC +6/-2)
 - [IMPLEMENT 5/5] 게이머 7462519 — Challenge discoverability: hint after tutorial (LOC +12/-0)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 18 — UX/개발자/기획자/UI/게이머 — 2026-04-19T03:44
+- [ANALYZE] Tutorial step 7 spotlight timing fix (primary: UX/개발자 9/10)
+- Delta: activeUsers 0->0 (GA completely silent), tutorial/user N/A->N/A
+- Lens choice reasoning: UX/개발자(9) — tutorial step 7 spotlight mispositioned on upgrade screen (currentScreen guard + setTimeout fix needed); UX(8) — hint banner shows during tutorial (missing isTutorialActive guard); 기획자(7) — compile-code hint duplicates mission card; UI(6) — token display ambiguous; 게이머(6) — bestGrade unused in challenge button. All 5 lenses >= 5, all in queue.
