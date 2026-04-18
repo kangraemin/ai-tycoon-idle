@@ -921,7 +921,7 @@ function renderModelsScreen() {
         <span class="material-symbols-outlined locked-model-icon">lock</span>
         <div class="locked-model-info">
           <div class="locked-model-name">${def.name}</div>
-          <div class="locked-model-cost">${formatNumber(def.unlockCost)} Compute · ${pct}%</div>
+          <div class="locked-model-cost">Unlock via Research (Papers)</div>
         </div>`;
       section.appendChild(item);
     });
