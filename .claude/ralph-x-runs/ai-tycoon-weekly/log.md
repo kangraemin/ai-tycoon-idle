@@ -125,3 +125,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 1/2] 개발자 7643e01 — Fix save/load persistence + tutorial re-trigger guard (LOC +12/-1)
 - [IMPLEMENT 2/2] 게이머 55ae566 — Flow State 20-tap milestone: hold meter + FLOW! label 1s (LOC +29/-1)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 13 - UX/개발자 - 2026-04-18T21:15
+- [ANALYZE] Fix Research Unlocked modal blocking new players: reorder checkDailyBonus after startTutorial + remove papers > 20 tutorial guard
+- Delta: activeUsers 0->0 (GA silent), tutorial/user N/A->N/A
+- Lens choice reasoning: UX/개발자 - checkDailyBonus() before startTutorial() causes papers=25 > 20 guard to skip tutorial; without isTutorialActive()=true, Research Unlocked modal blocks 100% of new players before first tap. Deterministic failure confirmed by code + playtest. Impl queue: UX(9) + 개발자(8) unified, 게이머(6), 기획자(5).
