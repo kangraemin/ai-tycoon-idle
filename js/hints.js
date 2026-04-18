@@ -77,7 +77,7 @@ const HINTS = [
   },
   {
     id: 'train-tab',
-    check: () => gameState.editorTab !== 'train' && gameState.stats && gameState.stats.totalCompiles >= 2 && gameState.papers < 20,
+    check: () => gameState.editorTab !== 'train' && gameState.stats && gameState.stats.totalCompiles >= 2 && gameState.papers < 50,
     text: 'Switch to train.js tab to earn Papers!',
     screen: 'editor',
     icon: 'code',

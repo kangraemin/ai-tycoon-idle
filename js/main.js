@@ -20,7 +20,7 @@ function getCurrentMission() {
   if (st.compute >= 50 && st.upgrades.infra.batchSize === 0)
     return { id: 'batch', icon: 'data_array', title: 'Buy Batch Size upgrade!', sub: 'More Code per tap', screen: 'upgrade', hasProg: true, getCurrent: () => st.compute, required: typeof getUpgradeCost === 'function' ? getUpgradeCost('infra', 'batchSize') : 50 };
 
-  if (st.stats && st.stats.totalCompiles >= 2 && st.editorTab !== 'train' && st.papers < 20)
+  if (st.stats && st.stats.totalCompiles >= 2 && st.editorTab !== 'train' && st.papers < 50)
     return { id: 'train', icon: 'model_training', title: 'Switch to train.js tab!', sub: 'Compile there to earn Papers', screen: null, hasProg: false };
 
   if (st.papers >= 10 && owned < maxSlots)
