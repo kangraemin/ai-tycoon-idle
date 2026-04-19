@@ -1141,6 +1141,11 @@ html, body {
   display: block;
 }
 
+.tutorial-overlay.spotlight-mode {
+  pointer-events: none;
+  background: transparent;
+}
+
 .tutorial-spotlight {
   position: fixed;
   border-radius: 12px;

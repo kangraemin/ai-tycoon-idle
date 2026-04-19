@@ -128,11 +128,13 @@ function showTutorialStep(step) {
 
   if (s.type === 'modal') {
     overlay.classList.add('active');
+    overlay.classList.remove('spotlight-mode');
     if (spotlight) spotlight.style.display = 'none';
     bubble.className = 'tutorial-bubble tutorial-modal-mode';
     bubble.innerHTML = progressHTML + '<div class="tutorial-modal-title">' + s.title + '</div><div class="tutorial-modal-msg">' + s.message + '</div><button class="btn btn-primary tutorial-next-btn" onclick="advanceTutorial()">' + s.btnText + '</button><button class="tutorial-skip" onclick="skipTutorial()">Skip Tutorial</button>';
   } else if (s.type === 'spotlight') {
     overlay.classList.add('active');
+    overlay.classList.add('spotlight-mode');
     const target = document.querySelector(s.selector);
     if (!target) { advanceTutorial(); return; }
 
@@ -171,8 +173,13 @@ function showTutorialStep(step) {
 function liftAncestorStackingContexts(target) {
   let el = target.parentElement;
   while (el && el !== document.body) {
-    const zi = parseInt(window.getComputedStyle(el).zIndex);
-    if (!isNaN(zi) && zi > 0 && zi < 1000) {
+    const style = window.getComputedStyle(el);
+    const zi = parseInt(style.zIndex);
+    const pos = style.position;
+    const isPositioned = pos === 'relative' || pos === 'absolute' || pos === 'fixed' || pos === 'sticky';
+    const hasStackingTrigger = style.transform !== 'none' || style.filter !== 'none' ||
+      parseFloat(style.opacity) < 1 || style.isolation === 'isolate';
+    if ((isPositioned || hasStackingTrigger) && (isNaN(zi) || zi < 1000)) {
       el.dataset.tutorialZSave = el.style.zIndex;
       el.style.zIndex = '1002';
     }
@@ -221,7 +228,7 @@ function endTutorial() {
   tutorialActive = false;
   Analytics.tutorialStep(gameState.tutorialStep, 'complete');
   const overlay = document.getElementById('tutorial-overlay');
-  if (overlay) overlay.classList.remove('active');
+  if (overlay) overlay.classList.remove('active', 'spotlight-mode');
 }
 
 function isTutorialActive() {
