@@ -14,7 +14,7 @@ function switchScreen(screen) {
     const unlockCond = btn.dataset.unlock;
     let msg = 'Keep playing to unlock this!';
     if (unlockCond === 'career') {
-      msg = 'Earn 5,000 Rep to unlock Career (you have ' + formatNumber(gameState.reputation) + ')';
+      msg = 'Earn 2,000 Rep to unlock Career (you have ' + formatNumber(gameState.reputation) + ')';
     }
     Analytics.lockedTabClick('career', gameState.reputation);
     if (typeof showToast === 'function') showToast(msg, 'info');
