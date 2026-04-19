@@ -24,6 +24,10 @@ function produceTick(dt) {
   const produced = lps * dt;
   gameState.loc += produced;
   gameState.totalLoc += produced;
+
+  // Passive Rep from running models (0.05 Rep per LPS·s keeps career reachable via idle)
+  const passiveRep = lps * dt * 0.05;
+  if (passiveRep > 0) gameState.reputation += passiveRep;
 }
 
 const BASE_AUTO_COMPILE_INTERVAL = 10; // seconds at Orchestrator Lv.1
