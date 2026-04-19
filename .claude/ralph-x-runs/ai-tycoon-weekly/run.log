@@ -2128,3 +2128,8 @@ Not logged in · Please run /login
 커밋 `3f89c8c` 푸시 완료. iter-0028 분석 파일 5개(01-analysis.md + 스크린샷 3장) + log.md 업데이트가 반영됐습니다.
 [28] Step 2: Implement
 [28] Step 2: Implement
+- [IMPLEMENT-SUMMARY] Attempted 4, Committed 4, Skipped 0+0
+- [IMPLEMENT 1/4] 게이머 db73077 — idle earnings forecast panel in editor (LOC +53/-1)
+- [IMPLEMENT 2/4] UI ae3fac1 — BugFarm career bar visibility boost (LOC +26/-5)
+- [IMPLEMENT 3/4] UX 82e51d3 — fix GPU-full post-tutorial mission (LOC +6/-2)
+- [IMPLEMENT 4/4] 기획자 62777b6 — memory upgrade offline synergy hint (LOC +1/-1)
