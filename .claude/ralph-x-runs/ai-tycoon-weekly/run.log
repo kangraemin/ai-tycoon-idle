@@ -2133,3 +2133,12 @@ Not logged in · Please run /login
 - [IMPLEMENT 2/4] UI ae3fac1 — BugFarm career bar visibility boost (LOC +26/-5)
 - [IMPLEMENT 3/4] UX 82e51d3 — fix GPU-full post-tutorial mission (LOC +6/-2)
 - [IMPLEMENT 4/4] 기획자 62777b6 — memory upgrade offline synergy hint (LOC +1/-1)
+워크로그 작성 완료. Notion 전송까지 성공했습니다.
+
+**기록 내용:**
+- 게이머 #1: idle earnings forecast 패널 (Code/hr·Rep/hr 표시)
+- UI #2: 커리어 진행 바 가시성 개선 + 마일스톤 라벨
+- UX #3: GPU-full 포스트-튜토리얼 미션 오류 수정
+- 기획자 #4: Memory 업그레이드 오프라인 시너지 힌트
+[28] Step 3: Deploy
+[28] Step 3: Deploy
