@@ -84,7 +84,7 @@ GA alone is noisy at this traffic level. You MUST triangulate with code review a
 
 2. **Signal A — GA data** (via `ga-analyze` skill at `~/.claude/skills/ga-analyze/SKILL.md`):
    ```
-   python3 scripts/ga-snapshot.py --days 1
+   python3 scripts/ga-snapshot.py --days 7
    ```
    Read the 2 most recent snapshot JSON files in `analytics/snapshots/` and compute key deltas.
    If only 1 snapshot exists, use it as baseline.
