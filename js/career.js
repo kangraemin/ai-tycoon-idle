@@ -98,6 +98,7 @@ function doCareerAdvance() {
   }
 
   gameState.gpuSlots = 2;
+  if (gameState.stats) gameState.stats.gachaPulls = 0;
 
   // Keep these
   // papers, tokens, reputation, discoveredFusions, achievements — preserved
