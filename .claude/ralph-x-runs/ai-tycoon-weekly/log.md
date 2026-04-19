@@ -246,3 +246,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 4/5] 게이머 a606f5f — First-compile wow: 3x burst + screen shake + toast (LOC +9/-1)
 - [IMPLEMENT 5/5] UI 8ee12de — Show Chatbot rate in welcome modal (LOC +8/-1)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 24 -- UX/Developer -- 2026-04-19T12:10
+- [ANALYZE] Fix tutorial buy-upgrade dead selector (.upgrade-card:first-child .btn matches nothing)
+- Delta: activeUsers 45 (30d baseline), tutorial/user 2.00, upgrade_purchase 8/1 user (0% for 44/45)
+- Lens choice reasoning: UX/Developer(9) -- .upgrade-card:first-child .btn returns null in browser; showTutorialStep auto-advances when target missing; 100% of users silently skip upgrade step; GA confirms 44/45 users never buy upgrade. Root cause of critical economy loop failure.
