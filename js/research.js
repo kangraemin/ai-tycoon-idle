@@ -104,14 +104,20 @@ function renderResearchScreen() {
         <div class="research-bubble-window">
           <span class="material-symbols-outlined" style="font-size:48px;color:var(--papers)">science</span>
         </div>
-        ${ownedCount >= maxSlots ? `<div class="lock-hint" style="margin:8px 0;cursor:pointer;text-decoration:underline" onclick="switchScreen('upgrade')"><span class="material-symbols-outlined" style="font-size:14px">lock</span> GPU full — <strong>Go to Upgrades</strong> (${formatNumber(getGpuSlotCost())} Compute)</div>` : ''}
         <div class="research-pull-area">
-          <button class="research-pull-btn ${gameState.papers < RESEARCH_COST ? 'btn-disabled' : ''}"
-                  onclick="doResearchPull()" ${gameState.papers < RESEARCH_COST ? 'disabled' : ''}>
-            Research!
-          </button>
-          <span class="research-pull-hint">${RESEARCH_COST} Papers per discovery</span>
-          ${gameState.papers < RESEARCH_COST ? `<div class="lock-hint" style="margin-top:8px">Need ${RESEARCH_COST - gameState.papers} more Papers</div>` : ''}
+          ${ownedCount >= maxSlots ? `
+            <button class="research-pull-btn btn-primary" onclick="switchScreen('upgrade')">
+              Expand GPU! (${formatNumber(getGpuSlotCost())} Compute)
+            </button>
+            <span class="research-pull-hint">GPU full — buy more slots to Research</span>
+          ` : `
+            <button class="research-pull-btn ${gameState.papers < RESEARCH_COST ? 'btn-disabled' : ''}"
+                    onclick="doResearchPull()" ${gameState.papers < RESEARCH_COST ? 'disabled' : ''}>
+              Research!
+            </button>
+            <span class="research-pull-hint">${RESEARCH_COST} Papers per discovery</span>
+            ${gameState.papers < RESEARCH_COST ? `<div class="lock-hint" style="margin-top:8px">Need ${RESEARCH_COST - gameState.papers} more Papers</div>` : ''}
+          `}
         </div>
       </div>
       <div class="research-rates">
