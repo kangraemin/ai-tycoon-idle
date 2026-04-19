@@ -152,14 +152,21 @@ function renderGoalsCard() {
   _goalsStructureKey = items.map(i => i.key).join(',');
   const mainItem = items[0];
   const pct = Math.min(100, Math.floor(mainItem.getCurrent() / mainItem.required * 100));
+  const isCareer = mainItem.key.startsWith('career-');
+  const pctClass = pct === 100 ? ' goal-pct-ready' : (isCareer && pct >= 80 ? ' goal-pct-close' : '');
+  const pctText = pct === 100 ? 'READY!' : pct + '%';
+  const milestoneLabel = isCareer && pct >= 50 && pct < 100
+    ? (pct >= 80 ? '<div class="goal-milestone">Almost there!</div>' : '<div class="goal-milestone">Halfway!</div>')
+    : '';
   let html = `<div class="goal-item" onclick="switchScreen('${mainItem.screen}')">
       <span class="material-symbols-outlined goal-icon">${mainItem.icon}</span>
       <div class="goal-info">
         <div class="goal-label">${mainItem.label}</div>
         <div class="goal-bar"><div class="goal-bar-fill" id="gf-${mainItem.key}"
           style="width:${pct}%;background:${mainItem.color}"></div></div>
+        ${milestoneLabel}
       </div>
-      <span class="goal-pct${pct === 100 ? ' goal-pct-ready' : ''}" id="gp-${mainItem.key}">${pct === 100 ? 'READY!' : pct + '%'}</span>
+      <span class="goal-pct${pctClass}" id="gp-${mainItem.key}">${pctText}</span>
       <span class="material-symbols-outlined goal-arrow">chevron_right</span>
     </div>`;
   if (items.length > 1) html += `<div class="goal-more">+${items.length - 1} more goals</div>`;
@@ -180,6 +187,8 @@ function updateGoalsProgress() {
     fill.style.width = pct + '%';
     pct_el.textContent = pct === 100 ? 'READY!' : pct + '%';
     pct_el.classList.toggle('goal-pct-ready', pct === 100);
+    const isCareer = mainItem.key.startsWith('career-');
+    pct_el.classList.toggle('goal-pct-close', isCareer && pct >= 80 && pct < 100);
   }
 }
 

@@ -1417,19 +1417,31 @@ html, body {
 }
 
 .goal-pct {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-code);
   flex-shrink: 0;
-  min-width: 28px;
+  min-width: 32px;
   text-align: right;
 }
 
 .goal-pct-ready {
   color: var(--accent);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.5px;
+}
+
+.goal-pct-close {
+  color: var(--accent);
+}
+
+.goal-milestone {
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-top: 2px;
+  opacity: 0.85;
 }
 
 .goal-arrow {
