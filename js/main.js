@@ -1015,10 +1015,10 @@ function renderUpgradeScreen() {
   let html = '<div class="screen-desc">Spend Compute to buy upgrades and boost your AI capabilities.</div>';
 
   const categories = {
+    infra: { name: 'Infra', icon: 'dns' },
+    skill: { name: 'Skill', icon: 'school' },
     agent: { name: 'Agent', icon: 'smart_toy' },
     teamAgent: { name: 'Team Agent', icon: 'groups' },
-    skill: { name: 'Skill', icon: 'school' },
-    infra: { name: 'Infra', icon: 'dns' },
   };
 
   for (const [catId, catDef] of Object.entries(categories)) {
