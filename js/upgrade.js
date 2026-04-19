@@ -3,7 +3,7 @@
 const UPGRADE_DEFS = {
   agent: {
     toolUse:    { name: 'Tool Use',    baseCost: 500,  description: '+20% Code output per level' },
-    memory:     { name: 'Memory',      baseCost: 800,  description: '+1h max offline time per level' },
+    memory:     { name: 'Memory',      baseCost: 800,  description: '+1h max offline time per level · earn more Code while away' },
     planning:   { name: 'Planning',    baseCost: 1200, description: '+1 challenge hint per level' },
   },
   teamAgent: {
