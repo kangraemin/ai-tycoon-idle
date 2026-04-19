@@ -81,6 +81,7 @@ const TUTORIAL_STEPS = [
 ];
 
 let tutorialActive = false;
+let tutorialLastModelName = '';
 
 function startTutorial() {
   if (gameState.tutorialStep >= TUTORIAL_STEPS.length) return;
@@ -141,6 +142,9 @@ function showTutorialStep(step) {
     if (spotlight) spotlight.style.display = 'none';
     bubble.className = 'tutorial-bubble tutorial-modal-mode';
     let modalMsg = s.message;
+    if (s.id === 'complete' && tutorialLastModelName) {
+      modalMsg = 'You discovered <b>' + tutorialLastModelName + '</b>! ' + modalMsg;
+    }
     if (s.id === 'welcome' && typeof getLocPerSecond === 'function') {
       const lps = getLocPerSecond();
       if (lps > 0) {
@@ -245,6 +249,14 @@ function endTutorial() {
   Analytics.tutorialStep(gameState.tutorialStep, 'complete');
   const overlay = document.getElementById('tutorial-overlay');
   if (overlay) overlay.classList.remove('active', 'spotlight-mode');
+  // Candidate 4: pulse challenge button so new players know what to do next
+  setTimeout(() => {
+    const btn = document.querySelector('.editor-challenge-area .btn-primary');
+    if (btn) {
+      btn.classList.add('tutorial-pulse');
+      setTimeout(() => btn.classList.remove('tutorial-pulse'), 3000);
+    }
+  }, 600);
 }
 
 function isTutorialActive() {
