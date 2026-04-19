@@ -267,3 +267,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Remove career nav lock -- all players see career screen from the start
 - Delta: activeUsers 45 (30d baseline), tutorial_step/user 2.00/10, upgrade_purchase 1/45 (2.2%), challenge_start 18/45 (40%)
 - Lens choice reasoning: 기획자(9) -- career screen locked from new players behind 2000 Rep; Goals card BugFarm click dead-ends into wrong "5000 Rep" toast (actual threshold 2000); canPromote() already guards Advance button so nav lock only gates player knowledge. Anti-stagnation: UX used 3x in last 5 iters, avoided.
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
