@@ -1,0 +1,1 @@
+SKIPPED — no candidates committed
