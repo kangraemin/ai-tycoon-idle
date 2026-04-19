@@ -1858,6 +1858,13 @@ html, body {
 .screen-shake {
   animation: screenShake 0.1s ease-in-out 3;
 }
+@keyframes tutorialPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99,179,237,0); }
+  50% { box-shadow: 0 0 0 6px rgba(99,179,237,0.5); }
+}
+.tutorial-pulse {
+  animation: tutorialPulse 0.7s ease-in-out 4;
+}
 
 /* Celebration overlay */
 .celebration-overlay {
