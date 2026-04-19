@@ -251,3 +251,7 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Fix tutorial buy-upgrade dead selector (.upgrade-card:first-child .btn matches nothing)
 - Delta: activeUsers 45 (30d baseline), tutorial/user 2.00, upgrade_purchase 8/1 user (0% for 44/45)
 - Lens choice reasoning: UX/Developer(9) -- .upgrade-card:first-child .btn returns null in browser; showTutorialStep auto-advances when target missing; 100% of users silently skip upgrade step; GA confirms 44/45 users never buy upgrade. Root cause of critical economy loop failure.
+- [IMPLEMENT-SUMMARY] Attempted 3, Committed 3, Skipped 0+0
+- [IMPLEMENT 1/3] UX 4aa7caf -- Fix tutorial buy-upgrade dead selector + compute guard (LOC +10/-1)
+- [IMPLEMENT 2/3] UI 10c331f -- Reorder upgrade categories Infra-first (LOC +2/-2)
+- [IMPLEMENT 3/3] Gamer 2e786f2 -- Start Here badge on Batch Size during tutorial (LOC +31/-1)
