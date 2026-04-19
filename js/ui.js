@@ -636,16 +636,6 @@ function checkTabUnlock() {
   if (now - lastTabUnlockCheck < 2000) return;
   lastTabUnlockCheck = now;
 
-  // 메인 네비 (Career만 남음)
-  document.querySelectorAll('.nav-btn[data-unlock]').forEach(btn => {
-    const cond = btn.dataset.unlock;
-    let unlocked = false;
-    if (cond === 'career' && gameState.reputation >= 2000) unlocked = true;
-    if (unlocked && btn.classList.contains('nav-locked')) {
-      btn.classList.remove('nav-locked');
-      showUnlockFanfare(cond);
-    }
-  });
   // Models 서브탭 언락
   document.querySelectorAll('.sub-tab[data-sub-unlock]').forEach(btn => {
     const cond = btn.dataset.subUnlock;
