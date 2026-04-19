@@ -239,3 +239,9 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Fix tutorial spotlight overlay blocking interaction (pointer-events:none + ancestor z-index propagation)
 - Delta: activeUsers 45 (30d baseline), tutorial/user 2.00, upgrade_purchase 8 events/1 user (critical)
 - Lens choice reasoning: UX(9) — tutorial overlay z-index:1000 blocks ALL pointer events during spotlight steps; 10/10 editor taps blocked in playtest; GA confirms drop at step 2-3. upgrade_purchase=1/45 users is downstream indicator of same funnel failure.
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] UX+UI 732bd0d — Fix tutorial spotlight: pointer-events:none overlay + ancestor z-index lift (LOC +15/-3)
+- [IMPLEMENT 2/5] 기획자 6e61891 — Affordable! pulse badge on Upgrade nav (LOC +49/-0)
+- [IMPLEMENT 3/5] 개발자 13b5ded — Fix train-tab spotlight timing: 50ms->300ms (LOC +1/-1)
+- [IMPLEMENT 4/5] 게이머 a606f5f — First-compile wow: 3x burst + screen shake + toast (LOC +9/-1)
+- [IMPLEMENT 5/5] UI 8ee12de — Show Chatbot rate in welcome modal (LOC +8/-1)
