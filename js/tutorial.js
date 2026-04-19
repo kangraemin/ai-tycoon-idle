@@ -249,7 +249,6 @@ function endTutorial() {
   Analytics.tutorialStep(gameState.tutorialStep, 'complete');
   const overlay = document.getElementById('tutorial-overlay');
   if (overlay) overlay.classList.remove('active', 'spotlight-mode');
-  // Candidate 4: pulse challenge button so new players know what to do next
   setTimeout(() => {
     const btn = document.querySelector('.editor-challenge-area .btn-primary');
     if (btn) {
@@ -257,6 +256,39 @@ function endTutorial() {
       setTimeout(() => btn.classList.remove('tutorial-pulse'), 3000);
     }
   }, 600);
+  // What's next checklist shown once after tutorial completes
+  setTimeout(() => {
+    if (typeof showModalHtml !== 'function') return;
+    const html = `
+      <div style="text-align:left;padding:4px 0">
+        <div style="color:var(--text-secondary);font-size:12px;margin-bottom:12px">Three ways to grow your AI startup:</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="material-symbols-outlined" style="color:var(--accent);font-size:22px">code</span>
+            <div>
+              <div style="font-weight:700;font-size:13px">Try a Challenge</div>
+              <div style="color:var(--text-muted);font-size:11px">Win Compute, Rep &amp; Papers fast</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="material-symbols-outlined" style="color:var(--reputation);font-size:22px">workspace_premium</span>
+            <div>
+              <div style="font-weight:700;font-size:13px">Earn 2,000 Rep</div>
+              <div style="color:var(--text-muted);font-size:11px">Advance career for a 2× production boost</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="material-symbols-outlined" style="color:var(--papers);font-size:22px">science</span>
+            <div>
+              <div style="font-weight:700;font-size:13px">Research New AI Models</div>
+              <div style="color:var(--text-muted);font-size:11px">Spend Papers to unlock faster idle production</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    showModalHtml("What's Next?", html, [{ text: "Let's Go!", primary: true }]);
+  }, 1200);
 }
 
 function isTutorialActive() {
