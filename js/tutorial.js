@@ -42,7 +42,7 @@ const TUTORIAL_STEPS = [
   {
     id: 'buy-upgrade',
     type: 'spotlight',
-    selector: '.upgrade-card:first-child .btn',
+    selector: '[data-category=infra][data-id=batchSize] .btn',
     message: 'Buy Batch Size — more LoC per tap!',
     position: 'below',
     trigger: 'buy',
@@ -121,6 +121,15 @@ function showTutorialStep(step) {
   // Auto-open Research sub-tab for do-research step
   if (s.id === 'do-research' && typeof switchModelsSubTab === 'function') {
     setTimeout(() => switchModelsSubTab('research'), 100);
+  }
+
+  // Compute readiness guard: wait until player has enough to buy Batch Size
+  if (s.id === 'buy-upgrade') {
+    const batchCost = typeof getUpgradeCost === 'function' ? getUpgradeCost('infra', 'batchSize') : 50;
+    if (typeof gameState !== 'undefined' && gameState.compute < batchCost) {
+      setTimeout(() => showTutorialStep(step), 500);
+      return;
+    }
   }
 
   const progressPct = Math.round((step + 1) / TUTORIAL_STEPS.length * 100);
