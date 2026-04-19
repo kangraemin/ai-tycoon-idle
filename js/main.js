@@ -724,11 +724,11 @@ function updateChallengeCooldownDisplay() {
   const btn = document.querySelector('.editor-challenge-area .btn');
   if (!btn) return;
   if (cooldown > 0) {
-    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ' + Math.ceil(cooldown / 1000) + 's';
+    btn.textContent = 'Play again in ' + Math.ceil(cooldown / 1000) + 's';
     btn.classList.add('btn-disabled');
     btn.classList.remove('btn-primary');
     btn.disabled = true;
-  } else if (btn.classList.contains('btn-disabled') && btn.textContent.includes('s')) {
+  } else if (btn.classList.contains('btn-disabled') && btn.textContent.startsWith('Play again')) {
     renderEditorScreen();
   }
 }
@@ -797,7 +797,7 @@ function renderEditorScreen() {
     const btnDisabled = isOnCooldown;
     const typeName = CHALLENGE_TYPES[currentChallengeType]?.name || 'Challenge';
     const btnLabel = isOnCooldown
-      ? `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">hourglass_top</span> ${Math.ceil(cooldown / 1000)}s`
+      ? `Play again in ${Math.ceil(cooldown / 1000)}s`
       : `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">code</span> ${typeName} (${costLabel})`;
     html += '<div class="editor-challenge-area" style="padding:8px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">';
     html += '<div style="display:flex;align-items:center;justify-content:center;gap:6px">';
