@@ -114,7 +114,7 @@ function showTutorialStep(step) {
   if (s.id === 'train-tab' && typeof switchScreen === 'function') {
     if (typeof currentScreen !== 'undefined' && currentScreen !== 'editor') {
       switchScreen('editor');
-      setTimeout(() => showTutorialStep(step), 50);
+      setTimeout(() => showTutorialStep(step), 300);
       return;
     }
   }
