@@ -227,3 +227,9 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Level Up shortcut in research reveal for duplicate pulls
 - Delta: activeUsers 0->0 (GA completely silent), tutorial/user N/A->N/A
 - Lens choice reasoning: 게이머(8) - research reveal shows duplicate with 5-step level-up path; inline CTA collapses to 0 navigation. Anti-stagnation: 기획자 used 3 consecutive iters (19-21), picking different lens. UX(7)+개발자(6)+UI(6)+기획자(5) all in queue.
+- [IMPLEMENT-SUMMARY] Attempted 5, Committed 5, Skipped 0+0
+- [IMPLEMENT 1/5] 게이머 c53a88e — Level Up shortcut in research reveal for duplicates (LOC +39/-0)
+- [IMPLEMENT 2/5] UX 857fd5e — GPU full replaces Research button with Expand GPU CTA (LOC +13/-7)
+- [IMPLEMENT 3/5] 개발자 7a63ec5 — Reset gachaPulls on career advance per-prestige pity (LOC +1/-0)
+- [IMPLEMENT 4/5] UI e6b3a38 — Research rates owned/total model count per rarity (LOC +7/-3)
+- [IMPLEMENT 5/5] 기획자 73e0111 — Career advance toast with actual papers bonus (LOC +5/-1)
