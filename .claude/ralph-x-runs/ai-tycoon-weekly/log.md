@@ -280,3 +280,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Delta: activeUsers 0 (1d empty), 30d baseline: 45 users, sessions/user 2.07, avg_session 124.9s
 - Lens choice reasoning: 게이머(8) -- sessions/user ~2 in 30d is the core retention failure; no outbound "you earn while away" signal in editor; offline.js calculates it, just needs display. UI(7) BugFarm bar visibility, UX(6) GPU-full mission fix, 기획자(5) Memory/offline synergy hint all >= 5 and in queue.
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 29 — 기획자/개발자 — 2026-04-19T17:41
+- [ANALYZE] Fix career Rep/hr: include passive idle Rep in Advance In estimate
+- Delta: activeUsers 0->0 (GA completely silent both snapshots), tutorial/user N/A->N/A
+- Lens choice reasoning: 기획자/개발자(8) — career.js MANUAL_REP_EST shows 1,500 Rep/hr (30 compiles/hr) but ignores passive idle Rep (360/hr for Chatbot); editor idle-forecast correctly shows 360/hr; same player sees 4x different number on career tab — confirmed by code + playtest. UX(6) challenge label cleanup, 게이머(5) mission gap, UI(5) flow meter all >= 5 and in queue.
