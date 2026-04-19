@@ -184,6 +184,21 @@ function doResearchPull() {
     if (typeof triggerEureka === 'function') triggerEureka();
 
     const isHighRarity = result.rarity === 'epic' || result.rarity === 'legendary';
+    const isDuplicate = !result.isNew && result.newCount >= 2;
+    let levelUpHTML = '';
+    if (isDuplicate) {
+      const dupModelState = getModelState(result.modelId);
+      const levelUpCost = dupModelState ? getModelLevelUpCost(dupModelState) : Infinity;
+      const canLevelUp = gameState.compute >= levelUpCost;
+      levelUpHTML = `
+      <div id="research-levelup-confirm"></div>
+      <div id="research-levelup-btn" style="margin-top:10px">
+        <button class="btn ${canLevelUp ? 'btn-primary' : 'btn-disabled'}" style="font-size:13px;padding:8px 20px"
+                ${canLevelUp ? `onclick="doResearchRevealLevelUp('${result.modelId}')"` : 'disabled'}>
+          ${canLevelUp ? `Level Up! (${formatNumber(levelUpCost)} Compute)` : `Level Up (need ${formatNumber(levelUpCost)} Compute)`}
+        </button>
+      </div>`;
+    }
     resultEl.innerHTML = `
       <div class="research-reveal ${result.rarity} ${isHighRarity ? 'gacha-flash' : 'gacha-fade'}">
         <div class="model-visual rarity-${result.rarity}" style="--model-color:${def.color}">
@@ -195,6 +210,7 @@ function doResearchPull() {
           ${result.isNew ? 'New model discovered!' : `Duplicate \u2014 now x${result.newCount}`}
         </div>
       </div>
+      ${levelUpHTML}
       <div class="research-pull-area" style="margin-top:16px">
         <button class="research-pull-btn ${gameState.papers < RESEARCH_COST ? 'btn-disabled' : ''}"
                 onclick="doResearchPull()" ${gameState.papers < RESEARCH_COST ? 'disabled' : ''}>Research!</button>
@@ -211,6 +227,29 @@ function doResearchPull() {
     if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
     if (typeof renderModelsScreen === 'function') renderModelsScreen();
   }, 1500);
+}
+
+function doResearchRevealLevelUp(modelId) {
+  const modelState = getModelState(modelId);
+  const def = MODEL_DEFS[modelId];
+  if (!modelState || !def) return;
+
+  const success = doSameFusion(modelId);
+  if (!success) {
+    if (typeof showToast === 'function') showToast('Not enough Compute!', 'error');
+    return;
+  }
+
+  const confirmEl = document.getElementById('research-levelup-confirm');
+  if (confirmEl) {
+    confirmEl.innerHTML = `<div style="color:var(--accent-green);font-size:13px;margin-top:8px;font-weight:700">✓ Leveled up! ${def.name} → Lv.${modelState.level}</div>`;
+  }
+  const btnEl = document.getElementById('research-levelup-btn');
+  if (btnEl) btnEl.style.display = 'none';
+
+  if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
+  if (typeof renderModelsScreen === 'function') renderModelsScreen();
+  if (typeof saveGame === 'function') saveGame();
 }
 
 // Alias for backward compatibility (main.js calls renderResearchScreen via renderGachaScreen check)
