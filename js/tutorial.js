@@ -131,7 +131,14 @@ function showTutorialStep(step) {
     overlay.classList.remove('spotlight-mode');
     if (spotlight) spotlight.style.display = 'none';
     bubble.className = 'tutorial-bubble tutorial-modal-mode';
-    bubble.innerHTML = progressHTML + '<div class="tutorial-modal-title">' + s.title + '</div><div class="tutorial-modal-msg">' + s.message + '</div><button class="btn btn-primary tutorial-next-btn" onclick="advanceTutorial()">' + s.btnText + '</button><button class="tutorial-skip" onclick="skipTutorial()">Skip Tutorial</button>';
+    let modalMsg = s.message;
+    if (s.id === 'welcome' && typeof getLocPerSecond === 'function') {
+      const lps = getLocPerSecond();
+      if (lps > 0) {
+        modalMsg += ' Your Chatbot is already coding at <b>' + (Math.round(lps * 10) / 10) + ' LoC/s</b>!';
+      }
+    }
+    bubble.innerHTML = progressHTML + '<div class="tutorial-modal-title">' + s.title + '</div><div class="tutorial-modal-msg">' + modalMsg + '</div><button class="btn btn-primary tutorial-next-btn" onclick="advanceTutorial()">' + s.btnText + '</button><button class="tutorial-skip" onclick="skipTutorial()">Skip Tutorial</button>';
   } else if (s.type === 'spotlight') {
     overlay.classList.add('active');
     overlay.classList.add('spotlight-mode');
