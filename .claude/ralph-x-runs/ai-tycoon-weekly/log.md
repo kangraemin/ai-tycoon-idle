@@ -234,3 +234,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 4/5] UI e6b3a38 — Research rates owned/total model count per rarity (LOC +7/-3)
 - [IMPLEMENT 5/5] 기획자 73e0111 — Career advance toast with actual papers bonus (LOC +5/-1)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 23 — UX/UI — 2026-04-19T10:30
+- [ANALYZE] Fix tutorial spotlight overlay blocking interaction (pointer-events:none + ancestor z-index propagation)
+- Delta: activeUsers 45 (30d baseline), tutorial/user 2.00, upgrade_purchase 8 events/1 user (critical)
+- Lens choice reasoning: UX(9) — tutorial overlay z-index:1000 blocks ALL pointer events during spotlight steps; 10/10 editor taps blocked in playtest; GA confirms drop at step 2-3. upgrade_purchase=1/45 users is downstream indicator of same funnel failure.
