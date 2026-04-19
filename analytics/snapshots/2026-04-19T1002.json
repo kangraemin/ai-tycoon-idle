@@ -1,0 +1,387 @@
+{
+  "taken_at": "2026-04-19T10:02:43",
+  "period_days": 30,
+  "property_id": "528427024",
+  "sections": {
+    "overview": [
+      {
+        "activeUsers": "45",
+        "newUsers": "45",
+        "sessions": "46",
+        "screenPageViews": "472",
+        "averageSessionDuration": "124.87670065217389",
+        "userEngagementDuration": "4846",
+        "engagementRate": "0.67391304347826086"
+      }
+    ],
+    "sources": [
+      {
+        "sessionSource": "ramang.itch.io",
+        "sessionMedium": "referral",
+        "sessions": "33",
+        "activeUsers": "32",
+        "userEngagementDuration": "4762"
+      },
+      {
+        "sessionSource": "(direct)",
+        "sessionMedium": "(none)",
+        "sessions": "12",
+        "activeUsers": "12",
+        "userEngagementDuration": "84"
+      },
+      {
+        "sessionSource": "what2.doingtechnology.com",
+        "sessionMedium": "referral",
+        "sessions": "1",
+        "activeUsers": "1",
+        "userEngagementDuration": "0"
+      }
+    ],
+    "new_users_by_day": [
+      {
+        "date": "20260331",
+        "newUsers": "18",
+        "activeUsers": "18"
+      },
+      {
+        "date": "20260330",
+        "newUsers": "11",
+        "activeUsers": "11"
+      },
+      {
+        "date": "20260401",
+        "newUsers": "8",
+        "activeUsers": "8"
+      },
+      {
+        "date": "20260402",
+        "newUsers": "2",
+        "activeUsers": "2"
+      },
+      {
+        "date": "20260405",
+        "newUsers": "2",
+        "activeUsers": "2"
+      },
+      {
+        "date": "20260403",
+        "newUsers": "1",
+        "activeUsers": "1"
+      },
+      {
+        "date": "20260407",
+        "newUsers": "1",
+        "activeUsers": "1"
+      },
+      {
+        "date": "20260409",
+        "newUsers": "1",
+        "activeUsers": "1"
+      },
+      {
+        "date": "20260414",
+        "newUsers": "1",
+        "activeUsers": "1"
+      }
+    ],
+    "devices": [
+      {
+        "deviceCategory": "desktop",
+        "activeUsers": "44",
+        "sessions": "45",
+        "averageSessionDuration": "127.50314546666667"
+      },
+      {
+        "deviceCategory": "mobile",
+        "activeUsers": "2",
+        "sessions": "2",
+        "averageSessionDuration": "3.343342"
+      }
+    ],
+    "countries": [
+      {
+        "country": "United States",
+        "activeUsers": "15",
+        "sessions": "15",
+        "userEngagementDuration": "816"
+      },
+      {
+        "country": "Germany",
+        "activeUsers": "8",
+        "sessions": "8",
+        "userEngagementDuration": "2334"
+      },
+      {
+        "country": "France",
+        "activeUsers": "3",
+        "sessions": "3",
+        "userEngagementDuration": "89"
+      },
+      {
+        "country": "Austria",
+        "activeUsers": "2",
+        "sessions": "2",
+        "userEngagementDuration": "77"
+      },
+      {
+        "country": "Brazil",
+        "activeUsers": "2",
+        "sessions": "2",
+        "userEngagementDuration": "116"
+      },
+      {
+        "country": "Canada",
+        "activeUsers": "2",
+        "sessions": "2",
+        "userEngagementDuration": "34"
+      },
+      {
+        "country": "Malaysia",
+        "activeUsers": "2",
+        "sessions": "3",
+        "userEngagementDuration": "193"
+      },
+      {
+        "country": "Spain",
+        "activeUsers": "2",
+        "sessions": "2",
+        "userEngagementDuration": "70"
+      },
+      {
+        "country": "Switzerland",
+        "activeUsers": "2",
+        "sessions": "2",
+        "userEngagementDuration": "283"
+      },
+      {
+        "country": "Chile",
+        "activeUsers": "1",
+        "sessions": "1",
+        "userEngagementDuration": "23"
+      },
+      {
+        "country": "Cyprus",
+        "activeUsers": "1",
+        "sessions": "1",
+        "userEngagementDuration": "0"
+      },
+      {
+        "country": "Israel",
+        "activeUsers": "1",
+        "sessions": "1",
+        "userEngagementDuration": "0"
+      },
+      {
+        "country": "Netherlands",
+        "activeUsers": "1",
+        "sessions": "1",
+        "userEngagementDuration": "0"
+      },
+      {
+        "country": "South Korea",
+        "activeUsers": "1",
+        "sessions": "1",
+        "userEngagementDuration": "40"
+      },
+      {
+        "country": "United Kingdom",
+        "activeUsers": "1",
+        "sessions": "1",
+        "userEngagementDuration": "263"
+      },
+      {
+        "country": "Vietnam",
+        "activeUsers": "1",
+        "sessions": "1",
+        "userEngagementDuration": "508"
+      }
+    ],
+    "events": [
+      {
+        "eventName": "screen_view",
+        "eventCount": "424",
+        "totalUsers": "18",
+        "eventCountPerUser": "23.555555555555557"
+      },
+      {
+        "eventName": "session_start",
+        "eventCount": "93",
+        "totalUsers": "45",
+        "eventCountPerUser": "2.0666666666666669"
+      },
+      {
+        "eventName": "research_pull",
+        "eventCount": "78",
+        "totalUsers": "9",
+        "eventCountPerUser": "8.6666666666666661"
+      },
+      {
+        "eventName": "achievement_unlock",
+        "eventCount": "76",
+        "totalUsers": "22",
+        "eventCountPerUser": "3.4545454545454546"
+      },
+      {
+        "eventName": "tutorial_step",
+        "eventCount": "58",
+        "totalUsers": "29",
+        "eventCountPerUser": "2"
+      },
+      {
+        "eventName": "page_view",
+        "eventCount": "48",
+        "totalUsers": "45",
+        "eventCountPerUser": "1.0666666666666667"
+      },
+      {
+        "eventName": "scroll",
+        "eventCount": "48",
+        "totalUsers": "45",
+        "eventCountPerUser": "1.0666666666666667"
+      },
+      {
+        "eventName": "first_visit",
+        "eventCount": "45",
+        "totalUsers": "45",
+        "eventCountPerUser": "1"
+      },
+      {
+        "eventName": "gpu_expansion",
+        "eventCount": "36",
+        "totalUsers": "7",
+        "eventCountPerUser": "5.1428571428571432"
+      },
+      {
+        "eventName": "session_end",
+        "eventCount": "33",
+        "totalUsers": "30",
+        "eventCountPerUser": "1.1"
+      },
+      {
+        "eventName": "challenge_start",
+        "eventCount": "31",
+        "totalUsers": "18",
+        "eventCountPerUser": "1.7222222222222223"
+      },
+      {
+        "eventName": "challenge_complete",
+        "eventCount": "27",
+        "totalUsers": "14",
+        "eventCountPerUser": "1.9285714285714286"
+      },
+      {
+        "eventName": "upgrade_purchase",
+        "eventCount": "8",
+        "totalUsers": "1",
+        "eventCountPerUser": "8"
+      },
+      {
+        "eventName": "fusion_attempt",
+        "eventCount": "5",
+        "totalUsers": "2",
+        "eventCountPerUser": "2.5"
+      },
+      {
+        "eventName": "event_resolved",
+        "eventCount": "3",
+        "totalUsers": "2",
+        "eventCountPerUser": "1.5"
+      },
+      {
+        "eventName": "user_engagement",
+        "eventCount": "3",
+        "totalUsers": "3",
+        "eventCountPerUser": "1"
+      },
+      {
+        "eventName": "locked_tab_click",
+        "eventCount": "2",
+        "totalUsers": "2",
+        "eventCountPerUser": "1"
+      }
+    ],
+    "pages": [
+      {
+        "pageTitle": "AI Tycoon",
+        "screenPageViews": "472",
+        "activeUsers": "45"
+      }
+    ],
+    "first_session_engagement": [
+      {
+        "firstSessionDate": "20260331",
+        "userEngagementDuration": "3716",
+        "eventCountPerUser": "34.444444444444443",
+        "totalUsers": "18"
+      },
+      {
+        "firstSessionDate": "20260401",
+        "userEngagementDuration": "687",
+        "eventCountPerUser": "23.375",
+        "totalUsers": "8"
+      },
+      {
+        "firstSessionDate": "20260330",
+        "userEngagementDuration": "344",
+        "eventCountPerUser": "12.545454545454545",
+        "totalUsers": "11"
+      },
+      {
+        "firstSessionDate": "20260402",
+        "userEngagementDuration": "63",
+        "eventCountPerUser": "13.5",
+        "totalUsers": "2"
+      },
+      {
+        "firstSessionDate": "20260403",
+        "userEngagementDuration": "18",
+        "eventCountPerUser": "9",
+        "totalUsers": "1"
+      },
+      {
+        "firstSessionDate": "20260407",
+        "userEngagementDuration": "11",
+        "eventCountPerUser": "6",
+        "totalUsers": "1"
+      },
+      {
+        "firstSessionDate": "20260409",
+        "userEngagementDuration": "7",
+        "eventCountPerUser": "9",
+        "totalUsers": "1"
+      },
+      {
+        "firstSessionDate": "(not set)",
+        "userEngagementDuration": "0",
+        "eventCountPerUser": "1",
+        "totalUsers": "5"
+      },
+      {
+        "firstSessionDate": "20260405",
+        "userEngagementDuration": "0",
+        "eventCountPerUser": "6",
+        "totalUsers": "2"
+      },
+      {
+        "firstSessionDate": "20260414",
+        "userEngagementDuration": "0",
+        "eventCountPerUser": "5",
+        "totalUsers": "1"
+      }
+    ],
+    "purchases": [],
+    "ads": []
+  },
+  "sections_status": {
+    "overview": "ok",
+    "sources": "ok",
+    "new_users_by_day": "ok",
+    "devices": "ok",
+    "countries": "ok",
+    "events": "ok",
+    "pages": "ok",
+    "first_session_engagement": "ok",
+    "purchases": "ok",
+    "ads": "ok"
+  }
+}
