@@ -26,8 +26,12 @@ function getCurrentMission() {
   if (st.papers >= 10 && owned < maxSlots)
     return { id: 'research', icon: 'science', title: 'Research a new AI model!', sub: st.papers + ' Papers ready', screen: 'research', hasProg: false };
 
-  if (owned >= maxSlots && typeof getGpuSlotCost === 'function' && st.compute >= getGpuSlotCost())
-    return { id: 'gpu', icon: 'developer_board', title: 'Expand GPU slots!', sub: 'Fit more models', screen: 'upgrade', hasProg: true, getCurrent: () => st.compute, required: getGpuSlotCost() };
+  if (owned >= maxSlots && typeof getGpuSlotCost === 'function') {
+    const gpuCost = getGpuSlotCost();
+    if (st.compute >= gpuCost)
+      return { id: 'gpu', icon: 'developer_board', title: 'Expand GPU slots!', sub: 'Fit more models', screen: 'upgrade', hasProg: true, getCurrent: () => st.compute, required: gpuCost };
+    return { id: 'gpu-save', icon: 'developer_board', title: 'Earn ' + (typeof formatNumber === 'function' ? formatNumber(gpuCost - st.compute) : (gpuCost - st.compute)) + ' more Compute!', sub: 'To unlock GPU expansion', screen: 'upgrade', hasProg: true, getCurrent: () => st.compute, required: gpuCost };
+  }
 
   const nextModel = Object.entries(MODEL_DEFS)
     .filter(([id, def]) => def.unlockCost > 0 && getModelState(id)?.count === 0)
