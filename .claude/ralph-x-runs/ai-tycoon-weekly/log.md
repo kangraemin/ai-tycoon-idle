@@ -262,3 +262,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Delta: activeUsers 45 (30d baseline), tutorial_step/user 2.00, upgrade_purchase 8/1 user (pre-iter-24 data)
 - Lens choice reasoning: UX/개발자(9) - doResearchPull() has zero advanceTutorial() call; trigger buy only fires in doBuyUpgrade() not research path; code+playtest confirmed 100% deterministic failure at step 9
 - [SKIP] iter-0025 — 02-implementation.md missing, no commits
+
+## Iter 26 -- 기획자 -- 2026-04-19T13:45
+- [ANALYZE] Remove career nav lock -- all players see career screen from the start
+- Delta: activeUsers 45 (30d baseline), tutorial_step/user 2.00/10, upgrade_purchase 1/45 (2.2%), challenge_start 18/45 (40%)
+- Lens choice reasoning: 기획자(9) -- career screen locked from new players behind 2000 Rep; Goals card BugFarm click dead-ends into wrong "5000 Rep" toast (actual threshold 2000); canPromote() already guards Advance button so nav lock only gates player knowledge. Anti-stagnation: UX used 3x in last 5 iters, avoided.
