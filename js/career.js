@@ -212,7 +212,11 @@ function confirmCareerAdvance() {
       { text: 'Cancel' },
       { text: 'Advance!', primary: true, onClick: () => {
         if (typeof SFX !== 'undefined' && SFX.prestige) SFX.prestige();
-        doCareerAdvance();
+        const advanced = doCareerAdvance();
+        if (advanced && typeof showToast === 'function') {
+          const papersBonus = 10 * gameState.careerHistory.length;
+          showToast(`Career Advanced! +${papersBonus} Papers bonus`, 'success');
+        }
         renderCareerScreen();
         if (typeof applyCareerTheme === 'function') applyCareerTheme();
         if (typeof renderModelsScreen === 'function') renderModelsScreen();
