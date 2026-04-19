@@ -164,6 +164,14 @@ function doResearchPull() {
   const resultEl = document.getElementById('research-result');
   if (!resultEl) return;
 
+  // Candidate 2 UI fix: hide spotlight before spinner so it doesn't point at a disappearing button
+  if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'buy') {
+    const tutOverlay = document.getElementById('tutorial-overlay');
+    const tutSpotlight = document.getElementById('tutorial-spotlight');
+    if (tutOverlay) tutOverlay.classList.remove('spotlight-mode');
+    if (tutSpotlight) tutSpotlight.style.display = 'none';
+  }
+
   // Phase 1: Spinner (1.5s)
   resultEl.innerHTML = `
     <div class="research-spinner">
@@ -192,6 +200,8 @@ function doResearchPull() {
     const def = MODEL_DEFS[result.modelId];
     if (!def) return;
     if (typeof triggerEureka === 'function') triggerEureka();
+    // Store model name for tutorial complete modal (candidate 3)
+    if (typeof tutorialLastModelName !== 'undefined') tutorialLastModelName = def.name;
 
     const isHighRarity = result.rarity === 'epic' || result.rarity === 'legendary';
     const isDuplicate = !result.isNew && result.newCount >= 2;
@@ -236,6 +246,10 @@ function doResearchPull() {
     if (typeof SFX !== 'undefined' && SFX.gachaReveal) SFX.gachaReveal(result.rarity);
     if (typeof updateCurrencyDisplay === 'function') updateCurrencyDisplay();
     if (typeof renderModelsScreen === 'function') renderModelsScreen();
+    // Candidate 1 UX fix: advance tutorial step 9 after reveal (was unreachable before)
+    if (typeof getTutorialTrigger === 'function' && getTutorialTrigger() === 'buy') {
+      setTimeout(() => { if (typeof advanceTutorial === 'function') advanceTutorial(); }, 400);
+    }
   }, 1500);
 }
 
