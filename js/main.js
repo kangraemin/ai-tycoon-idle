@@ -1030,8 +1030,13 @@ function renderUpgradeScreen() {
       const cost = getUpgradeCost(catId, id);
       const canBuy = gameState.compute >= cost;
 
+      const isTutorialTarget = typeof gameState !== 'undefined' &&
+        typeof TUTORIAL_STEPS !== 'undefined' &&
+        TUTORIAL_STEPS[gameState.tutorialStep] &&
+        TUTORIAL_STEPS[gameState.tutorialStep].id === 'buy-upgrade' &&
+        catId === 'infra' && id === 'batchSize';
       html += `
-        <div class="upgrade-card cat-${catId} ${canBuy ? '' : 'locked'}" data-category="${catId}" data-id="${id}">
+        <div class="upgrade-card cat-${catId} ${canBuy ? '' : 'locked'}${isTutorialTarget ? ' tutorial-target-card' : ''}" data-category="${catId}" data-id="${id}">
           <div class="upgrade-card-top">
             <div class="upgrade-icon-wrap ${upgradeIcon.bg}">
               <span class="material-symbols-outlined">${upgradeIcon.icon}</span>
