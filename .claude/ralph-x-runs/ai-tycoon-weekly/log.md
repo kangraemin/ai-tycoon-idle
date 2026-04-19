@@ -233,3 +233,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 3/5] 개발자 7a63ec5 — Reset gachaPulls on career advance per-prestige pity (LOC +1/-0)
 - [IMPLEMENT 4/5] UI e6b3a38 — Research rates owned/total model count per rarity (LOC +7/-3)
 - [IMPLEMENT 5/5] 기획자 73e0111 — Career advance toast with actual papers bonus (LOC +5/-1)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
