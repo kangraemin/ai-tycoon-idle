@@ -2109,3 +2109,12 @@ Not logged in · Please run /login
 - [IMPLEMENT 2/4] 게이머 e4ea571 — Play again in Xs cooldown button (LOC +3/-3)
 - [IMPLEMENT 3/4] 기획자/개발자 a2c0b08 — passive Rep from LPS in produceTick (LOC +4/-0)
 - [IMPLEMENT 4/4] UX 01b9379 — what's next checklist modal after tutorial (LOC +33/-1)
+워크로그 작성 완료 (Notion 전송 성공).
+
+**기록 내용:**
+- Candidate 1 (오프라인 수익): 이미 `offline.js`에 구현됨 — 스킵
+- Candidate 2: 챌린지 쿨다운 버튼 → "Play again in Xs" (`main.js`)
+- Candidate 3: produceTick에 패시브 Rep 적립 (`production.js`)
+- Candidate 4: 튜토리얼 완료 후 "What's Next?" 모달 (`tutorial.js`)
+[27] Step 3: Deploy
+[27] Step 3: Deploy

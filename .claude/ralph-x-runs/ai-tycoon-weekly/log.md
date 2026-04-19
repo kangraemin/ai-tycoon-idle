@@ -273,3 +273,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [ANALYZE] Offline Earnings System -- LoC accumulation while away + passive Rep from idle models
 - Delta: activeUsers 45->0 (1d empty; 30d baseline stable), tutorial/user 2.00, upgrade_purchase 1/45 (2.2%), avg_session 124.9s
 - Lens choice reasoning: 기획자(9) -- state.js loadGame() has zero offline calc; Rep only from tapping/compiling not from idle models; both gaps violate core idle tycoon promise. Anti-stagnation: two 기획자 in last 6 iters, not 3 in a row, rule not triggered.
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
