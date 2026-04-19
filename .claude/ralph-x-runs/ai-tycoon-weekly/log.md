@@ -274,3 +274,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Delta: activeUsers 45->0 (1d empty; 30d baseline stable), tutorial/user 2.00, upgrade_purchase 1/45 (2.2%), avg_session 124.9s
 - Lens choice reasoning: 기획자(9) -- state.js loadGame() has zero offline calc; Rep only from tapping/compiling not from idle models; both gaps violate core idle tycoon promise. Anti-stagnation: two 기획자 in last 6 iters, not 3 in a row, rule not triggered.
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 28 -- 게이머 -- 2026-04-19T
+- [ANALYZE] Idle earnings forecast panel in editor (primary: 게이머 8/10)
+- Delta: activeUsers 0 (1d empty), 30d baseline: 45 users, sessions/user 2.07, avg_session 124.9s
+- Lens choice reasoning: 게이머(8) -- sessions/user ~2 in 30d is the core retention failure; no outbound "you earn while away" signal in editor; offline.js calculates it, just needs display. UI(7) BugFarm bar visibility, UX(6) GPU-full mission fix, 기획자(5) Memory/offline synergy hint all >= 5 and in queue.
