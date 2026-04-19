@@ -256,3 +256,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 2/3] UI 10c331f -- Reorder upgrade categories Infra-first (LOC +2/-2)
 - [IMPLEMENT 3/3] Gamer 2e786f2 -- Start Here badge on Batch Size during tutorial (LOC +31/-1)
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 25 - UX/개발자 - 2026-04-19T13:15
+- [ANALYZE] Fix tutorial step 9: doResearchPull() never calls advanceTutorial() - 100% of post-step-8 players stuck
+- Delta: activeUsers 45 (30d baseline), tutorial_step/user 2.00, upgrade_purchase 8/1 user (pre-iter-24 data)
+- Lens choice reasoning: UX/개발자(9) - doResearchPull() has zero advanceTutorial() call; trigger buy only fires in doBuyUpgrade() not research path; code+playtest confirmed 100% deterministic failure at step 9
