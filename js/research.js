@@ -123,12 +123,16 @@ function renderResearchScreen() {
       <div class="research-rates">
         <h3>Discovery Rates</h3>
         <div class="rate-circles">
-          ${RESEARCH_RATES.map(r => `
+          ${RESEARCH_RATES.map(r => {
+            const allIds = Object.entries(MODEL_DEFS).filter(([_, d]) => d.rarity === r.rarity).map(([id]) => id);
+            const ownedCount = allIds.filter(id => { const ms = getModelState(id); return ms && ms.count > 0; }).length;
+            return `
             <div class="rate-circle">
               <div class="rate-circle-badge ${r.rarity}">${r.label}</div>
               <span class="rate-circle-pct ${r.rarity}">${r.weight}%</span>
-            </div>
-          `).join('')}
+              <span style="font-size:10px;color:var(--text-secondary)">${ownedCount}/${allIds.length}</span>
+            </div>`;
+          }).join('')}
         </div>
         ${(!gameState.stats || gameState.stats.gachaPulls === 0) ? `
         <div style="margin-top:8px;padding:6px 10px;background:var(--bg-card);border:1px solid var(--accent);border-radius:6px;font-size:11px;color:var(--accent);text-align:center">
