@@ -1438,6 +1438,41 @@ html, body {
   flex-shrink: 0;
 }
 
+/* ===== Idle Forecast Panel ===== */
+.idle-forecast {
+  margin: 4px 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.idle-forecast-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.idle-forecast-stat {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.idle-forecast-val {
+  font-weight: 700;
+}
+.idle-forecast-val.idle-loc { color: var(--loc); }
+.idle-forecast-val.idle-rep { color: var(--reputation); }
+.idle-forecast-sep { opacity: 0.4; }
+.idle-forecast-label {
+  margin-left: auto;
+  font-size: 10px;
+  opacity: 0.6;
+  font-style: italic;
+}
+
 /* ===== Hint Banner ===== */
 .hint-banner {
   display: flex;

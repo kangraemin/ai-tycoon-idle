@@ -43,6 +43,21 @@ function getCurrentMission() {
   return null;
 }
 
+function renderIdleForecast() {
+  const el = document.getElementById('idle-forecast');
+  if (!el) return;
+  const lps = getLocPerSecond();
+  if (lps <= 0) { el.style.display = 'none'; return; }
+  el.style.display = '';
+  const codePerHr = lps * 3600 * OFFLINE_EFFICIENCY;
+  const repPerHr = lps * 0.05 * 3600;
+  el.innerHTML = '<span class="material-symbols-outlined idle-forecast-icon">bedtime</span>'
+    + '<span class="idle-forecast-stat"><span class="idle-forecast-val idle-loc">+' + formatNumber(codePerHr) + '</span> Code/hr</span>'
+    + '<span class="idle-forecast-sep">·</span>'
+    + '<span class="idle-forecast-stat"><span class="idle-forecast-val idle-rep">+' + formatNumber(repPerHr) + '</span> Rep/hr</span>'
+    + '<span class="idle-forecast-label">while away</span>';
+}
+
 function renderMissionCard() {
   const card = document.getElementById('mission-card');
   if (!card) return;
@@ -617,6 +632,7 @@ function gameLoop() {
   if (typeof updateHintBanner === 'function') updateHintBanner();
   if (typeof updateMissionCard === 'function') updateMissionCard();
   if (typeof updateGoalsProgress === 'function') updateGoalsProgress();
+  if (typeof renderIdleForecast === 'function') renderIdleForecast();
   if (typeof renderEventBanner === 'function') renderEventBanner();
   if (typeof checkAchievements === 'function') checkAchievements();
   if (typeof checkTabUnlock === 'function') checkTabUnlock();
@@ -737,7 +753,7 @@ function renderEditorScreen() {
   const container = document.getElementById('editor-content');
   if (!container) return;
 
-  let html = '<div id="mission-card" class="mission-card"></div><div id="goals-card" class="goals-card"></div><div class="code-editor">';
+  let html = '<div id="mission-card" class="mission-card"></div><div id="goals-card" class="goals-card"></div><div id="idle-forecast" class="idle-forecast" style="display:none"></div><div class="code-editor">';
   html += '<div class="editor-tab-bar">';
   const isAgentActive = gameState.editorTab !== 'train';
   html += '<div class="editor-tab ' + (isAgentActive ? 'active' : '') + '" onclick="switchEditorTab(\'agent\')"><span class="editor-tab-icon">PY</span> agent.py</div>';
@@ -821,6 +837,7 @@ function renderEditorScreen() {
   container.innerHTML = html;
   if (typeof applyCareerTheme === 'function') applyCareerTheme();
   renderGoalsCard();
+  renderIdleForecast();
   updateCompileBtn();
 }
 
