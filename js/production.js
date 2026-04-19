@@ -106,8 +106,16 @@ function compileData() {
     if (typeof showToast === 'function') showToast('+' + papersEarned + ' Papers', 'success');
   } else {
     // agent.py → Compute (기존)
-    gameState.compute += output;
+    const isFirstCompile = !gameState.stats || gameState.stats.totalCompiles === 0;
+    const firstCompileMult = isFirstCompile ? 3 : 1;
+    gameState.compute += output * firstCompileMult;
     if (gameState.stats) gameState.stats.totalCompute += output;
+    if (isFirstCompile && typeof showToast === 'function') {
+      showToast('🚀 First Build! 3× Compute bonus!', 'success');
+      const app = document.getElementById('app') || document.body;
+      app.classList.add('screen-shake');
+      setTimeout(() => app.classList.remove('screen-shake'), 400);
+    }
     // Paper reward every 10 compiles (check after increment to avoid firing at compile #1)
     if (gameState.stats && (gameState.stats.totalCompiles + 1) % 10 === 0) {
       gameState.papers += 1;
