@@ -268,3 +268,8 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - Delta: activeUsers 45 (30d baseline), tutorial_step/user 2.00/10, upgrade_purchase 1/45 (2.2%), challenge_start 18/45 (40%)
 - Lens choice reasoning: 기획자(9) -- career screen locked from new players behind 2000 Rep; Goals card BugFarm click dead-ends into wrong "5000 Rep" toast (actual threshold 2000); canPromote() already guards Advance button so nav lock only gates player knowledge. Anti-stagnation: UX used 3x in last 5 iters, avoided.
 - [DEPLOY] success — https://ramang.itch.io/ai-tycoon
+
+## Iter 27 -- 기획자 -- 2026-04-19T15:00
+- [ANALYZE] Offline Earnings System -- LoC accumulation while away + passive Rep from idle models
+- Delta: activeUsers 45->0 (1d empty; 30d baseline stable), tutorial/user 2.00, upgrade_purchase 1/45 (2.2%), avg_session 124.9s
+- Lens choice reasoning: 기획자(9) -- state.js loadGame() has zero offline calc; Rep only from tapping/compiling not from idle models; both gaps violate core idle tycoon promise. Anti-stagnation: two 기획자 in last 6 iters, not 3 in a row, rule not triggered.
