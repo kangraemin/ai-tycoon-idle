@@ -316,6 +316,16 @@ function submitChallenge(forcedAnswer) {
   const bodyEl = document.getElementById('challenge-body');
   if (bodyEl) bodyEl.style.display = 'none';
   if (resultEl) {
+    const nextCareer = typeof getNextCareer === 'function' ? getNextCareer() : null;
+    let careerCtxHtml = '';
+    if (nextCareer) {
+      const repNeeded = nextCareer.repReq - gameState.reputation;
+      if (repNeeded > 0) {
+        careerCtxHtml = `<div style="color:var(--text-secondary);font-size:12px;margin-top:8px;padding:6px 8px;background:rgba(255,255,255,0.05);border-radius:6px">${formatNumber(repNeeded)} Rep to ${nextCareer.name} (${nextCareer.multiplier}x)</div>`;
+      } else {
+        careerCtxHtml = `<div style="color:var(--reputation);font-size:12px;margin-top:8px;padding:6px 8px;background:rgba(255,255,255,0.05);border-radius:6px">Ready to advance to ${nextCareer.name}! Go to Career tab.</div>`;
+      }
+    }
     resultEl.style.display = 'block';
     resultEl.innerHTML = `
       <div class="challenge-grade">
@@ -325,6 +335,7 @@ function submitChallenge(forcedAnswer) {
         <div style="color:var(--compute);font-size:13px">+${computeReward} Compute</div>
         <div style="color:var(--reputation);font-size:13px">+${repReward} Rep</div>
         ${paperReward > 0 ? `<div style="color:var(--papers);font-size:13px">+${paperReward} Papers</div>` : ''}
+        ${careerCtxHtml}
         <button class="btn btn-primary" style="width:100%;margin-top:16px" onclick="closeChallengeOverlay()">Close</button>
       </div>
     `;
