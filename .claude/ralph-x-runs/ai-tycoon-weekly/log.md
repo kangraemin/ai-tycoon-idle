@@ -245,3 +245,4 @@ Iter N의 관점 = ["UI", "UX", "기획자", "개발자", "게이머"][(N-1) mod
 - [IMPLEMENT 3/5] 개발자 13b5ded — Fix train-tab spotlight timing: 50ms->300ms (LOC +1/-1)
 - [IMPLEMENT 4/5] 게이머 a606f5f — First-compile wow: 3x burst + screen shake + toast (LOC +9/-1)
 - [IMPLEMENT 5/5] UI 8ee12de — Show Chatbot rate in welcome modal (LOC +8/-1)
+- [DEPLOY] success — https://ramang.itch.io/ai-tycoon
