@@ -138,6 +138,31 @@ function updateCurrencyDisplay() {
       compileBtn.classList.add('btn-disabled');
     }
   }
+
+  // "Affordable!" pulse badge on Upgrade nav when compute >= cheapest unlockable upgrade
+  const upgradeNavBtn = document.querySelector('[data-screen="upgrade"]');
+  if (upgradeNavBtn && typeof UPGRADE_DEFS !== 'undefined' && typeof getUpgradeCost === 'function') {
+    let cheapest = Infinity;
+    for (const cat of Object.keys(UPGRADE_DEFS)) {
+      for (const id of Object.keys(UPGRADE_DEFS[cat])) {
+        const c = getUpgradeCost(cat, id);
+        if (c < cheapest) cheapest = c;
+      }
+    }
+    const canAfford = gameState.compute >= cheapest;
+    const isOnUpgradeScreen = currentScreen === 'upgrade';
+    let badge = upgradeNavBtn.querySelector('.nav-affordable-badge');
+    if (canAfford && !isOnUpgradeScreen) {
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'nav-affordable-badge';
+        badge.textContent = '!';
+        upgradeNavBtn.querySelector('.nav-icon-wrap').appendChild(badge);
+      }
+    } else if (badge) {
+      badge.remove();
+    }
+  }
 }
 
 function updateUpgradeButtonStates() {
