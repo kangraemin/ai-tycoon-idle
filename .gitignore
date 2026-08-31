@@ -32,3 +32,6 @@ Gemfile.lock
 # Local dev tools
 scripts/ralph/
 skip.html
+
+# ai-bouncer 런타임 상태
+.ai-bouncer/
